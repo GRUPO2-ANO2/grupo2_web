@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "bootstrap": "^5.2.2",
-    "firebase": "^9.12.1"
+    "firebase": "^9.12.1",
+    "firebase-functions": "^4.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.26.0"
   }
 }
