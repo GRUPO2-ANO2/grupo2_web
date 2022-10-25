@@ -3,8 +3,8 @@ import { initializeApp } from 'firebase/app';
 import { getAnalytics } from "firebase/analytics";
 
 // Web app's Firebase configuration
-const firebaseApp = initializeApp({
-    apiKey: "AIzaSyCTx1Z-1z6x6cG4SrBsf7nWb5sUimfF1wg",
+const firebaseConfig = initializeApp({
+  apiKey: "AIzaSyCTx1Z-1z6x6cG4SrBsf7nWb5sUimfF1wg",
   authDomain: "grupo2-6980f.firebaseapp.com",
   databaseURL: "https://grupo2-6980f-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "grupo2-6980f",
@@ -16,4 +16,3 @@ const firebaseApp = initializeApp({
  
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
