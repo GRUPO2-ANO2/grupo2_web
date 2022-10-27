@@ -25,12 +25,14 @@
   </head>
   <body>
     <h1 style="text-align: center;">Grupo2</h1>
-
+    <a href="login.html">
+      <button>Login</button>
+   </a>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         const loadEl = document.querySelector('#load');
 
-        // firebase.auth().onAuthStateChanged(user => { });
+        firebase.auth().onAuthStateChanged(user => { });
         // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
         // firebase.firestore().doc('/foo/bar').get().then(() => { });
         // firebase.functions().httpsCallable('yourFunction')().then(() => { });
