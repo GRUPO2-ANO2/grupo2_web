@@ -13,7 +13,7 @@ function login() {
       form.email().value, form.password().value
   ).then(response => {
     console.log('sucess' +response)  
-    //window.location.href = "pages/home/home.html";
+    window.location.href = "index.html";
   }).catch(error => {
       alert(getErrorMessage(error));
   });
