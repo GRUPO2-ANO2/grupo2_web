@@ -16,10 +16,6 @@ function onChangePassword() {
   togglePasswordErrors();
 }
 
-function register() {
-  window.location.href = "pages/register/register.html";
-}
-
 function toggleEmailErrors() {
   const email = form.email().value;
   form.emailRequiredError().style.display = email ? "none" : "block";
