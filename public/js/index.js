@@ -1,17 +1,73 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
+function onChangeEmail() {
+  toggleButtonsDisable();
+  toggleEmailErrors();
+}
 
-// Web app's Firebase configuration
-const firebaseConfig = initializeApp({
-  apiKey: "AIzaSyCTx1Z-1z6x6cG4SrBsf7nWb5sUimfF1wg",
-  authDomain: "grupo2-6980f.firebaseapp.com",
-  databaseURL: "https://grupo2-6980f-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "grupo2-6980f",
-  storageBucket: "grupo2-6980f.appspot.com",
-  messagingSenderId: "320559211112",
-  appId: "1:320559211112:web:32eb3d060a84d01bca91dd",
-  measurementId: "G-8184SBYGFP"
-})
- 
-// Initialize Firebase
-export const firebaseApp = initializeApp(firebaseConfig);
+function onChangePassword() {
+  toggleButtonsDisable();
+  togglePasswordErrors();
+}
+
+function login() {
+  firebase.auth().signInWithEmailAndPassword(
+      form.email().value, form.password().value
+  ).then(response => {
+    console.log('sucess' +response)  
+    //window.location.href = "pages/home/home.html";
+  }).catch(error => {
+      alert(getErrorMessage(error));
+  });
+}
+
+function getErrorMessage(error) {
+  if (error.code == "auth/user-not-found") {
+      return "Usuário nao encontrado";
+  }
+  return error.message;
+}
+
+function register() {
+  window.location.href = "pages/register/register.html";
+}
+
+function toggleEmailErrors() {
+  const email = form.email().value;
+  form.emailRequiredError().style.display = email ? "none" : "block";
+  
+  form.emailInvalidError().style.display = validateEmail(email) ? "none" : "block";
+}
+
+function togglePasswordErrors() {
+  const password = form.password().value;
+  form.passwordRequiredError().style.display = password ? "none" : "block";
+}
+
+function toggleButtonsDisable() {
+  const emailValid = isEmailValid();
+  form.recoverPasswordButton().disabled = !emailValid;
+
+  const passwordValid = isPasswordValid();
+  form.loginButton().disabled = !emailValid || !passwordValid;
+}
+
+function isEmailValid() {
+  const email = form.email().value;
+  if (!email) {
+      return false;
+  }
+  return validateEmail(email);
+}
+
+function isPasswordValid() {
+  return form.password().value ? true : false;
+}
+
+const form = {
+  email: () => document.getElementById("email"),
+  emailInvalidError: () => document.getElementById("email-invalid-error"),
+  emailRequiredError: () => document.getElementById("email-required-error"),
+  loginButton: () => document.getElementById("login-button"),
+  password: () => document.getElementById("password"),
+  passwordRequiredError: () => document.getElementById("password-required-error"),
+  recoverPasswordButton: () => document.getElementById("recover-password-button"),
+} 
