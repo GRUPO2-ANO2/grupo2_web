@@ -1,3 +1,13 @@
+currentUser = null;
+
+firebase.auth().onAuthStateChanged((user) => {
+    currentUser = user;
+    if(user != null)
+        console.log("user: " + user.uid);
+    else
+        console.log("user: " + user);
+});
+
 function loginWithEmailAndPassword() {
     firebase.auth().signInWithEmailAndPassword(
         form.email().value, form.password().value
