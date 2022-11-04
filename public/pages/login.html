@@ -1,43 +1,50 @@
 <!DOCTYPE html>
-<html><head>
-  <title>Controle de gastos</title>
-</head>
+<html>
+    <head>
+        <title>Login</title>
+    </head>
 
-<body>
-  <form>
-      <div class="form-field">
-          <div><label>Email</label></div>
-          <input type="email" name="email" id="email" placeholder="seu@email.com" onchange="onChangeEmail()">
-          <div class="error" id="email-required-error">Email é obrigatório</div>
-          <div class="error" id="email-invalid-error">Email é inválido</div>
-      </div>
-      <div class="form-field">
-          <div><label>Senha</label></div>
-          <input type="password" name="password" id="password" placeholder="Senha" onchange="onChangePassword()">
-          <div class="error" id="password-required-error">Senha é obrigatória</div>
-      </div>
-      <div>
-          <button type="button" class="clear" id="recover-password-button" disabled="true">Recuperar senha</button>
-      </div>
-      <div>
-          <button type="button" class="solid" id="login-button" onclick="loginWithEmailAndPassword()">Entrar</button>
-      </div>
-      <div>
-            <button type="button" class="outline" id="register-button" onclick="registerWithEmailAndPassword()">Registrar</button>
-      </div>
-  </form>
-
-<!-- StyleSheets -->
-<link rel="stylesheet" href="../css/index.css">
-<link rel="stylesheet" href="../css/global.css">
-
-<!-- Scripts -->
-<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
-
-<script src="../js/index.js"></script>
-<script src="../js/constants.js"></script>
-<script src="../js/firebase/auth.js"></script>
-<script src="../js/utils/auth_utils.js"></script>
-
-</body></html>
+    <body>
+        <form>
+            <div class="form-field">
+                <div>
+                <label>Email</label>
+                </div>
+                <input type="email" name="email" id="email" placeholder="seu@email.com" onchange="onChangeEmail()">
+                <div class="error" id="email-required-error">Email é obrigatório</div>
+                <div class="error" id="email-invalid-error">Email é inválido</div>
+            </div>
+            
+            <div class="form-field">
+                <div>
+                <label>Senha</label>
+                </div>
+                <input type="password" name="password" id="password" placeholder="Senha" onchange="onChangePassword()">
+                <div class="error" id="password-required-error">Senha é obrigatória</div>
+            </div>
+            
+            <div>
+                <button type="button" class="clear" id="recover-password-button" disabled="true">Recuperar senha</button>
+            </div>
+            <div>
+                <button type="button" class="solid" id="login-button" onclick="loginWithEmailAndPassword()">Entrar</button>
+            </div>
+            <div>
+                <button type="button" class="outline" id="register-button" onclick="registerWithEmailAndPassword()">Registrar</button>
+            </div>
+        </form>
+      
+    <!-- StyleSheets -->
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/global.css">
+    
+    </body>
+    
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+    <script src="../js/index.js"></script>
+    <script src="../js/constants.js"></script>
+    <script src="../js/firebase/auth.js"></script>
+    <script src="../js/utils/auth_utils.js"></script>
+</html>
