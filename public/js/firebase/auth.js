@@ -28,6 +28,24 @@ function registerWithEmailAndPassword() {
     });
 }
 
+function updateUserProfile(){
+    currentUser.updateProfile({
+        displayName: form.name().value, email: form.email().value, password: form.password().value
+    }).then(() => {
+        console.log("Updated")
+    }).catch((error) => {
+        alert(getErrorMessage(error));
+    });
+}
+
+function updateEmail(){
+    firebase.auth().updateEmail(currentUser, form.email().value).then(() => {
+        console.log("Email Updated")
+    }).catch(error => {
+        alert(getErrorMessage(error));
+    })
+}
+
 function signOut() {
     firebase.auth().signOut().then(response => {
     // console.log("SignOut");
@@ -39,10 +57,11 @@ function signOut() {
 // Form object
 const form = {
     email: () => document.getElementById("email"),
+    name: () => document.getElementById("name"),
     emailInvalidError: () => document.getElementById("email-invalid-error"),
     emailRequiredError: () => document.getElementById("email-required-error"),
     loginButton: () => document.getElementById("login-button"),
     password: () => document.getElementById("password"),
     passwordRequiredError: () => document.getElementById("password-required-error"),
     recoverPasswordButton: () => document.getElementById("recover-password-button"),
-  } 
+} 
