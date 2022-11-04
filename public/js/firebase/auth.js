@@ -1,25 +1,21 @@
-function getErrorMessage(error) {
-    errorMsg = error.message;
+function loginWithEmailAndPassword() {
+    firebase.auth().signInWithEmailAndPassword(
+        form.email().value, form.password().value
+    ).then(response => {
+      window.location.href = "../index.html";
+    }).catch(error => {
+        alert(getErrorMessage(error));
+    });
+  }  
 
-    switch(error.code){
-        case "auth/email-already-in-use":
-            errorMsg = "Email já em uso.";
-            break;
-        case "auth/user-not-found":
-            errorMsg = "Utilizador não encontrado";
-            break;
-        case "auth/invalid-email":
-            errorMsg = "Email inválido.";
-            break;
-        case "auth/weak-password":
-            errorMsg = "Password fraca(deve ser de 6 ou mais caracteres).";
-            break;
-        case "auth/wrong-password":
-            errorMsg = "Password errada.";
-            break;
-    }
-
-    return errorMsg;
+function registerWithEmailAndPassword() {
+    firebase.auth().createUserWithEmailAndPassword(
+        form.email().value, form.password().value
+    ).then(response => {
+      window.location.href = "../index.html";
+    }).catch(error => {
+        alert(getErrorMessage(error));
+    });
 }
 
 function signOut() {
@@ -29,3 +25,14 @@ function signOut() {
         alert(getErrorMessage(error));
     });
 }
+
+// Form object
+const form = {
+    email: () => document.getElementById("email"),
+    emailInvalidError: () => document.getElementById("email-invalid-error"),
+    emailRequiredError: () => document.getElementById("email-required-error"),
+    loginButton: () => document.getElementById("login-button"),
+    password: () => document.getElementById("password"),
+    passwordRequiredError: () => document.getElementById("password-required-error"),
+    recoverPasswordButton: () => document.getElementById("recover-password-button"),
+  } 
