@@ -2,10 +2,64 @@
 <html>
     <head>
         <title>Login</title>
-    </head>
 
+    <!-- StyleSheets -->
+    <link rel="stylesheet" href="../css/index.css">
+    <!--<link rel="stylesheet" href="../css/global.css">-->
+    <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
+    </head>
     <body>
-        <form>
+            <form action="form-field" id="form_login">
+                <div class="jumbotron vertical-center">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col textfa-pull-left" id="content">
+
+                                <!-- Title -->
+                                <h1 class="card-title">
+                                    <strong>
+                                        Bem-Vindo
+                                    </strong>
+                                </h1>
+                                <br>
+                                <p class="card-text">Faça login</p>
+                       
+                                <div class="form-field">
+                                    <!-- Email Form -->
+                                    <label for="username">Email</label><br>
+                                    <input type="email" name="email" id="email" class="form-control rounded-pill" onchange="onChangeEmail()" placeholder="Email">
+                                    <div class="error" id="email-required-error">Email é obrigatório</div>
+                                    <div class="error" id="email-invalid-error">Email é inválido</div>
+                                </div>
+
+                                <div class="form-field"> 
+                                    <!-- Password Form -->
+                                    <label for="password" id="label_password">Password</label><br>
+                                    <input type="text" name="password" id="password" class="form-control rounded-pill" placeholder="Password">
+                                </div>
+
+                                <div class="form-field"> 
+                                    <!-- Forgot Password -->
+                                    <a href="recupararpassword.html" id="recuperar_pass">
+                                        <p class="card-text" id="recuperar_pass">Não se lembra da Password?</p>
+                                    </a>
+                                </div>
+                                    <br>
+
+                                    <!-- Btn -->
+                                    <button type="button" class="rounded-pill btn btn-md btn_login float-end" id="btn_login">
+                                        Entrar
+                                    </button>
+                            </div>
+                            <div class="col bg-secondary ">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+        <!--<form>
             <div class="form-field">
                 <div>
                 <label>Email</label>
@@ -32,12 +86,7 @@
             <div>
                 <button type="button" class="outline" id="register-button" onclick="registerWithEmailAndPassword()">Registrar</button>
             </div>
-        </form>
-      
-    <!-- StyleSheets -->
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/global.css">
-    
+        </form>-->   
     </body>
     
     <!-- Scripts -->
@@ -47,4 +96,5 @@
     <script src="../js/constants.js"></script>
     <script src="../js/firebase/auth.js"></script>
     <script src="../js/utils/auth_utils.js"></script>
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
 </html>
