@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Login</title>
+        <title>Registo</title>
 
     <!-- StyleSheets -->
-    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/registar.css">
     <!--<link rel="stylesheet" href="../css/global.css">-->
     <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
     </head>
@@ -13,16 +13,13 @@
                 <div class="vertical-center">
                     <div class="container">
                         <div class="row">
-                            <div class="col textfa-pull-left" id="content_left">
+                            <div class="col" id="content">
 
-                                <!-- Title -->
-                                <h1 class="card-title">
-                                    <strong>
-                                        Bem-Vindo
-                                    </strong>
-                                </h1>
-                                <br>
-                                <p class="card-text">Faça login</p>
+                                <div class="form-field">
+                                    <!-- Name Form -->
+                                    <label for="name">Nome</label><br>
+                                    <input type="text" name="name" id="name" class="form-control rounded-pill" placeholder="Nome">
+                                </div>
                        
                                 <div class="form-field">
                                     <!-- Email Form -->
@@ -35,22 +32,32 @@
                                     <label for="password" id="label_password">Password</label><br>
                                     <input type="password" name="password" id="password" class="form-control rounded-pill" placeholder="Password">
                                 </div>
-
-                                <div class="form-field">    
-                                    <!-- Forgot Password -->
-                                    <a href="recuperarpassword.html" id="recuperar_pass">
-                                        <p class="card-text" id="recuperar_pass">Não se lembra da Password?</p>
-                                    </a>
+                        
+                            </div>
+                            <div class="col" id="content">
+                                <div class="form-field">
+                                    <!-- Surname Form -->
+                                    <label for="sobrenome">Sobrenome</label><br>
+                                    <input type="text" name="sobrenome" id="sobrenome" class="form-control rounded-pill" onchange="onChangeEmail()" placeholder="Sobrenome">
                                 </div>
-                                    <br>
+                                
 
-                                    <!-- Btn -->
-                                    <button type="button" class="rounded-pill btn btn-md btn_login float-end" id="btn_login" onclick="loginWithEmailAndPassword()">
-                                        Entrar
-                                    </button>
+                                <div class="form-field"> 
+                                    <!-- Contact Form -->
+                                    <label for="contacto" id="label_contact">Contacto</label><br>
+                                    <input type="text" name="contacto" id="contacto" class="form-control rounded-pill" placeholder="Contacto">
+                                </div>
+                                <br>
+
+                                <!-- Btn -->
+                                <button type="button" class="rounded-pill btn btn-md btn_login float-end" id="btn_login" onclick="registerWithEmailAndPassword()">
+                                    Registar
+                                </button>
                             </div>
-                            <div class="col bg-secondary" id="content_right">
+                            <div class="col bg-secondary ">
+                                teste
                             </div>
+
                         </div>
                     </div>
                 </div>

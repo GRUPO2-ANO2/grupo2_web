@@ -10,14 +10,14 @@
     background-color: rgb(238,238,238);
 }
 
-#label_password {
-    margin-top: 15px;
-}
-
 #recuperar_pass {
     margin-top: 10px;
 }
 
 #content_left {
     padding-right: 80px;
+}
+
+label {
+    margin-top: 10px;
 }
