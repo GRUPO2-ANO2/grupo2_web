@@ -22,7 +22,18 @@ function registerWithEmailAndPassword() {
     firebase.auth().createUserWithEmailAndPassword(
         form.email().value, form.password().value
     ).then(response => {
+        registerPersonalInformations()
+    }).catch(error => {
+        alert(getErrorMessage(error));
+    });
+}
+
+function registerPersonalInformations() {
+    currentUser.updateProfile({
+        displayName: form.name().value, phoneNumber: form.contact().value
+    }).then(response => {
       window.location.href = "../index.html";
+      console.log("Sucess")
     }).catch(error => {
         alert(getErrorMessage(error));
     });
@@ -58,6 +69,7 @@ function signOut() {
 const form = {
     email: () => document.getElementById("email"),
     name: () => document.getElementById("name"),
+    contact: () => document.getElementById("contact"),
     emailInvalidError: () => document.getElementById("email-invalid-error"),
     emailRequiredError: () => document.getElementById("email-required-error"),
     loginButton: () => document.getElementById("login-button"),

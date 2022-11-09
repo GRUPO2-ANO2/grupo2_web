@@ -9,56 +9,50 @@
     <link rel="stylesheet" href="../css/bootstrap/bootstrap.min.css">
     </head>
     <body>
-            <form action="form-field" id="form_login">
-                <div class="vertical-center">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col" id="content">
-
-                                <div class="form-field">
-                                    <!-- Name Form -->
-                                    <label for="name">Nome</label><br>
-                                    <input type="text" name="name" id="name" class="form-control rounded-pill" placeholder="Nome">
-                                </div>
-                       
-                                <div class="form-field">
-                                    <!-- Email Form -->
-                                    <label for="email">Email</label><br>
-                                    <input type="email" name="email" id="email" class="form-control rounded-pill" onchange="onChangeEmail()" placeholder="Email">
-                                </div>
-
-                                <div class="form-field"> 
-                                    <!-- Password Form -->
-                                    <label for="password" id="label_password">Password</label><br>
-                                    <input type="password" name="password" id="password" class="form-control rounded-pill" placeholder="Password">
-                                </div>
-                        
+        <form action="form-field" id="form_login">
+            <div class="vertical-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col" id="content">
+                            <div class="form-field">
+                                <!-- Name Form -->
+                                <label for="name">Nome</label><br>
+                                <input type="text" name="name" id="name" class="form-control rounded-pill" placeholder="Nome">
                             </div>
-                            <div class="col" id="content">
-                                <div class="form-field">
-                                    <!-- Surname Form -->
-                                    <label for="sobrenome">Sobrenome</label><br>
-                                    <input type="text" name="sobrenome" id="sobrenome" class="form-control rounded-pill" onchange="onChangeEmail()" placeholder="Sobrenome">
-                                </div>
-                                
-
-                                <div class="form-field"> 
-                                    <!-- Contact Form -->
-                                    <label for="contacto" id="label_contact">Contacto</label><br>
-                                    <input type="text" name="contacto" id="contacto" class="form-control rounded-pill" placeholder="Contacto">
-                                </div>
-                                <br>
-
-                                <!-- Btn -->
-                                <button type="button" class="rounded-pill btn btn-md btn_login float-end" id="btn_login" onclick="registerWithEmailAndPassword()">
-                                    Registar
-                                </button>
+                   
+                            <div class="form-field">
+                                <!-- Email Form -->
+                                <label for="email">Email</label><br>
+                                <input type="email" name="email" id="email" class="form-control rounded-pill" onchange="onChangeEmail()" placeholder="Email">
                             </div>
-                            <div class="col bg-secondary ">
-                                teste
+                            <div class="form-field"> 
+                                <!-- Password Form -->
+                                <label for="password" id="label_password">Password</label><br>
+                                <input type="password" name="password" id="password" class="form-control rounded-pill" placeholder="Password">
                             </div>
-
+                    
                         </div>
+                        <div class="col" id="content">
+                            <div class="form-field">
+                                <!-- LastName Form -->
+                                <label for="lastname">Sobrenome</label><br>
+                                <input type="text" name="lastname" id="lastname" class="form-control rounded-pill" placeholder="Sobrenome">
+                            </div>
+                            
+                            <div class="form-field"> 
+                                <!-- Contact Form -->
+                                <label for="contact" id="label_contact">Contacto</label><br>
+                                <input type="text" name="contact" id="contact" class="form-control rounded-pill" placeholder="Contacto">
+                            </div>
+                            <br>
+                            <!-- Btn -->
+                            <button type="button" class="rounded-pill btn btn-md btn_login float-end" id="btn_login" onclick="registerWithEmailAndPassword()">
+                                Registar
+                            </button>
+                        </div>
+                        <div class="col bg-secondary ">
+                        </div>
+                    </div>
                     </div>
                 </div>
             </form>

@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-#btn_login, #email, #password, #name, #sobrenome, #contacto {
+#btn_login, #email, #password, #name {
     background-color: rgb(238,238,238);
 }
 
