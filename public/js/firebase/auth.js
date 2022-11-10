@@ -28,19 +28,20 @@ function registerWithEmailAndPassword() {
     });
 }
 
-function registerPersonalInformations() {
+function registerPersonalInformations() {  
     currentUser.updateProfile({
         displayName: form.name().value
-    }).then(response => {
-        // Add a new document in collection "cities"
-        getFirestore().setDoc(
-            doc(db, "utilizadores", currentUser.uid), {
-        name: "Los Angeles",
-        state: "CA",
-        country: "USA"
-    });
+    }).then(async response => {
+        await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
+            first: "Filipe",
+            last: "Cooper",
+            born: 1815
+        }).then(() => {
+            // console.log("sucesso");
+        }).catch(error => {
+            alert(getErrorMessage(error));
+        });
       window.location.href = "../index.html";
-      console.log("Sucess")
     }).catch(error => {
         alert(getErrorMessage(error));
     });

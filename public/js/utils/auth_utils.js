@@ -40,7 +40,7 @@ function validateEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
 }
 
-function onChangeEmail() {
+/*function onChangeEmail() {
     toggleEmailErrors();
   }
   
@@ -58,5 +58,5 @@ function onChangeEmail() {
   function togglePasswordErrors() {
     const password = form.password().value;
     form.passwordRequiredError().style.display = password ? "none" : "block";
-  }
+  }*/
   
