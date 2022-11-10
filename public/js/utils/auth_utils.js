@@ -21,6 +21,12 @@ function getErrorMessage(error) {
         case "auth/wrong-password":
             errorMsg = "Password errada.";
             break;
+        case "auth/requires-recent-login":
+            errorMsg = "Mudança de password requer um login recente, faça login.";
+            break;
+        case "auth/weak-password":
+            errorMsg = "Password Fraca.";
+            break;
     }
 
     return errorMsg;
