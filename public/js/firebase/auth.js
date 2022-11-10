@@ -30,8 +30,15 @@ function registerWithEmailAndPassword() {
 
 function registerPersonalInformations() {
     currentUser.updateProfile({
-        displayName: form.name().value, phoneNumber: form.contact().value
+        displayName: form.name().value
     }).then(response => {
+        // Add a new document in collection "cities"
+        getFirestore().setDoc(
+            doc(db, "utilizadores", currentUser.uid), {
+        name: "Los Angeles",
+        state: "CA",
+        country: "USA"
+    });
       window.location.href = "../index.html";
       console.log("Sucess")
     }).catch(error => {
