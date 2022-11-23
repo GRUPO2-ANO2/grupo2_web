@@ -46,23 +46,32 @@ function validateEmail(email) {
     return /\S+@\S+\.\S+/.test(email);
 }
 
-/*function onChangeEmail() {
+function toggleNameErrors() {
+    toggleNameErrors();
+}
+
+function onChangeEmail() {
     toggleEmailErrors();
-  }
+}
+
+function onChangePassword() {
+togglePasswordErrors();
+}
+
+function toggleNameErrors() {
+    const name = form.name().value;
+    form.nameRequiredError().style.display = name ? "none" : "block";
+    form.nameRequiredError().style.display = validateEmail(name) ? "none" : "block";
+}
   
-  function onChangePassword() {
-    togglePasswordErrors();
-  }
-  
-  function toggleEmailErrors() {
+function toggleEmailErrors() {
     const email = form.email().value;
     form.emailRequiredError().style.display = email ? "none" : "block";
-    
     form.emailInvalidError().style.display = validateEmail(email) ? "none" : "block";
-  }
-  
-  function togglePasswordErrors() {
+}
+
+function togglePasswordErrors() {
     const password = form.password().value;
     form.passwordRequiredError().style.display = password ? "none" : "block";
-  }*/
+}
   

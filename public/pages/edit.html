@@ -1,26 +1,29 @@
 <!DOCTYPE html>
 <html><head>
   <title>Editar</title>
+      <!-- StyleSheets -->
+      <link rel="stylesheet" href="../css/index.css">
+      <link rel="stylesheet" href="../css/global.css">
 </head>
 
 <body>
     <form>
         <div class="form-field">
             <div><label>Nome</label></div>
-            <input type="name" name="name" id="name" placeholder="nome">
+            <input type="name" name="name" id="name" placeholder="nome" onchange="onChangeName()">
         </div>
-        
+
         <div class="form-field">
-            <div><label>Email</label></div>
-            <input type="email" name="email" id="email" placeholder="seu@email.com" onchange="onChangeEmail()">
-            <div class="error" id="email-required-error">Email é obrigatório</div>
-            <div class="error" id="email-invalid-error">Email é inválido</div>
+            <!-- Email Form -->
+            <label for="email">Email</label><br>
+            <input type="email" name="email" id="email" class="form-control rounded-pill" onchange="onChangeEmail()" placeholder="Email">
         </div>
-        
-        <div class="form-field">
-            <div><label>Senha</label></div>
-            <input type="password" name="password" id="password" placeholder="Senha" onchange="onChangePassword()">
-            <div class="error" id="password-required-error">Senha é obrigatória</div>
+
+        <div class="form-field"> 
+            <!-- Password Form -->
+            <label for="password" id="label_password">Password</label><br>
+            <input type="password" name="password" id="password" class="form-control rounded-pill" placeholder="Password">
+        </div>
         </div>
 
         <div>
@@ -28,17 +31,14 @@
         </div>
     </form>
 
-    <!-- StyleSheets -->
-    <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/global.css">
-    </body>
+</body>
 
     <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
-
     <script src="../js/index.js"></script>
     <script src="../js/constants.js"></script>
     <script src="../js/firebase/auth.js"></script>
     <script src="../js/utils/auth_utils.js"></script>
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
 </html>
