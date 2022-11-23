@@ -12,7 +12,7 @@ function loginWithEmailAndPassword() {
     firebase.auth().signInWithEmailAndPassword(
         form.email().value, form.password().value
     ).then(response => {
-      window.location.href = "../index.html";
+        window.location.href = "../index.html";
     }).catch(error => {
         alert(getErrorMessage(error));
     });
@@ -65,9 +65,9 @@ async function userIsGuia(){
 function updateUserProfile(){
     currentUser.updateProfile({
         displayName: form.name().value, email: form.email().value, password: form.password().value
-    }).then(() => {
-        console.log("Updated")
-    }).catch((error) => {
+    }).then(response => {
+        window.location.href = "../index.html";
+    }).catch(error => {
         alert(getErrorMessage(error));
     });
 }
