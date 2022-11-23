@@ -5,7 +5,8 @@ async function createEvento(){
     if(isGuia == 1){
         await firebase.firestore().collection("eventos").add({
             idGuia: currentUser.uid,
-            date: null,
+            dateBeggining: null,
+            dateFinish: null,
             location: null
         }).then(() => {
             console.log("sucesso")
@@ -16,6 +17,9 @@ async function createEvento(){
     }
     else{
         alert("Utilizador não é guia!")
-    }
-   
+    } 
+}
+
+async function joinEvento(){
+    // TODO 
 }
