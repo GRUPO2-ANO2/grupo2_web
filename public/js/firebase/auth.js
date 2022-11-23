@@ -49,16 +49,14 @@ async function userIsGuia(){
     var userDoc = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
     
     // open doc
-    await userDoc.get().then((doc) => {
+    return userDoc.get().then((doc) => {
         if (doc.exists) {
             return doc.data().isGuia;
         } else {
             console.log("No collection for user registered");
-            return -1;
         }
     }).catch((error) => {
         console.log("Error getting document:", error);
-        return -1;
     });
 }
 
