@@ -3,7 +3,14 @@ currentUser = null;
 firebase.auth().onAuthStateChanged((user) => {
     currentUser = user;
     if(user != null)
+    {
         console.log("user: " + user.uid);
+
+        if(window.location.pathname.split("/").pop() == "edit.html"){
+            showProfile()
+        }
+    }
+
     else
         console.log("user: " + user);
 });
@@ -76,6 +83,12 @@ function updateEmail(){
     }).catch(error => {
         alert(getErrorMessage(error));
     })
+}
+
+async function showProfile() {
+    var userData = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
+
+    document.getElementById("userData").innerHTML = currentUser.displayName;
 }
 
 function signOut() {
