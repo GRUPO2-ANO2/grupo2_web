@@ -5,7 +5,7 @@ async function createEvento(){
     if(isGuia == 1){
         await firebase.firestore().collection("eventos").add({
             idGuia: currentUser.uid,
-            dateBeggining: null,
+            dateStart: null,
             dateFinish: null,
             location: null
         }).then(() => {
