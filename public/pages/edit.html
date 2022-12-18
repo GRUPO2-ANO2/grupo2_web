@@ -5,23 +5,21 @@
 
 <body>
 
+    <script type="text/javascript">
+        SomeFunction();
+      </script>
 
+    <div onload="showProfile()" id="info">
+        <div id="username" class="username"></div>
+    </div>
+
+    <br><br>
 
     <form>
-
-        <div>
-            <label id="userData">
-                
-            </label>
-        </div>
-
-        <br><br>
-
         <div class="form-field">
             <div><label>Nome</label></div>
             <input type="name" name="name" id="name" placeholder="nome">
         </div>
-
         
         <div class="form-field">
             <div><label>Email</label></div>
@@ -50,14 +48,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>   
-
     <script src="../js/index.js"></script>
     <script src="../js/constants.js"></script>
-    <script src="../js/firebase/auth.js">
-        firebase.auth().onAuthStateChanged((user) => {showProfile()});
-    </script>
+    <script src="../js/firebase/auth.js"></script>
     <script src="../js/utils/auth_utils.js"></script>
-
-      
 </html>
