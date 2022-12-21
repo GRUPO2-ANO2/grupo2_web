@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Login</title>
+        <title>Informações Pessoais</title>
 
     <!-- StyleSheets Login (not done) -->
     <link href="../css/login.css" rel="stylesheet" />
@@ -67,8 +67,8 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="evento.html">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="register.html">Registar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="pages/evento.html">Eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="pages/register.html">Registar</a></li>
                     </ul>
                 </div>
             </div>
@@ -79,34 +79,56 @@
             <section class="vh-100 gradient-custom">
                 <div class="container py-5 h-100">
                     <div class="row d-flex justify-content-center align-items-center h-100">
-                        <h1 class="text-center text-uppercase">Entrar</h1>
+                        <h1 class="text-center text-uppercase">Informações</h1>
                             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
                                 <div class="cardLogin bg-dark text-white">
                                     <div class="cardBorder">
                                         <div class="card-body p-5 text-center">       
-                                            <div class="mb-md-5 mt-md-4 pb-5">        
+                                            <div class="mb-2 mt-3">        
                                                 <div class="form-outline form-white mb-4">
-                                                    <input type="email" id="email" placeholder="Email" class="form-control form-control-lg bg-transparent text-white"/>
+                                                    <div class="form-group">
+                                                        <input type="text" name="name" id="name" placeholder="Nome Completo" class="form-control form-control-lg bg-transparent text-white" required> 
+                                                    </div>
                                                 </div>
                                                 <div class="form-outline form-white mb-4">
                                                     <div class="form-group">
-                                                        <input type="password" id="password" placeholder="Password" class="form-control form-control-lg bg-transparent text-white" required>                          
+                                                        <input type="date" id="birthDate" placeholder="Password" class="form-control form-control-lg bg-transparent text-white" required>                          
                                                     </div>    
                                                 </div>
-    
-                                                <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Esqueceste da Password?</a></p>
-    
-                                                <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="loginWithEmailAndPassword()">Entrar</button>
-    
-                                            </div>
-                                            <div>
-                                            <p class="mb-0" onclick="signOut()">Não tem conta? <a href="#!" class="text-white-50 fw-bold">Registar</a>
-                                            </p>
+                                                <div class="form-outline form-white mb-4">
+                                                    <div class="form-group">
+                                                        <input type="number" id="height" placeholder="Altura" class="form-control form-control-lg bg-transparent text-white" required>                          
+                                                    </div>    
+                                                </div>
+                                                <div class="form-outline form-white mb-4">
+                                                    <div class="form-group">
+                                                        <input type="number" id="weight" placeholder="Peso" class="form-control form-control-lg bg-transparent text-white" required>                          
+                                                    </div>    
+                                                </div>            
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                                <div class="cardLogin bg-dark text-white">
+                                    <div class="cardBorder">
+                                        <div class="card-body p-5 text-center">       
+                                            <div class="mb-2 mt-3">        
+                                                <div class="form-outline form-white mb-4">
+                                                    <div class="form-group">
+                                                        <input type="number" id="contact" placeholder="Contacto" class="form-control form-control-lg bg-transparent text-light" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="registerPersonalInformations()">Entrar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                    
                     </div>
                 </div>
             </section>             
@@ -114,8 +136,13 @@
     </body>
     
     <!-- Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+    <!-- Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+
+    <!-- Firestore -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>     -->
+    <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>    
     <script src="../js/index.js"></script>
     <script src="../js/constants.js"></script>
     <script src="../js/firebase/auth.js"></script>

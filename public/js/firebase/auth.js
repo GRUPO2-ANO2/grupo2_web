@@ -29,24 +29,24 @@ function registerWithEmailAndPassword() {
     firebase.auth().createUserWithEmailAndPassword(
         form.email().value, form.password().value
     ).then(response => {
-        registerPersonalInformations()
+        console.log("Account Created");
+        window.location.href = "../pages/infoPessoais.html";
     }).catch(error => {
         alert(getErrorMessage(error));
     });
 }
 
-function registerPersonalInformations() {  
-    currentUser.updateProfile({
-        displayName: form.name().value
-    }).then(async response => {
-        await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
-            isGuia: 0
-        }).then(() => {
-            // console.log("sucesso");
-        }).catch(error => {
-            alert(getErrorMessage(error));
-        });
-      window.location.href = "../index.html";
+async function registerPersonalInformations() {
+        firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
+            isGuia: 0,
+            Name: form.name().value,
+            Contact: form.contact().value, 
+            BirthDate: form.birthDate().value,
+            Height: form.height().value,
+            Weight: form.weight().value
+    }).then(() => {
+        console.log("Personal Informations Added");
+        window.location.href = "../index.html";
     }).catch(error => {
         alert(getErrorMessage(error));
     });
@@ -102,12 +102,15 @@ function signOut() {
 // Form object
 const form = {
     email: () => document.getElementById("email"),
+    password: () => document.getElementById("password"),
     name: () => document.getElementById("name"),
+    birthDate: () => document.getElementById("birthDate"),
+    height: () => document.getElementById("height"),
+    weight: () => document.getElementById("weight"),
     contact: () => document.getElementById("contact"),
     emailInvalidError: () => document.getElementById("email-invalid-error"),
     emailRequiredError: () => document.getElementById("email-required-error"),
     loginButton: () => document.getElementById("login-button"),
-    password: () => document.getElementById("password"),
     passwordRequiredError: () => document.getElementById("password-required-error"),
     recoverPasswordButton: () => document.getElementById("recover-password-button"),
 } 
