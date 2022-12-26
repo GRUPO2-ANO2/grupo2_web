@@ -12,8 +12,8 @@ firebase.auth().onAuthStateChanged((user) => {
 		console.log("user: " + user);
 });
 
-function loginWithEmailAndPassword() {
-	firebase.auth().signInWithEmailAndPassword(
+async function loginWithEmailAndPassword() {
+	await firebase.auth().signInWithEmailAndPassword(
 		form.email().value, form.password().value
 	).then(response => {
 		window.location.href = "../index.html";
@@ -22,8 +22,8 @@ function loginWithEmailAndPassword() {
 	});
 }
 
-function registerWithEmailAndPassword() {
-	firebase.auth().createUserWithEmailAndPassword(
+async function registerWithEmailAndPassword() {
+	await firebase.auth().createUserWithEmailAndPassword(
 		form.email().value, form.password().value
 	).then(response => {
 		console.log("Account Created");
@@ -34,7 +34,7 @@ function registerWithEmailAndPassword() {
 }
 
 async function registerPersonalInformations() {
-	firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
+	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
 		isGuia: 0,
 		Name: form.name().value,
 		Contact: form.contact().value,
@@ -64,8 +64,8 @@ async function userIsGuia() {
 	});
 }
 
-function updateUserProfile() {
-	currentUser.updateProfile({
+async function updateUserProfile() {
+	await currentUser.updateProfile({
 		displayName: form.name().value,
 		email: form.email().value,
 		password: form.password().value
@@ -76,9 +76,9 @@ function updateUserProfile() {
 	});
 }
 
-function updateEmail() {
-	firebase.auth().updateEmail(currentUser, form.email().value).then(() => {
-		console.log("Email Updated")
+async function updateEmail() {
+	await firebase.auth().updateEmail(currentUser, form.email().value).then(() => {
+		console.log("Email Updated");
 	}).catch(error => {
 		alert(getErrorMessage(error));
 	})
@@ -90,9 +90,8 @@ async function showProfile() {
 	document.getElementById("userData").innerHTML = currentUser.displayName;
 }
 
-function signOut() {
-	firebase.auth().signOut().then(response => {
-		// console.log("SignOut");
+async function signOut() {
+	await firebase.auth().signOut().then(response => {
 	}).catch(error => {
 		alert(getErrorMessage(error));
 	});
