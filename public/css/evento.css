@@ -163,4 +163,10 @@
   .cardLogin {
     border-radius: 1rem;
   }
+
+#card-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+}
   
