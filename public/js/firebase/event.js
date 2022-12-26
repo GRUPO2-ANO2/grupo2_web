@@ -1,8 +1,10 @@
+const eventDocRef = firebase.firestore().collection("eventos");
+
 async function createEvent(){
-    var isGuia = await userIsGuia()
+    var isGuia = await userIsGuia();
     
-    if(isGuia == 1){
-        await firebase.firestore().collection("eventos").add({
+    if (isGuia == 1){
+        await eventDocRef.add({
             idGuia: currentUser.uid,
             dateStart: null,
             dateFinish: null,
@@ -28,7 +30,7 @@ async function getValidEvents(){
     var eventosValidos = [];
     var arraySize = 0;
 
-    await firebase.firestore().collection("eventos").get().then((querySnapshot) => {
+    await eventDocRef.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots~
             const data = doc.data();

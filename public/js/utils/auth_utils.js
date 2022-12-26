@@ -1,5 +1,5 @@
 /*
- REQUIRES constans.js FILE IMPORTED
+ REQUIRES constants.js FILE IMPORTED
 */
 
 function getErrorMessage(error) {

@@ -2,17 +2,18 @@ currentUser = null;
 
 firebase.auth().onAuthStateChanged((user) => {
 	currentUser = user;
-	if (user != null) {
+	if (user != null){
 		console.log("user: " + user.uid);
 
 		if (window.location.pathname.split("/").pop() == "edit.html") {
-			showProfile()
+			showProfile();
 		}
-	} else
+	} else{
 		console.log("user: " + user);
+	}
 });
 
-async function loginWithEmailAndPassword() {
+async function loginWithEmailAndPassword(){
 	await firebase.auth().signInWithEmailAndPassword(
 		form.email().value, form.password().value
 	).then(response => {
@@ -22,7 +23,7 @@ async function loginWithEmailAndPassword() {
 	});
 }
 
-async function registerWithEmailAndPassword() {
+async function registerWithEmailAndPassword(){
 	await firebase.auth().createUserWithEmailAndPassword(
 		form.email().value, form.password().value
 	).then(response => {
@@ -33,8 +34,9 @@ async function registerWithEmailAndPassword() {
 	});
 }
 
-async function registerPersonalInformations() {
-	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
+// This fn should be in user.js
+async function registerPersonalInformations(){
+	await utilizadorDocRef.doc(currentUser.uid).set({
 		isGuia: 0,
 		Name: form.name().value,
 		Contact: form.contact().value,
@@ -49,22 +51,8 @@ async function registerPersonalInformations() {
 	});
 }
 
-async function userIsGuia() {
-	var userDoc = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
-
-	// open doc
-	return userDoc.get().then((doc) => {
-		if (doc.exists) {
-			return doc.data().isGuia;
-		} else {
-			console.log("No collection for user registered");
-		}
-	}).catch((error) => {
-		console.log("Error getting document:", error);
-	});
-}
-
-async function updateUserProfile() {
+// This fn should be in user.js
+async function updateUserProfile(){
 	await currentUser.updateProfile({
 		displayName: form.name().value,
 		email: form.email().value,
@@ -76,7 +64,7 @@ async function updateUserProfile() {
 	});
 }
 
-async function updateEmail() {
+async function updateEmail(){
 	await firebase.auth().updateEmail(currentUser, form.email().value).then(() => {
 		console.log("Email Updated");
 	}).catch(error => {
@@ -84,13 +72,13 @@ async function updateEmail() {
 	})
 }
 
-async function showProfile() {
-	var userData = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
+async function showProfile(){
+	var userData = await getUserData();
 
 	document.getElementById("userData").innerHTML = currentUser.displayName;
 }
 
-async function signOut() {
+async function signOut(){
 	await firebase.auth().signOut().then(response => {
 	}).catch(error => {
 		alert(getErrorMessage(error));
