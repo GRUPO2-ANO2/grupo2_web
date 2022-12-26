@@ -35,8 +35,8 @@ async function registerWithEmailAndPassword(){
 }
 
 // This fn should be in user.js
-async function registerPersonalInformations(){
-	await utilizadorDocRef.doc(currentUser.uid).set({
+function registerPersonalInformations(){
+	utilizadorDocRef.doc(currentUser.uid).set({
 		isGuia: 0,
 		Name: form.name().value,
 		Contact: form.contact().value,

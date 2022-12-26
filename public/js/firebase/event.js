@@ -41,8 +41,34 @@ async function getValidEvents(){
                 eventosValidos[arraySize] = doc.data();
                 arraySize++;
             }
+
+            
         });
     });
 
-    return eventosValidos;
+    //showEvents.apply(null, eventosValidos);
+    showEvents(eventosValidos);
+    //return eventosValidos;
+}
+
+async function showEvents(events){
+    var event = "";
+    var location = "";
+    var timeStamp = 0;
+    var dateFormat = 0;
+    //var dateFinish = "";
+    for (var i = 0; i < events.length; i++){
+        location = events[i].location;
+        dateStart = events[i].dateStart;
+        dateFinish = events[i].dateFinish;
+
+        timeStamp = events[i].dateStart;
+        dateFormat = new Date(timeStamp);
+
+        document.getElementById("location").innerHTML = events[i].location;
+        document.getElementById("description").innerHTML = dateFormat;
+        //document.getElementById("description").innerHTML = events[i].dateFinish;
+    }
+
+    return event;
 }
