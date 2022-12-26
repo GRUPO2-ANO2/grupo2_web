@@ -1,5 +1,4 @@
-
-async function createEvento(){
+async function createEvent(){
     var isGuia = await userIsGuia()
     
     if(isGuia == 1){
@@ -20,6 +19,28 @@ async function createEvento(){
     } 
 }
 
-async function joinEvento(){
+async function joinEvent(){
     // TODO 
+}
+
+// Return open events
+async function getValidEvents(){
+    var eventosValidos = [];
+    var arraySize = 0;
+
+    await firebase.firestore().collection("eventos").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots~
+            const data = doc.data();
+            const dateFinish = data.dateFinish.toDate();
+
+            // Check if valid event
+            if (dateFinish > Date.now()) {
+                eventosValidos[arraySize] = doc.data();
+                arraySize++;
+            }
+        });
+    });
+
+    return eventosValidos;
 }
