@@ -19,8 +19,22 @@ async function createEvent(){
     } 
 }
 
-async function joinEvent(){
-    // TODO 
+async function joinEvent(idEvent){
+    var userEnrolled = await userIsEnrolledInEvent(idEvent);
+
+    // if user isnt enrolled yet, enroll him
+    if (userEnrolled == false){
+        await firebase.firestore().collection("eventosUtilizadores").add({
+            idUtilizador: currentUser.uid,
+            idEvento: idEvent
+        }).then(() => {
+            console.log("enrolled");
+        }).catch(error => {
+            alert(getErrorMessage(error));
+        });
+    } else {
+        console.log("user already enrolled");
+    }
 }
 
 // Return open events
