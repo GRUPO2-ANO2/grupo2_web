@@ -1,8 +1,5 @@
-const utilizadorDocRef = firebase.firestore().collection("utilizadores");
-const eventoUtilizadorDocRef = firebase.firestore().collection("eventosUtilizadores");
-
 async function userIsGuia(){
-	var userDoc = await utilizadorDocRef.doc(currentUser.uid);
+	var userDoc = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
 
 	// open doc
 	return userDoc.get().then((doc) => {
@@ -19,9 +16,26 @@ async function userIsGuia(){
 
 // No null check
 async function getUserData(){
-    return await utilizadorDocRef.doc(currentUser.uid);
+    return await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
 }
 
 async function userIsEnrolledInEvent(idEvent){
-    
+	var userEnrolled = false;
+
+	await firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			var docEventId = doc.data().idEvento;
+			
+			if (docEventId == idEvent){
+				// check for users
+				var docUserId = doc.data().idUtilizador;
+				
+				if (docUserId == currentUser.uid){
+					userEnrolled = true;
+				}
+			}
+		});
+    });
+
+	return userEnrolled;
 }
