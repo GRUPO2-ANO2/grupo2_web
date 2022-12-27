@@ -86,51 +86,47 @@ async function getValidEvents(){
     //return eventosValidos;
 }
 
-async function showEvents(events){
-    var event = "";
-    var location = "";
-    var timeStamp = 0;
-    var dateFormat = 0;
-    
+async function showEvents(events) {
+
     // Get the card container element
     const cardContainer = document.getElementById('card-container');
-    cardContainer.classList.add('row gx-4 gx-lg-5 row-cols-2 justify-content-center');
-        
-    // Iterate through the data and create a card for each item
+  
+    // Create a row element
+    const row = document.createElement('div');
+    row.className = 'row';
+  
+    // Create a card for each item
     for (let i = 0; i < events.length; i++) {
 
-        const div = document.createElement('div');
-        div.className = `container px-4 px-lg-5 mt-5`
-
-        const div2 = document.createElement('div');
-        div2.className = `row gx-4 gx-lg-5 row-cols-2 justify-content-center`
-
-        const div3 = document.createElement('div');
-        div3.className = `col mx-5`
-
-        const div4 = document.createElement('div');
-        div4.className = `card h-100`
-
-        const div5 = document.createElement('div');
-        div5.className = `card-body p-4`
-
-        const div6 = document.createElement('div');
-        div6.className = `text-center`
-
-        const card = document.createElement('div');
-        card.id = `card-${i}`;
-        card.className = `fw-bolder`
-        card.innerHTML = `
-        <h5>${events[i].location}</h2>
-        `;
-
-
-        /*div6.appendChild(card);
-        div5.appendChild(div6);*/
-        div6.appendChild(card);
-        div5.appendChild(div6);
-        div4.appendChild(div5);
-        div3.appendChild(div4);
-        document.body.appendChild(div3);
+      // Create a column
+      const col = document.createElement('div');
+      col.className = 'col-6 mt-3';
+  
+      // Create the card
+      const card = document.createElement('div');
+      card.id = `card-${i}`;
+      card.className = `fw-bolder`;
+      card.innerHTML = `
+        <div class="card h-100">
+          <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+          <div class="card-body p-4">
+            <div class="text-center">
+              <h5>${events[i].location}</h2>
+            </div>
+          </div>
+          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
+          </div>
+        </div>
+      `;
+  
+      // Append the card to the column
+      col.appendChild(card);
+  
+      // Append the column to the row
+      row.appendChild(col);
     }
-}
+    // Append the row to the card container
+    cardContainer.appendChild(row);
+  }
+  
