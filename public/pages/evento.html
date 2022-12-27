@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login</title>
+    <title>Eventos</title>
     <!-- StyleSheets Login (not done) -->
     <link href="../css/evento.css" rel="stylesheet" />
     <!--<link rel="stylesheet" href="../css/global.css"> -->
     <link rel="stylesheet" href="../css/bootstrap/css/bootstrap.min.css">
+
   </head>
-  <body>
+  <body onload="getValidEvents()">
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container px-4 px-lg-5">
@@ -26,50 +27,35 @@
         </div>
       </div>
     </nav>
-    <!-- Masthead-->
-    <header class="masthead">
-      <section class="vh-100 gradient-custom">
-        <div class="container py-5 h-100">
-          <div class="row d-flex justify-content-center align-items-center h-100">
-            <h1 class="text-center text-uppercase">Entrar</h1>
-            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-              <div class="cardLogin bg-dark text-white">
-                <div class="cardBorder">
-                  <div class="card-body p-5 text-center">
-                    <div class="mb-md-5 mt-md-4 pb-5">
-                      <div class="form-outline form-white mb-4">
-                        <input type="email" id="email" placeholder="Email" class="form-control form-control-lg bg-transparent text-white" />
-                      </div>
-                      <div class="form-outline form-white mb-4">
-                        <div class="form-group">
-                          <input type="password" id="password" placeholder="Password" class="form-control form-control-lg bg-transparent text-white" required>
-                        </div>
-                      </div>
-                      <p class="small mb-5 pb-lg-2">
-                        <a class="text-white-50" href="#!">Esqueceste da Password?</a>
-                      </p>
-                      <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="loginWithEmailAndPassword()">Entrar</button>
-                    </div>
-                    <div>
-                      <p class="mb-0" onclick="signOut()">Não tem conta? <a href="#!" class="text-white-50 fw-bold">Registar</a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+    <!-- Header-->
+    <header class="bg-dark py-5">
+      <div class="container px-4 px-lg-5 my-5">
+          <div class="text-center text-white">
+              <h1 class="display-4 fw-bolder">Eventos</h1>
+          </div>
+      </div>
+    </header>
+    <!-- Section-->
+    <section class="py-5">
+      <div class="container px-4 mt-5">
+          <div class="justify-content-center">
+              <div id="card-container">
+                  
               </div>
-            </div>
           </div>
         </div>
-      </section>
-    </header>
+    </section>
   </body>
   <!-- Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+  <!-- Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
   <script src="../js/index.js"></script>
   <script src="../js/constants.js"></script>
   <script src="../js/firebase/user.js"></script>
   <script src="../js/firebase/auth.js"></script>
+  <script src="../js/firebase/event.js"></script>
   <script src="../js/utils/auth_utils.js"></script>
-  <script src="../js/bootstrap/bootstrap.min.js"></script>
+  <script src="../css/bootstrap/js/bootstrap.min.js"></script>
 </html>
