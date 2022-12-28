@@ -77,16 +77,44 @@ async function getValidEvents(){
                 eventosValidos[arraySize] = data;
                 arraySize++;
             }
-
-            
         });
     });
 
     return eventosValidos;
 }
 
-async function showEvents() {
+async function editEvent(idEvent, location, dateStart, dateFinish){
+    var owns = await userOwnsEvent(idEvent);
 
+    if (owns){
+        await firebase.firestore().collection("eventos").doc(idEvent).update({
+            location: location,
+            dateStart: dateStart,
+            dateFinish: dateFinish
+        }).then(() => {
+            console.log("edited");
+        });
+    } else {
+        console.log("User doesnt own event")
+    }
+}
+
+// used to check wether a user owns an event(for editting/removing purposes)
+async function userOwnsEvent(idEvent){
+    await firebase.firestore().collection("eventos").doc(idEvent).get().then((doc) => {
+		if (doc.exists){
+			return doc.data().idGuia == currentUser.uid;
+		} else{
+            return false;
+		}
+	}).catch((error) => {
+		console.log("userOwnsEvent():", error);
+	});
+
+    return false;
+}
+
+async function showEvents() {
     var events = await getValidEvents();
 
     // Get the card container element
