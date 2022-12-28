@@ -95,7 +95,7 @@ async function editEvent(idEvent, location, dateStart, dateFinish){
             console.log("edited");
         });
     } else {
-        console.log("User doesnt own event")
+        console.log("User doesnt own event");
     }
 }
 
