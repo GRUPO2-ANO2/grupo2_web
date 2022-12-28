@@ -158,3 +158,8 @@ body {
     font-size: 1.25rem;
   }
 }
+
+.cardRegisto {
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}

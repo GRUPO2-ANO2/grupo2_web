@@ -28,7 +28,7 @@ async function joinEvent(idEvent){
             idUtilizador: currentUser.uid,
             idEvento: idEvent
         }).then(() => {
-            console.log("enrolled");
+            console.log(idEvent, "enrolled");
         }).catch(error => {
             alert(getErrorMessage(error));
         });
@@ -69,11 +69,12 @@ async function getValidEvents(){
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots~
             const data = doc.data();
+            data.uid = doc.id;
             const dateFinish = data.dateFinish.toDate();
 
             // Check if valid event
             if (dateFinish > Date.now()) {
-                eventosValidos[arraySize] = doc.data();
+                eventosValidos[arraySize] = data;
                 arraySize++;
             }
 
@@ -81,12 +82,12 @@ async function getValidEvents(){
         });
     });
 
-    //showEvents.apply(null, eventosValidos);
-    showEvents(eventosValidos);
-    //return eventosValidos;
+    return eventosValidos;
 }
 
-async function showEvents(events) {
+async function showEvents() {
+
+    var events = await getValidEvents();
 
     // Get the card container element
     const cardContainer = document.getElementById('card-container');
@@ -109,13 +110,13 @@ async function showEvents(events) {
       card.innerHTML = `
         <div class="card h-100">
           <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-          <div class="card-body p-4">
-            <div class="text-center">
+          <div class="card-body p-4 bg-dark">
+            <div class="text-center text-white">
               <h5>${events[i].location}</h2>
             </div>
           </div>
-          <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a>
+          <div class="card-footer p-4 pt-0 border-top-0 bg-dark">
+            <div class="text-center "><button class="btn btn-outline-light mt-auto text-white" onclick="joinEvent('${events[i].uid}')"">Entrar Evento</button>
           </div>
         </div>
       `;
