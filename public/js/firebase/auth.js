@@ -35,8 +35,8 @@ async function registerWithEmailAndPassword(){
 }
 
 // This fn should be in user.js
-function registerPersonalInformations(){
-	utilizadorDocRef.doc(currentUser.uid).set({
+async function registerPersonalInformations(){
+	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
 		isGuia: 0,
 		Name: form.name().value,
 		Contact: form.contact().value,

@@ -83,7 +83,6 @@ async function getValidEvents(){
     return eventosValidos;
 }
 
-
 // used to check wether a user owns an event(for editting/removing purposes)
 async function userOwnsEvent(idEvent){
     await firebase.firestore().collection("eventos").doc(idEvent).get().then((doc) => {
