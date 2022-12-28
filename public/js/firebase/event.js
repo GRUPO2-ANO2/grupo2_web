@@ -83,6 +83,22 @@ async function getValidEvents(){
     return eventosValidos;
 }
 
+
+// used to check wether a user owns an event(for editting/removing purposes)
+async function userOwnsEvent(idEvent){
+    await firebase.firestore().collection("eventos").doc(idEvent).get().then((doc) => {
+		if (doc.exists){
+			return doc.data().idGuia == currentUser.uid;
+		} else{
+            return false;
+		}
+	}).catch((error) => {
+		console.log("userOwnsEvent():", error);
+	});
+
+    return false;
+}
+
 async function editEvent(idEvent, location, dateStart, dateFinish){
     var owns = await userOwnsEvent(idEvent);
 
@@ -99,19 +115,18 @@ async function editEvent(idEvent, location, dateStart, dateFinish){
     }
 }
 
-// used to check wether a user owns an event(for editting/removing purposes)
-async function userOwnsEvent(idEvent){
-    await firebase.firestore().collection("eventos").doc(idEvent).get().then((doc) => {
-		if (doc.exists){
-			return doc.data().idGuia == currentUser.uid;
-		} else{
-            return false;
-		}
-	}).catch((error) => {
-		console.log("userOwnsEvent():", error);
-	});
+async function removeEvent(idEvent){
+    var owns = await userOwnsEvent(idEvent);
 
-    return false;
+    if (owns){
+        await firebase.firestore().collection("eventos").doc(idEvent).delete().then(() => {
+            console.log("removed");
+        }).catch((error) => {
+            console.log("removeEvent():", error);
+        });
+    } else {
+        console.log("User doesnt own event");
+    }
 }
 
 async function showEvents() {
