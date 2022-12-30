@@ -2,15 +2,31 @@ currentUser = null;
 
 firebase.auth().onAuthStateChanged((user) => {
 	currentUser = user;
+
+	const loginLink = document.querySelector('.login-link');
+	const registerLink = document.querySelector('.register-link');
+	const profileLink = document.querySelector('.profile-link');
+
 	if (user != null){
 		console.log("user: " + user.uid);
+
+		// change navbar if user is loggedin
+		loginLink.style.display = 'none';
+		registerLink.style.display = 'none';
+    	profileLink.style.display = 'block';
 
 		if (window.location.pathname.split("/").pop() == "edit.html") {
 			showProfile();
 		}
 	} else{
 		console.log("user: " + user);
+
+		loginLink.style.display = 'block';
+		registerLink.style.display = 'block';
+    	profileLink.style.display = 'none';
 	}
+
+
 });
 
 async function loginWithEmailAndPassword(){
@@ -86,6 +102,11 @@ async function showProfile(){
 
 async function signOut(){
 	await firebase.auth().signOut().then(response => {
+		if (window.location.pathname.split("/").pop() == "index.html") {
+			window.location.href = "index.html";
+		} else {
+			window.location.href = "../index.html";
+		}
 	}).catch(error => {
 		alert(getErrorMessage(error));
 	});
