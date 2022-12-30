@@ -36,13 +36,19 @@ async function registerWithEmailAndPassword(){
 
 // This fn should be in user.js
 async function registerPersonalInformations(){
+
+	let birthDate = new Date(form.birthDate().value);
+	let contact = parseFloat(form.contact().value);
+	let height = parseFloat(form.height().value);
+	let weight = parseFloat(form.weight().value);
+
 	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
 		isGuia: 0,
 		Name: form.name().value,
-		Contact: form.contact().value,
-		BirthDate: form.birthDate().value,
-		Height: form.height().value,
-		Weight: form.weight().value
+		Contact: contact,
+		BirthDate: birthDate,
+		Height: height,
+		Weight: weight
 	}).then(() => {
 		console.log("Personal Informations Added");
 		window.location.href = "../index.html";
