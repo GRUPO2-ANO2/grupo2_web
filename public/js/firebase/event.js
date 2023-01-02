@@ -93,7 +93,7 @@ async function userOwnsEvent(idEvent){
 		}
 	}).catch((error) => {
 		console.log("userOwnsEvent():", error);
-	});
+	}); 
 
     return false;
 }
@@ -133,18 +133,18 @@ async function showEvents() {
 
     // Get the card container element
     const cardContainer = document.getElementById('card-container');
-  
+
     // Create a row element
     const row = document.createElement('div');
     row.className = 'row';
-  
+
     // Create a card for each item
     for (let i = 0; i < events.length; i++) {
 
       // Create a column
       const col = document.createElement('div');
-      col.className = 'col-6 mt-3';
-  
+      col.className = 'col-4 mt-3';
+
       // Create the card
       const card = document.createElement('div');
       card.id = `card-${i}`;
@@ -152,24 +152,57 @@ async function showEvents() {
       card.innerHTML = `
         <div class="card h-100">
           <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
-          <div class="card-body p-4 bg-dark">
+          <div class="card-img-overlay">
             <div class="text-center text-white">
               <h5>${events[i].location}</h2>
             </div>
           </div>
-          <div class="card-footer p-4 pt-0 border-top-0 bg-dark">
-            <div class="text-center "><button class="btn btn-outline-light mt-auto text-white" onclick="joinEvent('${events[i].uid}')"">Entrar Evento</button>
-          </div>
         </div>
-      `;
-  
+        `;
+
       // Append the card to the column
       col.appendChild(card);
-  
+
       // Append the column to the row
       row.appendChild(col);
+
+      const modalContainer = document.getElementById('modal-container');
+
+      // Create the modal element
+      const modal = document.createElement('div');
+        modal.className = `modal-content`;
+        modal.innerHTML = `
+      <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">${events[i].name}</h5>
+            <button class="btn-close" type="button" data-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>${events[i].location}</p>
+            <p>${events[i].date}</p>
+            <p>${events[i].description}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-success" onclick="joinEvent('${events[i].uid}')">Entrar</button>
+          </div>
+        </div>
+    </div>
+    </div>
+        `;
+
+      // Append the modal to the document body
+      modalContainer.appendChild(modal);
+
+      // Add an event listener to the card that opens the modal when clicked
+      card.addEventListener('click', function() {
+        const modalElement = document.getElementById(`modal-${events[i].uid}`);
+        modalElement.style.display = 'block';
+      });
     }
+
     // Append the row to the card container
     cardContainer.appendChild(row);
-  }
-  
+}
