@@ -185,7 +185,7 @@ async function showEvents() {
       card.className = `fw-bolder`;
       card.innerHTML = `
         <div class="card h-100">
-          <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+          <img class="card-img-top" src="${events[i].image}" alt="..." />
           <div class="card-img-overlay">
             <div class="text-center text-white">
               <h5>${events[i].location}</h2>
@@ -207,7 +207,7 @@ async function showEvents() {
         modal.className = `modal-content`;
         modal.innerHTML = `
             <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">${events[i].location}</h5>
@@ -215,7 +215,8 @@ async function showEvents() {
                 </div>
                 <div class="modal-body">
                     <p>${events[i].location}</p>
-                    <p>${events[i].date}</p>
+                    <p>${events[i].dateStart}</p>
+                    <p>${events[i].dateFinish}</p>
                     <p>${events[i].description}</p>
                 </div>
                 <div class="modal-footer">
