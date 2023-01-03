@@ -114,7 +114,7 @@ async function getValidEvents(){
 }
 
 function isValidDate(date){
-    return dateFinish > Date.now();
+    return date > Date.now();
 } // pull
 
 // used to check wether a user owns an event(for editting/removing purposes)
