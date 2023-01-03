@@ -172,37 +172,39 @@ async function showEvents() {
       const modal = document.createElement('div');
         modal.className = `modal-content`;
         modal.innerHTML = `
-      <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">${events[i].name}</h5>
-            <button class="btn-close" type="button" data-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>${events[i].location}</p>
-            <p>${events[i].date}</p>
-            <p>${events[i].description}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-success" onclick="joinEvent('${events[i].uid}')">Entrar</button>
-          </div>
-        </div>
-    </div>
-    </div>
-        `;
+            <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">${events[i].location}</h5>
+                    <button class="btn-close" id="close" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>${events[i].location}</p>
+                    <p>${events[i].date}</p>
+                    <p>${events[i].description}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="joinEvent('${events[i].uid}')">Entrar</button>
+                </div>
+                </div>
+            </div>
+            </div>
+        `;      
 
-      // Append the modal to the document body
-      modalContainer.appendChild(modal);
+        // Append the modal to the document body
+        modalContainer.appendChild(modal);
 
-      // Add an event listener to the card that opens the modal when clicked
-      card.addEventListener('click', function() {
-        const modalElement = document.getElementById(`modal-${events[i].uid}`);
-        modalElement.style.display = 'block';
-      });
+
+        // Add an event listener to the card that opens the modal when clicked
+        card.addEventListener('click', function() {
+            var modalElement = document.getElementById(`modal-${events[i].uid}`);
+            modalElement.style.display = 'block';
+        });
+
     }
 
     // Append the row to the card container
     cardContainer.appendChild(row);
 }
+
