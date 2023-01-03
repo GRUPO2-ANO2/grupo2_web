@@ -60,6 +60,36 @@ async function leaveEvent(idEvent){
     }
 }
 
+async function getEventsByUser(){
+    var events = [];
+    var eventCount = 0;
+    var enrolled = false;
+    var data;
+
+    await firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
+        querySnapshot.forEach(async (doc) => {
+            data = doc.data();
+            const docIdEvento = data.idEvento;
+            const docIdUtilizador = data.idUtilizador;
+
+            // If user in document same as logged in
+            if (docIdUtilizador == currentUser.uid){
+                enrolled = await userIsEnrolledInEvent(docIdEvento);
+                // And if enrolled, add event
+                if(enrolled){
+                    await firebase.firestore().collection("eventos").doc(docIdEvento).get().then((docE) =>{
+                        if (docE.exists){
+                            events[eventCount] = docE.data();
+                            eventCount++;
+                        }
+                    });
+                }
+            }
+        });
+    });
+    return events;
+}
+
 // Return open events
 async function getValidEvents(){
     var eventosValidos = [];
@@ -73,7 +103,7 @@ async function getValidEvents(){
             const dateFinish = data.dateFinish.toDate();
 
             // Check if valid event
-            if (dateFinish > Date.now()) {
+            if (isValidDate(dateFinish)) {
                 eventosValidos[arraySize] = data;
                 arraySize++;
             }
@@ -81,6 +111,10 @@ async function getValidEvents(){
     });
 
     return eventosValidos;
+}
+
+function isValidDate(date){
+    return dateFinish > Date.now();
 }
 
 // used to check wether a user owns an event(for editting/removing purposes)
