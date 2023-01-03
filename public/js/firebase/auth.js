@@ -54,7 +54,7 @@ async function registerWithEmailAndPassword(){
 async function registerPersonalInformations(){
 
 	let birthDate = new Date(form.birthDate().value);
-	let contact = parseFloat(form.contact().value);
+	let contact = parseInt(form.contact().value);
 	let height = parseFloat(form.height().value);
 	let weight = parseFloat(form.weight().value);
 
