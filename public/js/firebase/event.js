@@ -21,6 +21,13 @@ async function createEvent(){
 
 async function joinEvent(idEvent){
     var userEnrolled = await userIsEnrolledInEvent(idEvent);
+    var userIsGuia = await userIsGuia();
+    
+    // dont allow guia's to enter events
+    if (userIsGuia){
+        alert("guia nao pode entrar evento");
+        return;
+    }
 
     // if user isnt enrolled yet, enroll him
     if (userEnrolled == false){
