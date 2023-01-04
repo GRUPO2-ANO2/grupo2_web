@@ -61,13 +61,14 @@ async function leaveEvent(idEvent){
 }
 
 async function getEventsByUser(){
-    var events = [];
-    var eventCount = 0;
-    var enrolled = false;
-    var data;
+    return new Promise(async (resolve, reject) => {
+        var events = [];
+        var eventCount = 0;
+        var enrolled = false;
+        var data;
 
-    await firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
-        querySnapshot.forEach(async (doc) => {
+        const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").get();
+        for (const doc of querySnapshot.docs) {
             data = doc.data();
             const docIdEvento = data.idEvento;
             const docIdUtilizador = data.idUtilizador;
@@ -77,21 +78,23 @@ async function getEventsByUser(){
                 enrolled = await userIsEnrolledInEvent(docIdEvento);
                 // And if enrolled, add event
                 if(enrolled){   
-                    await firebase.firestore().collection("eventos").doc(docIdEvento).get().then((docE) =>{
-                        if (docE.exists){
-                            events[eventCount] = docE.data();
-                            eventCount++;                                                    
-                        }
-                    });
+                    const docE = await firebase.firestore().collection("eventos").doc(docIdEvento).get();
+                    if (docE.exists){
+                        events[eventCount] = docE.data();
+                        events[eventCount].uid = docE.id;
+                        eventCount++;
+                    }
                 }
             }
-        });
+        }
+        resolve(events);
     });
-    return events;
 }
 
+
 async function showEventsByUser() {
-    var events = await getEventsByUser();
+    const events = await getEventsByUser();
+    console.log(events.length);
 
     // Get the card container element
     const cardContainer = document.getElementById('card-container');
@@ -102,10 +105,6 @@ async function showEventsByUser() {
 
     // Create a card for each item
     for (let i = 0; i < events.length; i++) {
-
-        if (events[i]) {
-            console.log(events[i].uid);
-          }
 
       // Create a column
       const col = document.createElement('div');
@@ -216,7 +215,7 @@ async function getValidEvents(){
 
 function isValidDate(date){
     return date > Date.now();
-} // pull
+}
 
 // used to check wether a user owns an event(for editting/removing purposes)
 async function userOwnsEvent(idEvent){
