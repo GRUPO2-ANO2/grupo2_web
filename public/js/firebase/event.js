@@ -204,29 +204,43 @@ async function showEvents() {
 
       // Create the modal element
       const modal = document.createElement('div');
-        modal.className = `modal-content`;
         modal.innerHTML = `
-            <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">${events[i].location}</h5>
-                    <button class="btn-close" id="close" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>${events[i].location}</p>
-                    <p>${events[i].dateStart}</p>
-                    <p>${events[i].dateFinish}</p>
-                    <p>${events[i].description}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="joinEvent('${events[i].uid}')">Entrar</button>
-                </div>
+        <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true" onload="hideModal('modal-${events[i].uid}');">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+                <div class="modal-content bg-dark text-white">
+                    <div class="modal-header border-0">
+                        <button class="btn-close" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body pb-5">
+                        <div class="row justify-content-center text-center">
+                            <div class="col-lg-8">
+                                <h5 class="modal-title text-secondary text-uppercase mb-0 text-center">${events[i].location}</h5>
+                                <img class="img-fluid rounded mb-5" style="margin-top: 20px;" src="${events[i].image}" />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h5>Localização</h5>
+                                        <p>${events[i].location}</p>
+                                        <h5>Data Inicio</h5>
+                                        <p>${events[i].dateStart}</p>
+                                        <h5>Data Fim</h5>
+                                        <p>${events[i].dateFinish}</p>
+                                    </div>
+                                <div class="col-md-8 ms-auto">
+                                    <h5>Descrição</h5>
+                                    <p>${events[i].description}</p>
+                                </div>
+                                <div class="row d-grid gap-2 col-6 mx-auto">
+                                    <button class="btn btn-sm btn-success" style="margin-top: 20px;" onclick="joinEvent('${events[i].uid}')">
+                                        <i class="fas fa-xmark fa-fw"></i> Entrar 
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            </div>
+        </div>
         `;      
-
         // Append the modal to the document body
         modalContainer.appendChild(modal);
 
