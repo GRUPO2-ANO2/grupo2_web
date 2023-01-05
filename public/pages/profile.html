@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Perfil</title>
+    <!-- StyleSheets Login (not done) -->
+    <link href="../css/profile.css" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="../css/global.css"> -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+
+  </head>
+  <body onload="showEventsByUser();">
+    <!-- navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+      <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="../index.html">Grupo 2</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item login-link"><a class="nav-link" href="login.html">Entrar</a></li>
+            <li class="nav-item register-link"><a class="nav-link" href="register.html">Registar</a></li>
+            <li class="nav-item profile-link"><a class="nav-link" onclick="signOut()" style="cursor: pointer">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header-->
+    <header class="masthead">
+      <div class="bg-transparent py-5">
+        <div class="container px-4 px-lg-5 my-5">
+          <div class="text-center text-white">
+              <h1 class="display-4 fw-bolder">Perfil</h1>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="vh-100 gradient-custom">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <h3 class="text-center text-uppercase">Informações Pessoais</h3>
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="cardLogin bg-dark text-white">
+              <div class="cardBorder">
+                <div class="card-body p-5 text-center">
+                  <div class="mb-2 mt-3">
+                    <div class="form-outline form-white mb-4">
+                      <div class="form-group">
+                        <input type="text" name="name" id="name" placeholder="Nome Completo" class="form-control form-control-lg bg-transparent text-white" required>
+                      </div>
+                    </div>
+                    <div class="form-outline form-white mb-4">
+                      <div class="form-group">
+                        <input type="date" id="birthDate" placeholder="Password" class="form-control form-control-lg bg-transparent text-white" required>
+                      </div>
+                    </div>
+                    <div class="form-outline form-white mb-4">
+                      <div class="form-group">
+                        <input type="number" id="height" placeholder="Altura" class="form-control form-control-lg bg-transparent text-white" required>
+                      </div>
+                    </div>
+                    <div class="form-outline form-white mb-4">
+                      <div class="form-group">
+                        <input type="number" id="weight" placeholder="Peso" class="form-control form-control-lg bg-transparent text-white" required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="cardLogin bg-dark text-white">
+              <div class="cardBorder">
+                <div class="card-body p-5 text-center">
+                  <div class="mb-2 mt-3">
+                    <div class="form-outline form-white mb-4">
+                      <div class="form-group">
+                        <input type="number" id="contact" placeholder="Contacto" class="form-control form-control-lg bg-transparent text-light" />
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="editPersonalInformations()">Atualizar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+           
+
+    <!-- Cards -->
+    <section class="py-5">
+      <div class="container px-4 mt-5">
+          <div class="justify-content-center">
+              <div id="card-container">
+
+              </div>
+          </div>
+        </div>
+    </section>
+
+    <!-- Modals -->
+    <section class="py-5">
+      <div id="modal-container">
+        
+      </div>
+    </section>
+  </body>
+
+  <script>
+    function hideModal(modalID){
+      document.getElementById(modalID).style.display = "none";
+    }
+  </script>
+
+<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+  <!-- Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
+  <script src="../js/index.js"></script>
+  <script src="../js/constants.js"></script>
+  <script src="../js/firebase/event.js"></script>
+  <script src="../js/firebase/user.js"></script>
+  <script src="../js/firebase/auth.js"></script>
+  <script src="../js/utils/auth_utils.js"></script>
+  <script src="../js/navbar/navbar.js"></script>
+</html>

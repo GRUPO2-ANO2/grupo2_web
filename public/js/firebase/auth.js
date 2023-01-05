@@ -7,29 +7,35 @@ firebase.auth().onAuthStateChanged((user) => {
 	const registerLink = document.querySelector('.register-link');
 	const profileLink = document.querySelector('.profile-link');
 
-	if (user != null){
+	if (user != null) {
 		console.log("user: " + user.uid);
 
 		// change navbar if user is loggedin
 		loginLink.style.display = 'none';
 		registerLink.style.display = 'none';
-    	profileLink.style.display = 'block';
+		profileLink.style.display = 'block';
 
-		if (window.location.pathname.split("/").pop() == "edit.html") {
-			showProfile();
+		switch (window.location.pathname.split("/").pop()) {
+			case "edit.hmtl":
+				showProfile();
+				break;
+
+			case "profile.html":
+				showPersonalInformation();
+				break;
 		}
-	} else{
+	} else {
 		console.log("user: " + user);
 
 		loginLink.style.display = 'block';
 		registerLink.style.display = 'block';
-    	profileLink.style.display = 'none';
+		profileLink.style.display = 'none';
 	}
 
 
 });
 
-async function loginWithEmailAndPassword(){
+async function loginWithEmailAndPassword() {
 	await firebase.auth().signInWithEmailAndPassword(
 		form.email().value, form.password().value
 	).then(response => {
@@ -39,7 +45,7 @@ async function loginWithEmailAndPassword(){
 	});
 }
 
-async function registerWithEmailAndPassword(){
+async function registerWithEmailAndPassword() {
 	await firebase.auth().createUserWithEmailAndPassword(
 		form.email().value, form.password().value
 	).then(response => {
@@ -51,7 +57,7 @@ async function registerWithEmailAndPassword(){
 }
 
 // This fn should be in user.js
-async function registerPersonalInformations(){
+async function registerPersonalInformations() {
 
 	let birthDate = new Date(form.birthDate().value);
 	let contact = parseInt(form.contact().value);
@@ -73,8 +79,57 @@ async function registerPersonalInformations(){
 	});
 }
 
+async function editPersonalInformations() {
+
+	let birthDate = new Date(form.birthDate().value);
+	let contact = parseInt(form.contact().value);
+	let height = parseFloat(form.height().value);
+	let weight = parseFloat(form.weight().value);
+
+	const docRef = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
+
+	docRef.update({
+		isGuia: 0,
+		Name: form.name().value,
+		Contact: contact,
+		BirthDate: birthDate,
+		Height: height,
+		Weight: weight
+	})
+}
+
+async function showPersonalInformation() {
+
+	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).get().then(async function(doc) {
+		if (doc.exists) {
+			const data = doc.data();
+
+			document.getElementById("name").value = data.Name;
+			const timestamp = data.BirthDate
+			const timestampAsDate = timestamp.toDate();
+
+			const options = {
+				day: "2-digit",
+				month: "2-digit",
+				year: "numeric"
+			};
+			const timestampAsString = timestampAsDate.toLocaleDateString("pt-PT", options);
+
+			const formattedDate = timestampAsString
+				.split("/")
+				.reverse()
+				.join("-");
+			document.getElementById("birthDate").value = formattedDate;
+
+			document.getElementById("height").value = data.Height;
+			document.getElementById("weight").value = data.Weight;
+			document.getElementById("contact").value = data.Contact;
+		}
+	});
+}
+
 // This fn should be in user.js
-async function updateUserProfile(){
+async function updateUserProfile() {
 	await currentUser.updateProfile({
 		displayName: form.name().value,
 		email: form.email().value,
@@ -86,7 +141,7 @@ async function updateUserProfile(){
 	});
 }
 
-async function updateEmail(){
+async function updateEmail() {
 	await firebase.auth().updateEmail(currentUser, form.email().value).then(() => {
 		console.log("Email Updated");
 	}).catch(error => {
@@ -94,13 +149,13 @@ async function updateEmail(){
 	})
 }
 
-async function showProfile(){
+async function showProfile() {
 	var userData = await getUserData();
 
 	document.getElementById("userData").innerHTML = currentUser.displayName;
 }
 
-async function signOut(){
+async function signOut() {
 	await firebase.auth().signOut().then(response => {
 		if (window.location.pathname.split("/").pop() == "index.html") {
 			window.location.href = "index.html";

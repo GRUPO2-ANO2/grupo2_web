@@ -54,9 +54,16 @@ body {
   background-color: transparent;
 }
 #mainNav.scrolled {
-  min-height: 3.5rem;
   background-color: #fff;
   color: black;
+}
+
+#mainNav.scrolled .navbar-brand {
+  color: #000;
+}
+
+#mainNav.scrolled .nav-link {
+  color: #000;
 }
 
 @media (min-width: 992px) {
@@ -177,4 +184,8 @@ body {
 #title {
   width: 50%;
   text-align: center;
+}
+
+button.btn-close {
+  color: white;
 }

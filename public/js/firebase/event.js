@@ -1,127 +1,125 @@
-async function createEvent(){
-    var isGuia = await userIsGuia();
-    
-    if (isGuia == 1){
-        await firebase.firestore().collection("eventos").add({
-            idGuia: currentUser.uid,
-            dateStart: null,
-            dateFinish: null,
-            location: null
-        }).then(() => {
-            console.log("sucesso")
-        })
-        .catch((error) => {
-            console.error("Error writing document: ", error);
-        });
-    }
-    else{
-        alert("Utilizador não é guia!")
-    } 
+async function createEvent() {
+	var isGuia = await userIsGuia();
+
+	if (isGuia == 1) {
+		await firebase.firestore().collection("eventos").add({
+				idGuia: currentUser.uid,
+				dateStart: null,
+				dateFinish: null,
+				location: null
+			}).then(() => {
+				console.log("sucesso")
+			})
+			.catch((error) => {
+				console.error("Error writing document: ", error);
+			});
+	} else {
+		alert("Utilizador não é guia!")
+	}
 }
 
-async function joinEvent(idEvent){
-    var userEnrolled = await userIsEnrolledInEvent(idEvent);
-    var isGuia = await userIsGuia(); 
+async function joinEvent(idEvent) {
+	var userEnrolled = await userIsEnrolledInEvent(idEvent);
+	var isGuia = await userIsGuia();
 
-    // dont allow guia's to enter events
-    if (isGuia){
-        alert("Guia nao pode entrar evento");
-        return;
-    }
+	// dont allow guia's to enter events
+	if (isGuia) {
+		alert("Guia nao pode entrar evento");
+		return;
+	}
 
-    // if user isnt enrolled yet, enroll him
-    if (userEnrolled == false){
-        await firebase.firestore().collection("eventosUtilizadores").add({
-            idUtilizador: currentUser.uid,
-            idEvento: idEvent
-        }).then(() => {
-            console.log(idEvent, "enrolled");
-        }).catch(error => {
-            alert(getErrorMessage(error));
-        });
-    } else {
-        console.log("user already enrolled");
-    }
+	// if user isnt enrolled yet, enroll him
+	if (userEnrolled == false) {
+		await firebase.firestore().collection("eventosUtilizadores").add({
+			idUtilizador: currentUser.uid,
+			idEvento: idEvent
+		}).then(() => {
+			console.log(idEvent, "enrolled");
+		}).catch(error => {
+			alert(getErrorMessage(error));
+		});
+	} else {
+		console.log("user already enrolled");
+	}
 }
 
-async function leaveEvent(idEvent){
-    var userEnrolled = await userIsEnrolledInEvent(idEvent);
+async function leaveEvent(idEvent) {
+	var userEnrolled = await userIsEnrolledInEvent(idEvent);
 
-    // if user enrolled remove him
-    if (userEnrolled){
-        await firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
-            querySnapshot.forEach(async (doc) => {
-                const data = doc.data();
-                const docIdEvento = data.idEvento;
-                const docIdUtilizador = data.idUtilizador;
-                
-                if (docIdEvento == idEvent && docIdUtilizador == currentUser.uid){
-                    await firebase.firestore().collection("eventosUtilizadores").doc(doc.id).delete().then(() => {
-                        console.log("left event " + doc.id);
-                    }).catch((error) => {
-                        console.error("leaveEvent()", error);
-                    });
-                }
-            });
-        });
-    }
+	// if user enrolled remove him
+	if (userEnrolled) {
+		await firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
+			querySnapshot.forEach(async (doc) => {
+				const data = doc.data();
+				const docIdEvento = data.idEvento;
+				const docIdUtilizador = data.idUtilizador;
+
+				if (docIdEvento == idEvent && docIdUtilizador == currentUser.uid) {
+					await firebase.firestore().collection("eventosUtilizadores").doc(doc.id).delete().then(() => {
+						console.log("left event " + doc.id);
+					}).catch((error) => {
+						console.error("leaveEvent()", error);
+					});
+				}
+			});
+		});
+	}
 }
 
-async function getEventsByUser(){
-    return new Promise(async (resolve, reject) => {
-        var events = [];
-        var eventCount = 0;
-        var enrolled = false;
-        var data;
+async function getEventsByUser() {
+	return new Promise(async (resolve, reject) => {
+		var events = [];
+		var eventCount = 0;
+		var enrolled = false;
+		var data;
 
-        const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").get();
-        for (const doc of querySnapshot.docs) {
-            data = doc.data();
-            const docIdEvento = data.idEvento;
-            const docIdUtilizador = data.idUtilizador;
+		const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").get();
+		for (const doc of querySnapshot.docs) {
+			data = doc.data();
+			const docIdEvento = data.idEvento;
+			const docIdUtilizador = data.idUtilizador;
 
-            // If user in document same as logged in
-            if (docIdUtilizador == currentUser.uid){
-                enrolled = await userIsEnrolledInEvent(docIdEvento);
-                // And if enrolled, add event
-                if(enrolled){   
-                    const docE = await firebase.firestore().collection("eventos").doc(docIdEvento).get();
-                    if (docE.exists){
-                        events[eventCount] = docE.data();
-                        events[eventCount].uid = docE.id;
-                        eventCount++;
-                    }
-                }
-            }
-        }
-        resolve(events);
-    });
+			// If user in document same as logged in
+			if (docIdUtilizador == currentUser.uid) {
+				enrolled = await userIsEnrolledInEvent(docIdEvento);
+				// And if enrolled, add event
+				if (enrolled) {
+					const docE = await firebase.firestore().collection("eventos").doc(docIdEvento).get();
+					if (docE.exists) {
+						events[eventCount] = docE.data();
+						events[eventCount].uid = docE.id;
+						eventCount++;
+					}
+				}
+			}
+		}
+		resolve(events);
+	});
 }
 
 
 async function showEventsByUser() {
-    const events = await getEventsByUser();
-    console.log(events.length);
+	const events = await getEventsByUser();
 
-    // Get the card container element
-    const cardContainer = document.getElementById('card-container');
+	// Get the card container element
+	const cardContainer = document.getElementById('card-container');
 
-    // Create a row element
-    const row = document.createElement('div');
-    row.className = 'row';
+	// Create a row element
+	const row = document.createElement('div');
+	row.className = 'row';
 
-    // Create a card for each item
-    for (let i = 0; i < events.length; i++) {
+	// Create a card for each item
+	for (let i = 0; i < events.length; i++) {
 
-      // Create a column
-      const col = document.createElement('div');
-      col.className = 'col-4 mt-3';
+		// Create a column
+		const col = document.createElement('div');
+		col.className = 'col-4 mt-3';
 
-      // Create the card
-      const card = document.createElement('div');
-      card.id = `card-${i}`;
-      card.className = `fw-bolder`;
-      card.innerHTML = `
+		// Create the card
+		const card = document.createElement('div');
+		card.id = `card-${events[i].uid}`;
+		card.className = `fw-bolder`;
+		card.innerHTML = `
         <div class="card h-100">
           <img class="card-img-top" src="${events[i].image}" alt="..." />
           <div class="card-img-overlay">
@@ -132,17 +130,17 @@ async function showEventsByUser() {
         </div>
         `;
 
-      // Append the card to the column
-      col.appendChild(card);
+		// Append the card to the column
+		col.appendChild(card);
 
-      // Append the column to the row
-      row.appendChild(col);
+		// Append the column to the row
+		row.appendChild(col);
 
-      const modalContainer = document.getElementById('modal-container');
+		const modalContainer = document.getElementById('modal-container');
 
-      // Create the modal element
-      const modal = document.createElement('div');
-        modal.innerHTML = `
+		// Create the modal element
+		const modal = document.createElement('div');
+		modal.innerHTML = `
         <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content bg-dark text-white">
@@ -169,9 +167,10 @@ async function showEventsByUser() {
                                     </div>
                                 </div>
                                 <div class="row d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEvent('${events[i].uid}'); hideModal('modal-${events[i].uid}');">
-                                        <i class="fas fa-xmark fa-fw"></i> Sair do Evento 
-                                    </button>
+                                <button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEventAndReload('${events[i].uid}')">
+                                <i class="fas fa-xmark fa-fw"></i> Sair do Evento 
+                              </button>
+
                                 </div>
                             </div>
                         </div>
@@ -179,117 +178,126 @@ async function showEventsByUser() {
                 </div>
             </div>
         </div>
-        `;      
+        `;
 
-        // Append the modal to the document body
-        modalContainer.appendChild(modal);
+		// Append the modal to the document body
+		modalContainer.appendChild(modal);
 
 
-        // Add an event listener to the card that opens the modal when clicked
-        card.addEventListener('click', function() {
-            var modalElement = document.getElementById(`modal-${events[i].uid}`);
-            modalElement.style.display = 'block';
-        });
-    }
+		// Add an event listener to the card that opens the modal when clicked
+		card.addEventListener('click', function() {
+			var modalElement = document.getElementById(`modal-${events[i].uid}`);
+			modalElement.style.display = 'block';
+		});
+	}
 
-    // Append the row to the card container
-    cardContainer.appendChild(row);
+	// Append the row to the card container
+	cardContainer.appendChild(row);
 }
+
+async function leaveEventAndReload(event) {
+	await leaveEvent(event);
+	await hideModal(`modal-${event}`);
+	setTimeout(function() {
+		location.reload();
+	}, 1000);
+}
+
 
 // Return open events
-async function getValidEvents(){
-    var eventosValidos = [];
-    var arraySize = 0;
+async function getValidEvents() {
+	var eventosValidos = [];
+	var arraySize = 0;
 
-    await firebase.firestore().collection("eventos").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            // doc.data() is never undefined for query doc snapshots~
-            const data = doc.data();
-            data.uid = doc.id;
-            const dateFinish = data.dateFinish.toDate();
+	await firebase.firestore().collection("eventos").get().then((querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			// doc.data() is never undefined for query doc snapshots~
+			const data = doc.data();
+			data.uid = doc.id;
+			const dateFinish = data.dateFinish.toDate();
 
-            // Check if valid event
-            if (isValidDate(dateFinish)) {
-                eventosValidos[arraySize] = data;
-                arraySize++;
-            }
-        });
-    });
+			// Check if valid event
+			if (isValidDate(dateFinish)) {
+				eventosValidos[arraySize] = data;
+				arraySize++;
+			}
+		});
+	});
 
-    return eventosValidos;
+	return eventosValidos;
 }
 
-function isValidDate(date){
-    return date > Date.now();
+function isValidDate(date) {
+	return date > Date.now();
 }
 
 // used to check wether a user owns an event(for editting/removing purposes)
-async function userOwnsEvent(idEvent){
-    await firebase.firestore().collection("eventos").doc(idEvent).get().then((doc) => {
-		if (doc.exists){
+async function userOwnsEvent(idEvent) {
+	await firebase.firestore().collection("eventos").doc(idEvent).get().then((doc) => {
+		if (doc.exists) {
 			return doc.data().idGuia == currentUser.uid;
-		} else{
-            return false;
+		} else {
+			return false;
 		}
 	}).catch((error) => {
 		console.log("userOwnsEvent():", error);
-	}); 
+	});
 
-    return false;
+	return false;
 }
 
-async function editEvent(idEvent, location, dateStart, dateFinish){
-    var owns = await userOwnsEvent(idEvent);
+async function editEvent(idEvent, location, dateStart, dateFinish) {
+	var owns = await userOwnsEvent(idEvent);
 
-    if (owns){
-        await firebase.firestore().collection("eventos").doc(idEvent).update({
-            location: location,
-            dateStart: dateStart,
-            dateFinish: dateFinish
-        }).then(() => {
-            console.log("edited");
-        });
-    } else {
-        console.log("User doesnt own event");
-    }
+	if (owns) {
+		await firebase.firestore().collection("eventos").doc(idEvent).update({
+			location: location,
+			dateStart: dateStart,
+			dateFinish: dateFinish
+		}).then(() => {
+			console.log("edited");
+		});
+	} else {
+		console.log("User doesnt own event");
+	}
 }
 
-async function removeEvent(idEvent){
-    var owns = await userOwnsEvent(idEvent);
+async function removeEvent(idEvent) {
+	var owns = await userOwnsEvent(idEvent);
 
-    if (owns){
-        await firebase.firestore().collection("eventos").doc(idEvent).delete().then(() => {
-            console.log("removed");
-        }).catch((error) => {
-            console.log("removeEvent():", error);
-        });
-    } else {
-        console.log("User doesnt own event");
-    }
+	if (owns) {
+		await firebase.firestore().collection("eventos").doc(idEvent).delete().then(() => {
+			console.log("removed");
+		}).catch((error) => {
+			console.log("removeEvent():", error);
+		});
+	} else {
+		console.log("User doesnt own event");
+	}
 }
 
 async function showEvents() {
-    var events = await getValidEvents();
+	var events = await getValidEvents();
 
-    // Get the card container element
-    const cardContainer = document.getElementById('card-container');
+	// Get the card container element
+	const cardContainer = document.getElementById('card-container');
 
-    // Create a row element
-    const row = document.createElement('div');
-    row.className = 'row';
+	// Create a row element
+	const row = document.createElement('div');
+	row.className = 'row';
 
-    // Create a card for each item
-    for (let i = 0; i < events.length; i++) {
+	// Create a card for each item
+	for (let i = 0; i < events.length; i++) {
 
-      // Create a column
-      const col = document.createElement('div');
-      col.className = 'col-4 mt-3';
+		// Create a column
+		const col = document.createElement('div');
+		col.className = 'col-4 mt-3';
 
-      // Create the card
-      const card = document.createElement('div');
-      card.id = `card-${i}`;
-      card.className = `fw-bolder`;
-      card.innerHTML = `
+		// Create the card
+		const card = document.createElement('div');
+		card.id = `card-${events[i].uid}`;
+		card.className = `fw-bolder`;
+		card.innerHTML = `
         <div class="card h-100">
           <img class="card-img-top" src="${events[i].image}" />
           <div class="card-img-overlay">
@@ -300,17 +308,43 @@ async function showEvents() {
         </div>
         `;
 
-      // Append the card to the column
-      col.appendChild(card);
+		// Append the card to the column
+		col.appendChild(card);
 
-      // Append the column to the row
-      row.appendChild(col);
+		// Append the column to the row
+		row.appendChild(col);
 
-      const modalContainer = document.getElementById('modal-container');
+		const modalContainer = document.getElementById('modal-container');
 
-      // Create the modal element
-      const modal = document.createElement('div');
-        modal.innerHTML = `
+		const dateStart = events[i].dateStart
+		const dateStartAsDate = dateStart.toDate();
+
+		const dateFinish = events[i].dateStart
+		const dateFinishAsDate = dateFinish.toDate();
+
+		const options = {
+			day: "2-digit",
+			month: "2-digit",
+			year: "numeric"
+		};
+		const dateStartAsString = dateStartAsDate.toLocaleDateString("pt-PT", options);
+		const dateFinishAsString = dateFinishAsDate.toLocaleDateString("pt-PT", options);
+
+
+		const formattedDateStart = dateStartAsString
+			.split("/")
+			.reverse()
+			.join("-");
+
+		const formattedDateFinish = dateStartAsString
+			.split("/")
+			.reverse()
+			.join("-");
+
+
+		// Create the modal element
+		const modal = document.createElement('div');
+		modal.innerHTML = `
         <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true" onload="hideModal('modal-${events[i].uid}');">
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content bg-dark text-white">
@@ -327,16 +361,16 @@ async function showEvents() {
                                         <h5>Localização</h5>
                                         <p>${events[i].location}</p>
                                         <h5>Data Inicio</h5>
-                                        <p>${events[i].dateStart}</p>
+                                        <p>${formattedDateStart}</p>
                                         <h5>Data Fim</h5>
-                                        <p>${events[i].dateFinish}</p>
+                                        <p>${formattedDateFinish}</p>
                                     </div>
                                 <div class="col-md-8 ms-auto">
                                     <h5>Descrição</h5>
                                     <p>${events[i].description}</p>
                                 </div>
                                 <div class="row d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-success" style="margin-top: 20px;" onclick="joinEvent('${events[i].uid}')">
+                                    <button class="btn btn-success" style="margin-top: 20px;" onclick="joinEvent('${events[i].uid}'); hideModal('modal-${events[i].uid}');">
                                         <i class="fas fa-xmark fa-fw"></i> Entrar 
                                     </button>
                                 </div>
@@ -346,20 +380,19 @@ async function showEvents() {
                 </div>
             </div>
         </div>
-        `;      
-        // Append the modal to the document body
-        modalContainer.appendChild(modal);
+        `;
+		// Append the modal to the document body
+		modalContainer.appendChild(modal);
 
 
-        // Add an event listener to the card that opens the modal when clicked
-        card.addEventListener('click', function() {
-            var modalElement = document.getElementById(`modal-${events[i].uid}`);
-            modalElement.style.display = 'block';
-        });
+		// Add an event listener to the card that opens the modal when clicked
+		card.addEventListener('click', function() {
+			var modalElement = document.getElementById(`modal-${events[i].uid}`);
+			modalElement.style.display = 'block';
+		});
 
-    }
+	}
 
-    // Append the row to the card container
-    cardContainer.appendChild(row);
+	// Append the row to the card container
+	cardContainer.appendChild(row);
 }
-
