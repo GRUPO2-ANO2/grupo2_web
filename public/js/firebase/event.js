@@ -138,6 +138,31 @@ async function showEventsByUser() {
 
 		const modalContainer = document.getElementById('modal-container');
 
+		const dateStart = events[i].dateStart
+		const dateStartAsDate = dateStart.toDate();
+
+		const dateFinish = events[i].dateFinish
+		const dateFinishAsDate = dateFinish.toDate();
+
+		const options = {
+			day: "2-digit",
+			month: "2-digit",
+			year: "numeric"
+		};
+		const dateStartAsString = dateStartAsDate.toLocaleDateString("pt-PT", options);
+		const dateFinishAsString = dateFinishAsDate.toLocaleDateString("pt-PT", options);
+
+
+		const formattedDateStart = dateStartAsString
+			.split("/")
+			.reverse()
+			.join("-");
+
+		const formattedDateFinish = dateFinishAsString
+			.split("/")
+			.reverse()
+			.join("-");
+
 		// Create the modal element
 		const modal = document.createElement('div');
 		modal.innerHTML = `
@@ -145,7 +170,7 @@ async function showEventsByUser() {
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-0">
-                        <button class="btn-close" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
+                        <button class="btn-close btn-close-white" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pb-5">
                         <div class="row justify-content-center text-center">
@@ -157,9 +182,9 @@ async function showEventsByUser() {
                                         <h5>Localização</h5>
                                         <p>${events[i].location}</p>
                                         <h5>Data Inicio</h5>
-                                        <p>${events[i].dateStart}</p>
+                                        <p>${formattedDateStart}</p>
                                         <h5>Data Fim</h5>
-                                        <p>${events[i].dateFinish}</p>
+                                        <p>${formattedDateFinish}</p>
                                     </div>
                                     <div class="col-md-8 ms-auto">
                                         <h5>Descrição</h5>
@@ -319,7 +344,7 @@ async function showEvents() {
 		const dateStart = events[i].dateStart
 		const dateStartAsDate = dateStart.toDate();
 
-		const dateFinish = events[i].dateStart
+		const dateFinish = events[i].dateFinish
 		const dateFinishAsDate = dateFinish.toDate();
 
 		const options = {
@@ -336,7 +361,7 @@ async function showEvents() {
 			.reverse()
 			.join("-");
 
-		const formattedDateFinish = dateStartAsString
+		const formattedDateFinish = dateFinishAsString
 			.split("/")
 			.reverse()
 			.join("-");
@@ -349,7 +374,7 @@ async function showEvents() {
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
                 <div class="modal-content bg-dark text-white">
                     <div class="modal-header border-0">
-                        <button class="btn-close" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
+                        <button class="btn-close btn-close-white" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
                     </div>
                     <div class="modal-body pb-5">
                         <div class="row justify-content-center text-center">
@@ -371,7 +396,7 @@ async function showEvents() {
                                 </div>
                                 <div class="row d-grid gap-2 col-6 mx-auto">
                                     <button class="btn btn-success" style="margin-top: 20px;" onclick="joinEvent('${events[i].uid}'); hideModal('modal-${events[i].uid}');">
-                                        <i class="fas fa-xmark fa-fw"></i> Entrar 
+									<i class="fas fa-check"></i> Entrar 
                                     </button>
                                 </div>
                             </div>
