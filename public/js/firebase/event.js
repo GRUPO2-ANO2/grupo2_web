@@ -123,10 +123,10 @@ async function showEventsByUser() {
       card.className = `fw-bolder`;
       card.innerHTML = `
         <div class="card h-100">
-          <img id="thumbnail" class="card-img-top" src="${events[i].image}" alt="..." />
+          <img class="card-img-top" src="${events[i].image}" alt="..." />
           <div class="card-img-overlay">
-            <div class="text-center text-white">
-              <h5>${events[i].location}</h2>
+          <div id="title" class="text-center text-white bg-dark opacity-15 rounded-3">
+          <h5>${events[i].location}</h2>
             </div>
           </div>
         </div>
@@ -142,7 +142,6 @@ async function showEventsByUser() {
 
       // Create the modal element
       const modal = document.createElement('div');
-        modal.className = `modal-content`;
         modal.innerHTML = `
         <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -153,8 +152,8 @@ async function showEventsByUser() {
                     <div class="modal-body pb-5">
                         <div class="row justify-content-center text-center">
                             <div class="col-lg-8">
-                                <h5 class="modal-title text-secondary text-uppercase mb-0 text-center">${events[i].location}</h5>
-                                <img class="img-fluid rounded mb-5" src="${events[i].image}" />
+                                <h5 class="modal-title text-white text-uppercase mb-0 text-center">${events[i].location}</h5>
+                                <img id="img" class="img-fluid rounded mb-5" src="${events[i].image}" />
                                 <div class="row">
                                     <div class="col-md-4">
                                         <h5>Localização</h5>
@@ -170,7 +169,7 @@ async function showEventsByUser() {
                                     </div>
                                 </div>
                                 <div class="row d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-sm btn-success" style="margin-top: 20px;" onclick="leaveEvent('${events[i].uid}')">
+                                    <button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEvent('${events[i].uid}')">
                                         <i class="fas fa-xmark fa-fw"></i> Sair do Evento 
                                     </button>
                                 </div>
@@ -321,8 +320,8 @@ async function showEvents() {
                     <div class="modal-body pb-5">
                         <div class="row justify-content-center text-center">
                             <div class="col-lg-8">
-                                <h5 class="modal-title text-secondary text-uppercase mb-0 text-center">${events[i].location}</h5>
-                                <img class="img-fluid rounded mb-5" style="margin-top: 20px;" src="${events[i].image}" />
+                                <h5 class="modal-title text-white text-uppercase mb-0 text-center">${events[i].location}</h5>
+                                <img id="img" class="img-fluid rounded mb-5" style="margin-top: 20px;" src="${events[i].image}" />
                                 <div class="row">
                                     <div class="col-md-4">
                                         <h5>Localização</h5>
@@ -337,7 +336,7 @@ async function showEvents() {
                                     <p>${events[i].description}</p>
                                 </div>
                                 <div class="row d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-sm btn-success" style="margin-top: 20px;" onclick="joinEvent('${events[i].uid}')">
+                                    <button class="btn btn-success" style="margin-top: 20px;" onclick="joinEvent('${events[i].uid}')">
                                         <i class="fas fa-xmark fa-fw"></i> Entrar 
                                     </button>
                                 </div>
