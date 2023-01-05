@@ -21,10 +21,10 @@ async function createEvent(){
 
 async function joinEvent(idEvent){
     var userEnrolled = await userIsEnrolledInEvent(idEvent);
-    var userIsGuia = await userIsGuia(); 
+    var isGuia = await userIsGuia(); 
 
     // dont allow guia's to enter events
-    if (userIsGuia){
+    if (isGuia){
         alert("Guia nao pode entrar evento");
         return;
     }
@@ -169,7 +169,7 @@ async function showEventsByUser() {
                                     </div>
                                 </div>
                                 <div class="row d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEvent('${events[i].uid}')">
+                                    <button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEvent('${events[i].uid}'); hideModal('modal-${events[i].uid}');">
                                         <i class="fas fa-xmark fa-fw"></i> Sair do Evento 
                                     </button>
                                 </div>
