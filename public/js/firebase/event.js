@@ -194,10 +194,9 @@ async function showEventsByUser() {
                                     </div>
                                 </div>
                                 <div class="row d-grid gap-2 col-6 mx-auto">
-                                <button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEventAndReload('${events[i].uid}')">
-                                <i class="fas fa-xmark fa-fw"></i> Sair do Evento 
-                              </button>
-
+								<button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEventAndReload('${events[i].uid}')">
+									<i class="fas fa-xmark fa-fw"></i> Sair do Evento 
+								</button>
                                 </div>
                             </div>
                         </div>
@@ -341,77 +340,7 @@ async function showEvents() {
 		// Append the column to the row
 		row.appendChild(col);
 
-		const modalContainer = document.getElementById('modal-container');
-
-		const dateStart = events[i].dateStart
-		const dateStartAsDate = dateStart.toDate();
-
-		const dateFinish = events[i].dateFinish
-		const dateFinishAsDate = dateFinish.toDate();
-
-		const options = {
-			day: "2-digit",
-			month: "2-digit",
-			year: "numeric"
-		};
-		const dateStartAsString = dateStartAsDate.toLocaleDateString("pt-PT", options);
-		const dateFinishAsString = dateFinishAsDate.toLocaleDateString("pt-PT", options);
-
-
-		const formattedDateStart = dateStartAsString
-			.split("/")
-			.reverse()
-			.join("-");
-
-		const formattedDateFinish = dateFinishAsString
-			.split("/")
-			.reverse()
-			.join("-");
-
-
-		// Create the modal element
-		const modal = document.createElement('div');
-		modal.innerHTML = `
-        <div class="modal" id="modal-${events[i].uid}" tabindex="-1" aria-labelledby="modal-${events[i].uid}" aria-hidden="true" onload="hideModal('modal-${events[i].uid}');">
-            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
-                <div class="modal-content bg-dark text-white">
-                    <div class="modal-header border-0">
-                        <button class="btn-close btn-close-white" type="button" onclick="hideModal('modal-${events[i].uid}');" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body pb-5">
-                        <div class="row justify-content-center text-center">
-                            <div class="col-lg-8">
-                                <h5 class="modal-title text-white text-uppercase mb-0 text-center">${events[i].location}</h5>
-                                <img id="img" class="img-fluid rounded mb-5" style="margin-top: 20px;" src="${events[i].image}" />
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h5>Localização</h5>
-                                        <p>${events[i].location}</p>
-                                        <h5>Data Inicio</h5>
-                                        <p>${formattedDateStart}</p>
-                                        <h5>Data Fim</h5>
-                                        <p>${formattedDateFinish}</p>
-                                    </div>
-                                <div class="col-md-8 ms-auto">
-                                    <h5>Descrição</h5>
-                                    <p>${events[i].description}</p>
-                                </div>
-                                <div class="row d-grid gap-2 col-6 mx-auto">
-                                    <button class="btn btn-success" style="margin-top: 20px;" onclick="joinEvent('${events[i].uid}'); hideModal('modal-${events[i].uid}');">
-									<i class="fas fa-check"></i> Entrar 
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        `;
-		// Append the modal to the document body
-		modalContainer.appendChild(modal);
-
-
+		
 		// Add an event listener to the card that opens the modal when clicked
 		card.addEventListener('click', function() {
 			var modalElement = document.getElementById(`modal-${events[i].uid}`);
@@ -424,6 +353,147 @@ async function showEvents() {
 	cardContainer.appendChild(row);
 }
 
+async function showEventInformations(event) {
+	
+}
+
 async function numUserRegisterEvents(events) {
 	return events.length;
 }
+
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZ29uY2F2ZiIsImEiOiJjbGNrcm5oa20wN2k4M29xbDB2dThrbHFnIn0.WIf2lhzQBXsULjf5Dm4t1g';
+(async () => {
+	const map = new mapboxgl.Map({
+		container: 'map',
+		zoom: 10,
+		center: [84.554836750031,28.578701019287],
+		pitch: 80,
+		bearing: 180,
+		interactive: false,
+		style: 'mapbox://styles/mapbox/satellite-streets-v11'
+	});
+
+	await map.once('load');
+	// Add fog
+	map.setFog({
+		'range': [-1, 1.5],
+		'color': 'white',
+		'horizon-blend': 0.1
+	});
+
+	// Add some 3d terrain
+	map.addSource('mapbox-dem', {
+		'type': 'raster-dem',
+		'url': 'mapbox://mapbox.terrain-rgb',
+		'tileSize': 512,
+		'maxzoom': 14
+	});
+	map.setTerrain({
+		'source': 'mapbox-dem',
+		'exaggeration': 1.2
+	});
+
+	// Add two different day and night sky layers so that we may switch between
+	// them during animation. We add a sky opacity transition to slightly animate
+	// the opacity updates.
+	map.addLayer({
+		'id': 'sky-day',
+		'type': 'sky',
+		'paint': {
+			'sky-type': 'gradient',
+			'sky-opacity-transition': { 'duration': 500 }
+		}
+	});
+	map.addLayer({
+		'id': 'sky-night',
+		'type': 'sky',
+		'paint': {
+			'sky-type': 'atmosphere',
+			'sky-atmosphere-sun': [90, 0],
+			'sky-atmosphere-halo-color': 'rgba(255, 255, 255, 0.5)',
+			'sky-atmosphere-color': 'rgba(255, 255, 255, 0.2)',
+			'sky-opacity': 0,
+			'sky-opacity-transition': { 'duration': 500 }
+		}
+	});
+	map.addLayer({
+		"id": "countour-labels",
+		"type": "symbol",
+		"source": {
+		  type: 'vector',
+		  url: 'mapbox://mapbox.mapbox-terrain-v2'
+		},
+		"source-layer": "contour",
+		'layout': {
+		  'visibility': 'visible',
+		  'symbol-placement': 'line',
+		  'text-field': ['concat', ['to-string', ['get', 'ele']], 'm']
+		},
+		'paint': {
+		  'icon-color': '#877b59',
+		  'icon-halo-width': 1,
+		  'text-color': '#877b59',
+		  'text-halo-width': 1
+		}
+	  });
+	  map.addLayer({
+		"id": "countours",
+		"type": "line",
+		"source": {
+		  type: 'vector',
+		  url: 'mapbox://mapbox.mapbox-terrain-v2'
+		},
+		"source-layer": "contour",
+		'layout': {
+		  'visibility': 'visible',
+		  'line-join': 'round',
+		  'line-cap': 'round'
+		},
+		'paint': {
+		  'line-color': '#877b59',
+		  'line-width': 1
+		}
+	  });
+	map.scrollZoom.enable();
+
+	// Run a timing loop to switch between day and night
+	await map.once('idle');
+	let lastTime = 0.0;
+	let animationTime = 0.0;
+	let cycleTime = 0.0;
+	let day = true;
+
+	const initialBearing = map.getBearing();
+
+	function frame(time) {
+		const elapsedTime = (time - lastTime) / 1000.0;
+
+		animationTime += elapsedTime;
+		cycleTime += elapsedTime;
+
+		if (cycleTime > 10.0) {
+			if (day) {
+				map.setPaintProperty('sky-day', 'sky-opacity', 1);
+				map.setPaintProperty('sky-night', 'sky-opacity', 0);
+				map.setFog({ 'color': 'white' });
+			} else {
+				map.setPaintProperty('sky-day', 'sky-opacity', 0);
+				map.setPaintProperty('sky-night', 'sky-opacity', 1);
+				map.setFog({ 'color': 'rgba(66, 88, 106, 1.0)' });
+			}
+
+			day = !day;
+			cycleTime = 0.0;
+		}
+
+		const rotation = initialBearing + animationTime * 2.0;
+		map.setBearing(rotation % 360);
+
+		lastTime = time;
+
+		window.requestAnimationFrame(frame);
+	}
+
+	window.requestAnimationFrame(frame);
+})();
