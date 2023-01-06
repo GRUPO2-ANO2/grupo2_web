@@ -39,3 +39,26 @@ async function userIsEnrolledInEvent(idEvent) {
 
 	return userEnrolled;
 }
+
+async function getUserById(idUser){
+	return await firebase.firestore().collection("utilizadores").doc(idUser).get()
+}
+
+async function getAllUtilizadoresByEvent(idEvent) {
+	var users = [];
+	var numUsers = 0;
+
+	await firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			var docEventId = doc.data().idEvento;
+			var docUserId = doc.data().idUtilizador;
+
+			if (docEventId == idEvent) {
+				users[numUsers] = getUserById(docUserId);
+				numUsers++;
+			}
+		});
+	});
+
+	return users;
+}

@@ -138,6 +138,8 @@ async function showEventsByUser() {
 
 		const modalContainer = document.getElementById('modal-container');
 
+		const numUsers = (await getAllUtilizadoresByEvent(events[i].uid)).length
+		console.log(numUsers)
 		const dateStart = events[i].dateStart
 		const dateStartAsDate = dateStart.toDate();
 
@@ -420,4 +422,8 @@ async function showEvents() {
 
 	// Append the row to the card container
 	cardContainer.appendChild(row);
+}
+
+async function numUserRegisterEvents(events) {
+	return events.length;
 }
