@@ -14,7 +14,8 @@
     <link href="../css/eventInfo.css" rel="stylesheet" />
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   </head>
-  <body onload="showEvents()">
+  
+  <body onload="showEventInformations()">
     <!-- navbar -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
       <div class="container px-4 px-lg-5">
@@ -43,32 +44,98 @@
     <!-- Header-->
     <header class="masthead">
       <div class="bg-transparent py-5">
-        <div class="container px-4 px-lg-5 my-5">
+        <div class="container px-4 px-lg-5 my-2">
           <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Evento</h1>
+            <h1 id="title" class="display-4 fw-bolder">
+
+            </h1>
           </div>
         </div>
       </div>
     </header>
 
     <!-- section -->
-    <section>
+    <section class="information mt-4">
+      <div class="container">
         <div class="row text-center">
-            <div class="col-6 imgEvent">imagens</div>
-            <div class="col-6">
-                <div id="map"></div>
-            </div>
+          <div class="col-6">
+            <div id="img" class="imgEvent"></div>
+          </div>
+          <div class="col-6">
+            <div id="map" class="rounded"></div>
+          </div>
         </div>
-
-        
+        <div class="row text-center d-flex justify-content-center mt-5">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Localização</h5>
+                <p id="location" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Range</h5>
+                <p id="range" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Elevação</h5>
+                <p id="elevation" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row text-center d-flex justify-content-center mt-5">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Duração</h5>
+                <p id="duration" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Datas</h5>
+                <p id="dateStart" class="card-text"></p>
+                <p id="dateFinish" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Número de Inscrições máximas</h5>
+                <p id="registrations" class="card-text"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-center mt-5 mb-5">
+          <div class="col">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title text-center">Descrição</h5>
+                <p id="description" class="card-text text-left"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>    
     </section>
+
+    <div id="btn" class="mx-auto d-flex justify-content-center mb-5">
+    </div>
+
     </body>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-    function hideModal(modalID) {
-      document.getElementById(modalID).style.display = "none";
-    }
-  </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Map -->
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js'></script>
