@@ -371,14 +371,14 @@ async function showEventInformations() {
 	var btn = document.getElementById("btn");
 
 	image.innerHTML = `<img class="rounded" src="${event.image}">`;
-	title.innerHTML = `${event.name}`;
-	location.innerHTML = `${event.location}`;
-	range.innerHTML = `${event.range}`;
-	elevation.innerHTML = `${event.elevation}`
-	description.innerHTML = `${event.description}`
-	registrations.innerHTML = `${event.registrations}`
-	startDate.innerHTML = `Inicio: ${formattedDateStart}`
-	finishDate.innerHTML = `Fim: ${formattedDateFinish}`
+	title.innerHTML = event.name;
+	location.innerHTML = event.location;
+	range.innerHTML = event.range;
+	elevation.innerHTML = event.elevation;
+	description.innerHTML = event.description;
+	registrations.innerHTML = event.registrations;
+	startDate.innerHTML = `Inicio: ${formattedDateStart}`;
+	finishDate.innerHTML = `Fim: ${formattedDateFinish}`;
 
 	duration.innerHTML = `${numDays} Dias`
 
@@ -405,7 +405,7 @@ async function showEventInformations() {
 		const map = new mapboxgl.Map({
 			container: 'map',
 			zoom: 12,
-			center: [86.922623,27.986065],
+			center: [event.longitude,event.latitude],
 			pitch: 80,
 			bearing: 180,
 			interactive: false,
