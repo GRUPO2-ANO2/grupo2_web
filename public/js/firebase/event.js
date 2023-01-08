@@ -69,15 +69,17 @@ async function leaveEvent(idEvent) {
 }
 
 async function getEvent(idEvent) {
-	const docE = await firebase.firestore().collection("eventos").doc(idEvent).get();
-	var event = null;
-
-	if (docE.exists) {
-		event = docE.data();
-		event.uid = docE.id;
-	}
+	return new Promise(async (resolve) => {
+		const docE = await firebase.firestore().collection("eventos").doc(idEvent).get();
+		var event = null;
 	
-	return event;
+		if (docE.exists) {
+			event = docE.data();
+			event.uid = docE.id;
+		}
+	
+		resolve(event);
+	});
 }
 
 // WARNING: Does not validate events
@@ -99,12 +101,8 @@ async function getEventsByUser() {
 				enrolled = await userIsEnrolledInEvent(docIdEvento);
 				// And if enrolled, add event
 				if (enrolled) {
-					const docE = await firebase.firestore().collection("eventos").doc(docIdEvento).get();
-					if (docE.exists) {
-						events[eventCount] = docE.data();
-						events[eventCount].uid = docE.id;
-						eventCount++;
-					}
+					events[eventCount] = await getEvent(docIdEvento);
+					eventCount++;
 				}
 			}
 		}
@@ -118,7 +116,7 @@ async function getEventsByGuia() {
 		return null;
 	}
 
-	return new Promise(async (resolve, reject) => {
+	return new Promise(async (resolve) => {
 		var events = [];
 		var eventCount = 0;
 		var owns = false;
@@ -135,12 +133,8 @@ async function getEventsByGuia() {
 				owns = await userOwnsEvent(docIdEvento);
 				// And if owns, add event
 				if (owns) {
-					const docE = await firebase.firestore().collection("eventos").doc(docIdEvento).get();
-					if (docE.exists) {
-						events[eventCount] = docE.data();
-						events[eventCount].uid = docE.id;
-						eventCount++;
-					}
+					events[eventCount] = await getEvent(docIdEvento);
+					eventCount++;
 				}
 			}
 		}
@@ -148,6 +142,78 @@ async function getEventsByGuia() {
 	});
 }
 
+// Return open events
+async function getValidEvents() {
+	return new Promise(async (resolve) => {
+		var eventosValidos = [];
+		var arraySize = 0;
+	
+		await firebase.firestore().collection("eventos").get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				// doc.data() is never undefined for query doc snapshots~
+				const data = doc.data();
+				data.uid = doc.id;
+				const dateFinish = data.dateFinish.toDate();
+	
+				// Check if valid event
+				if (isValidDate(dateFinish)) {
+					eventosValidos[arraySize] = data;
+					arraySize++;
+				}
+			});
+		});
+	
+		resolve(eventosValidos);
+	});
+}
+
+// used to check wether a user owns an event(for editting/removing purposes)
+async function userOwnsEvent(idEvent) {
+	return new Promise(async (resolve) => {
+		var data = await getEvent(idEvent);
+		resolve(data.idGuia == currentUser.uid);
+	});
+}
+
+// Does not need to make a promise
+async function editEvent(idEvent, location, dateStart, dateFinish) {
+	var owns = await userOwnsEvent(idEvent);
+
+	if (owns) {
+		await firebase.firestore().collection("eventos").doc(idEvent).update({
+			location: location,
+			dateStart: dateStart,
+			dateFinish: dateFinish
+		}).then(() => {
+			console.log("edited");
+		});
+	} else {
+		console.log("User doesnt own event");
+	}
+}
+
+// Does not need to make a promise
+async function removeEvent(idEvent) {
+	var owns = await userOwnsEvent(idEvent);
+
+	if (owns) {
+		await firebase.firestore().collection("eventos").doc(idEvent).delete().then(() => {
+			console.log("removed");
+		}).catch((error) => {
+			console.log("removeEvent():", error);
+		});
+	} else {
+		console.log("User doesnt own event");
+	}
+}
+
+function isValidDate(date) {
+	return date > Date.now();
+}
+
+// Tudo daqui para baixo é melhor mudar de sitio
+// porque o que fazemos neste ficheiro é fazer pedidos ao firebase
+// relacionados a tabela evento
 
 async function showEventsByUser() {
 	const events = await getEventsByUser();
@@ -225,78 +291,6 @@ async function showEventsByUser() {
 	cardContainer.appendChild(row);
 }
 
-// Return open events
-async function getValidEvents() {
-	var eventosValidos = [];
-	var arraySize = 0;
-
-	await firebase.firestore().collection("eventos").get().then((querySnapshot) => {
-		querySnapshot.forEach((doc) => {
-			// doc.data() is never undefined for query doc snapshots~
-			const data = doc.data();
-			data.uid = doc.id;
-			const dateFinish = data.dateFinish.toDate();
-
-			// Check if valid event
-			if (isValidDate(dateFinish)) {
-				eventosValidos[arraySize] = data;
-				arraySize++;
-			}
-		});
-	});
-
-	return eventosValidos;
-}
-
-function isValidDate(date) {
-	return date > Date.now();
-}
-
-// used to check wether a user owns an event(for editting/removing purposes)
-async function userOwnsEvent(idEvent) {
-	await firebase.firestore().collection("eventos").doc(idEvent).get().then((doc) => {
-		if (doc.exists) {
-			return doc.data().idGuia == currentUser.uid;
-		} else {
-			return false;
-		}
-	}).catch((error) => {
-		console.log("userOwnsEvent():", error);
-	});
-
-	return false;
-}
-
-async function editEvent(idEvent, location, dateStart, dateFinish) {
-	var owns = await userOwnsEvent(idEvent);
-
-	if (owns) {
-		await firebase.firestore().collection("eventos").doc(idEvent).update({
-			location: location,
-			dateStart: dateStart,
-			dateFinish: dateFinish
-		}).then(() => {
-			console.log("edited");
-		});
-	} else {
-		console.log("User doesnt own event");
-	}
-}
-
-async function removeEvent(idEvent) {
-	var owns = await userOwnsEvent(idEvent);
-
-	if (owns) {
-		await firebase.firestore().collection("eventos").doc(idEvent).delete().then(() => {
-			console.log("removed");
-		}).catch((error) => {
-			console.log("removeEvent():", error);
-		});
-	} else {
-		console.log("User doesnt own event");
-	}
-}
-
 async function showEvents() {
 	var events = await getValidEvents();
 
@@ -347,24 +341,6 @@ async function showEvents() {
 	cardContainer.appendChild(row);
 }
 
-async function numUserRegisterEvents(events) {
-	return events.length;
-}
-
-async function getEventById(eventId) {
-
-	var event;	
-
-	const docE = await firebase.firestore().collection("eventos").doc(eventId).get();
-	if (docE.exists) {
-		event = docE.data();
-		event.uid = docE.id;
-	}
-
-	return event;
-}
-
-
 async function showEventInformations() {
 
 	const urlParams = new URLSearchParams(window.location.search);
@@ -372,7 +348,7 @@ async function showEventInformations() {
 	const urlParamsPage = new URLSearchParams(window.location.search);
 	const page = urlParamsPage.get('page');
 
-	var event = await getEventById(eventId);
+	var event = await getEvent(eventId);
 
 	// convert timestamp to Date
 	const dateStart = event.dateStart
