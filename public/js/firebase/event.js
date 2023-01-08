@@ -82,6 +82,38 @@ async function getEvent(idEvent) {
 	});
 }
 
+// Does not need to make a promise
+async function editEvent(idEvent, location, dateStart, dateFinish) {
+	var owns = await userOwnsEvent(idEvent);
+
+	if (owns) {
+		await firebase.firestore().collection("eventos").doc(idEvent).update({
+			location: location,
+			dateStart: dateStart,
+			dateFinish: dateFinish
+		}).then(() => {
+			console.log("edited");
+		});
+	} else {
+		console.log("User doesnt own event");
+	}
+}
+
+// Does not need to make a promise
+async function removeEvent(idEvent) {
+	var owns = await userOwnsEvent(idEvent);
+
+	if (owns) {
+		await firebase.firestore().collection("eventos").doc(idEvent).delete().then(() => {
+			console.log("removed");
+		}).catch((error) => {
+			console.log("removeEvent():", error);
+		});
+	} else {
+		console.log("User doesnt own event");
+	}
+}
+
 // WARNING: Does not validate events
 async function getEventsByUser() {
 	return new Promise(async (resolve, reject) => {
@@ -173,38 +205,6 @@ async function userOwnsEvent(idEvent) {
 		var data = await getEvent(idEvent);
 		resolve(data.idGuia == currentUser.uid);
 	});
-}
-
-// Does not need to make a promise
-async function editEvent(idEvent, location, dateStart, dateFinish) {
-	var owns = await userOwnsEvent(idEvent);
-
-	if (owns) {
-		await firebase.firestore().collection("eventos").doc(idEvent).update({
-			location: location,
-			dateStart: dateStart,
-			dateFinish: dateFinish
-		}).then(() => {
-			console.log("edited");
-		});
-	} else {
-		console.log("User doesnt own event");
-	}
-}
-
-// Does not need to make a promise
-async function removeEvent(idEvent) {
-	var owns = await userOwnsEvent(idEvent);
-
-	if (owns) {
-		await firebase.firestore().collection("eventos").doc(idEvent).delete().then(() => {
-			console.log("removed");
-		}).catch((error) => {
-			console.log("removeEvent():", error);
-		});
-	} else {
-		console.log("User doesnt own event");
-	}
 }
 
 function isValidDate(date) {
