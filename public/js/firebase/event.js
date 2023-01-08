@@ -68,6 +68,18 @@ async function leaveEvent(idEvent) {
 	}
 }
 
+async function getEvent(idEvent) {
+	const docE = await firebase.firestore().collection("eventos").doc(idEvent).get();
+	var event = null;
+
+	if (docE.exists) {
+		event = docE.data();
+		event.uid = docE.id;
+	}
+	
+	return event;
+}
+
 // WARNING: Does not validate events
 async function getEventsByUser() {
 	return new Promise(async (resolve, reject) => {
