@@ -68,6 +68,7 @@ async function leaveEvent(idEvent) {
 	}
 }
 
+// WARNING: Does not validate events
 async function getEventsByUser() {
 	return new Promise(async (resolve, reject) => {
 		var events = [];
@@ -86,6 +87,42 @@ async function getEventsByUser() {
 				enrolled = await userIsEnrolledInEvent(docIdEvento);
 				// And if enrolled, add event
 				if (enrolled) {
+					const docE = await firebase.firestore().collection("eventos").doc(docIdEvento).get();
+					if (docE.exists) {
+						events[eventCount] = docE.data();
+						events[eventCount].uid = docE.id;
+						eventCount++;
+					}
+				}
+			}
+		}
+		resolve(events);
+	});
+}
+
+async function getEventsByGuia() {
+	if (await userIsGuia() == false){
+		alert("user is not guia");
+		return null;
+	}
+
+	return new Promise(async (resolve, reject) => {
+		var events = [];
+		var eventCount = 0;
+		var owns = false;
+		var data;
+
+		const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").get();
+		for (const doc of querySnapshot.docs) {
+			data = doc.data();
+			const docIdEvento = data.idEvento;
+			const docIdGuia = data.idGuia;
+
+			// If user in document same as logged in
+			if (docIdGuia == currentUser.uid) {
+				owns = await userOwnsEvent(docIdEvento);
+				// And if owns, add event
+				if (owns) {
 					const docE = await firebase.firestore().collection("eventos").doc(docIdEvento).get();
 					if (docE.exists) {
 						events[eventCount] = docE.data();
