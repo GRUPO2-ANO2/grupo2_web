@@ -9,15 +9,16 @@ async function createEvento() {
 
 		console.log(form.eventId().value);
 
-		var event = getEventData(form.eventId().value);
+		var event = await getEventData(form.eventId().value);
 
-		console.log(event.location);
+		console.log(event);
 
 		await firebase.firestore().collection("eventos").add({
 				idGuia: currentUser.uid,
 				dateStart: dateStart,
 				dateFinish: dateFinish,
 				location: event.location,
+				description: event.description,
 				name: form.name().value,
 				elevation: event.elevation,
 				latitude: event.latitude,
