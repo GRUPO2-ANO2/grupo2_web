@@ -1,20 +1,30 @@
-async function createEvent() {
+async function createEvento() {
 	var isGuia = await userIsGuia();
 
 	if (isGuia == 1) {
+
+		let dateStart = new Date(form.startDate().value);
+		let dateFinish = new Date(form.finishDate().value);
+		let registrations = parseInt(form.registrations().value);
+
+		console.log(form.eventId().value);
+
+		var event = getEventData(form.eventId().value);
+
+		console.log(event.location);
+
 		await firebase.firestore().collection("eventos").add({
 				idGuia: currentUser.uid,
-				dateStart: null,
-				dateFinish: null,
-				location: null,
-				name: null,
-				elevation: null,
-				latitude: null,
-				longitude: null,
-				range: null,
-				registrations: null,
-				image: null,
-				difficultyLevel
+				dateStart: dateStart,
+				dateFinish: dateFinish,
+				location: event.location,
+				name: form.name().value,
+				elevation: event.elevation,
+				latitude: event.latitude,
+				longitude: event.longitude,
+				range: event.range,
+				registrations: registrations,
+				image: event.image,
 			}).then(() => {
 				console.log("sucesso")
 			})
@@ -166,7 +176,7 @@ async function getEventsByGuia() {
 		for (const doc of querySnapshot.docs) {
 			data = doc.data();
 			const docIdEvento = data.idEvento;
-			const docIdGuia = data.idGuia;
+			const docIdGuia = data.idUtilizador;
 
 			// If user in document same as logged in
 			if (docIdGuia == currentUser.uid) {
@@ -207,6 +217,43 @@ async function getValidEvents() {
 	});
 }
 
+async function getEventsData() {
+	return new Promise(async (resolve) => {
+		var events = [];
+		var arraySize = 0;
+	
+		await firebase.firestore().collection("dadosEventos").get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				// doc.data() is never undefined for query doc snapshots~
+				const data = doc.data();
+				data.uid = doc.id;
+
+				events[arraySize] = data;
+				arraySize++;
+			});
+		});
+	
+		resolve(events);
+	});
+}
+
+async function getEventData(idEventData) {
+	return new Promise(async (resolve) => {
+		var event = [];
+	
+		const docE = await firebase.firestore().collection("dadosEventos").doc(idEventData).get();
+	
+		if (docE.exists) {
+			event = docE.data();
+			event.uid = docE.id;
+		}
+
+		console.log(event.location)
+	
+		resolve(event);
+	});
+}
+
 // used to check wether a user owns an event(for editting/removing purposes)
 async function userOwnsEvent(idEvent) {
 	return new Promise(async (resolve) => {
@@ -222,6 +269,106 @@ function isValidDate(date) {
 // Tudo daqui para baixo é melhor mudar de sitio
 // porque o que fazemos neste ficheiro é fazer pedidos ao firebase
 // relacionados a tabela evento
+
+async function showEventDataList() {
+	const events = await getEventsData();
+    console.log(events);
+
+	var data;
+
+	// Create a card for each item
+	for (let i = 0; i < events.length; i++) {
+
+		// Create the card
+		const table = document.getElementById('data');
+		table.innerHTML += `
+        <tr>
+		    <td>
+			    <option id="eventId" value="${events[i].uid}">
+		            ${events[i].name}
+				</option>
+			</td>
+			
+    	</tr>
+        `;
+	}
+}
+
+async function showEventsByGuia() {
+	const events = await getEventsByGuia();
+
+	// Get the card container element
+	const cardContainer = document.getElementById('card-container');
+
+	// Create a row element
+	const row = document.createElement('div');
+	row.className = 'row';
+
+	// Create a card for each item
+	for (let i = 0; i < events.length; i++) {
+
+		// Create a column
+		const col = document.createElement('div');
+		col.className = 'col-4 mt-3';
+
+		// Create the card
+		const card = document.createElement('div');
+		card.id = `card-${events[i].uid}`;
+		card.className = `fw-bolder`;
+		card.innerHTML = `
+        <div class="card h-100">
+          <img class="card-img-top" src="${events[i].image}" alt="..." />
+          <div class="card-img-overlay">
+          <div id="title" class="text-center text-white bg-dark opacity-15 rounded-3">
+          <h5>${events[i].name}</h2>
+            </div>
+          </div>
+        </div>
+        `;
+
+		// Append the card to the column
+		col.appendChild(card);
+
+		// Append the column to the row
+		row.appendChild(col);
+
+		const numUsers = (await getAllUtilizadoresByEvent(events[i].uid)).length
+
+		const dateStart = events[i].dateStart
+		const dateStartAsDate = dateStart.toDate();
+
+		const dateFinish = events[i].dateFinish
+		const dateFinishAsDate = dateFinish.toDate();
+
+		const options = {
+			day: "2-digit",
+			month: "2-digit",
+			year: "numeric"
+		};
+		const dateStartAsString = dateStartAsDate.toLocaleDateString("pt-PT", options);
+		const dateFinishAsString = dateFinishAsDate.toLocaleDateString("pt-PT", options);
+
+
+		const formattedDateStart = dateStartAsString
+			.split("/")
+			.reverse()
+			.join("-");
+
+		const formattedDateFinish = dateFinishAsString
+			.split("/")
+			.reverse()
+			.join("-");
+
+
+		// Add an event listener to the card that opens eventInfo
+		card.addEventListener('click', function() {
+			window.location.href = 'eventInfo.html?id=' + events[i].uid + '&page=' + "admin";
+		});
+	}
+
+	// Append the row to the card container
+	cardContainer.appendChild(row);
+}
 
 async function showEventsByUser() {
 	const events = await getEventsByUser();
@@ -351,11 +498,10 @@ async function showEvents() {
 
 async function showEventInformations() {
 
-	const urlParams = new URLSearchParams(window.location.search);
-	const eventId = urlParams.get('id');
+	const urlParamsId = new URLSearchParams(window.location.search);
+	const eventId = urlParamsId.get('id');
 	const urlParamsPage = new URLSearchParams(window.location.search);
 	const page = urlParamsPage.get('page');
-
 	var event = await getEvent(eventId);
 
 	// convert timestamp to Date
@@ -423,11 +569,21 @@ async function showEventInformations() {
 			Entrar no Evento
 		</button>
 		  `
-	}else
+	}if (page == "profile")
 	{
 		btn.innerHTML = `      
 		<button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEvent('${event.uid}');">
 			<i class="fas fa-xmark fa-fw"></i> Sair do Evento 
+		</button>
+		  `
+	}if (page == "admin")
+	{
+		btn.innerHTML = `      
+		<button class="btn btn-primary m-2" style="margin-top: 20px;" onclick="#editarEvento">
+			<i class="fas fa-check fa-fw"></i> Editar Evento 
+		</button>
+		<button class="btn btn-danger m-2" style="margin-top: 20px;" onclick="#removerEvento">
+			<i class="fas fa-xmark fa-fw"></i> Remover Evento 
 		</button>
 		  `
 	}
@@ -568,8 +724,4 @@ async function showEventInformations() {
 
 		window.requestAnimationFrame(frame);
 	})();
-}
-
-const form = {
-	email: () => document.getElementById("email"),
 }

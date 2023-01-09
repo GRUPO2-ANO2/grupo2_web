@@ -31,6 +31,10 @@ firebase.auth().onAuthStateChanged(async (user) => {
 			case "profile.html":
 				showPersonalInformation();
 				break;
+
+			case "admin.html":
+				showEventsByGuia();
+				break;
 		}
 	} else {
 		console.log("user: " + user);
@@ -188,4 +192,9 @@ const form = {
 	loginButton: () => document.getElementById("login-button"),
 	passwordRequiredError: () => document.getElementById("password-required-error"),
 	recoverPasswordButton: () => document.getElementById("recover-password-button"),
+	name: () => document.getElementById("name"),
+	startDate: () => document.getElementById("startDate"),
+	finishDate: () => document.getElementById("endDate"),
+	registrations: () => document.getElementById("registrations"),
+	eventId: () => document.getElementById("eventId"),
 }
