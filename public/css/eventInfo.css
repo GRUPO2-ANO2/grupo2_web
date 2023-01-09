@@ -58,6 +58,9 @@ body {
 #mainNav.scrolled .nav-link {
   color: #000;
 }
+#mainNav.scrolled .nav-item:hover {
+  color: #000;
+}
 @media (min-width: 992px) {
   #mainNav {
       padding-top: 0;

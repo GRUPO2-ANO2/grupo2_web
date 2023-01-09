@@ -6,7 +6,15 @@ async function createEvent() {
 				idGuia: currentUser.uid,
 				dateStart: null,
 				dateFinish: null,
-				location: null
+				location: null,
+				name: null,
+				elevation: null,
+				latitude: null,
+				longitude: null,
+				range: null,
+				registrations: null,
+				image: null,
+				difficultyLevel
 			}).then(() => {
 				console.log("sucesso")
 			})
@@ -535,4 +543,8 @@ async function showEventInformations() {
 
 		window.requestAnimationFrame(frame);
 	})();
+}
+
+const form = {
+	email: () => document.getElementById("email"),
 }

@@ -1,19 +1,27 @@
 currentUser = null;
 
-firebase.auth().onAuthStateChanged((user) => {
+firebase.auth().onAuthStateChanged(async (user) => {
 	currentUser = user;
 
 	const loginLink = document.querySelector('.login-link');
 	const registerLink = document.querySelector('.register-link');
 	const profileLink = document.querySelector('.profile-link');
+	const adminLink = document.querySelector('.admin-link');
+
+	adminLink.style.display = 'none';
 
 	if (user != null) {
 		console.log("user: " + user.uid);
+		const isGuia = await userIsGuia();
 
 		// change navbar if user is loggedin
 		loginLink.style.display = 'none';
 		registerLink.style.display = 'none';
 		profileLink.style.display = 'block';
+
+		if (isGuia) {
+			adminLink.style.display = 'block'
+		}
 
 		switch (window.location.pathname.split("/").pop()) {
 			case "edit.hmtl":
@@ -30,9 +38,8 @@ firebase.auth().onAuthStateChanged((user) => {
 		loginLink.style.display = 'block';
 		registerLink.style.display = 'block';
 		profileLink.style.display = 'none';
+		adminLink.style.display = 'none';
 	}
-
-
 });
 
 async function loginWithEmailAndPassword() {
