@@ -128,6 +128,16 @@ async function removeEvent(idEvent) {
 		}).catch((error) => {
 			console.log("removeEvent():", error);
 		});
+
+		const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").get();
+		for (const doc of querySnapshot.docs) {
+			data = doc.data();
+			const docIdEvento = data.idEvento;
+
+			if (docIdEvento == idEvent) {
+				await firebase.firestore().collection("eventosUtilizadores").doc(data.id).delete();
+			}
+		}	
 	} else {
 		console.log("User doesnt own event");
 	}
@@ -173,11 +183,11 @@ async function getEventsByGuia() {
 		var owns = false;
 		var data;
 
-		const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").get();
+		const querySnapshot = await firebase.firestore().collection("eventos").get();
 		for (const doc of querySnapshot.docs) {
 			data = doc.data();
-			const docIdEvento = data.idEvento;
-			const docIdGuia = data.idUtilizador;
+			const docIdEvento = doc.id;
+			const docIdGuia = data.idGuia;
 
 			// If user in document same as logged in
 			if (docIdGuia == currentUser.uid) {
