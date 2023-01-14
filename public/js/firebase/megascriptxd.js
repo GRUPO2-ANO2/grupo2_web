@@ -22,8 +22,6 @@ modification date : date of last modification in yyyy-MM-dd format
 
 */
 
-var fs = require('fs');
-
 class Location{
     constructor(geonameid, _name, alternate_names, latitude, longitude, feature_class, feature_code, country_code,
         cc2, admin1_code, admin2_code, admin3_code, admin4_code, population, elevation, dem, timezone, modification_date){
@@ -48,17 +46,36 @@ class Location{
         }
 }
 
-function readFileToObject(path){
-    var content = fs.readFileSync(path, "utf8");
-    const objs = content.split('\n')
-        .map(profile => {
-            const [ geonameid, _name, alternatenames, latitude, longitude, feature_class, feature_code,
-                country_code, cc2, admin1_code, admin2_code, admin3_code, admin4_code, population, elevation,
-                dem, timezone, modification_date] = profile.split('\t');
-            return { geonameid, _name, alternatenames, latitude, longitude, feature_class, feature_code,
-                country_code, cc2, admin1_code, admin2_code, admin3_code, admin4_code, population, elevation,
-                dem, timezone, modification_date };
-        });
-    
-    return objs;
+async function readFileToObject(){
+    const [file] = document.querySelector('input[type=file]').files;
+    const headers = ['geonameid', 'name', 'asciiname', "alternatenames", "latitude", "longitude", "feature_class",
+    "feature_code", "country_code", "cc2", "admin1_code", "admin2_code", "admin3_code", 
+    "admin4_code", "population", "elevation", "dem", "timezone", "modification_date"];
+
+    Papa.parse(file, {
+        delimiter: '\t',
+        dynamicTyping: true,
+        complete: function(results) {
+            // fazer collectionRef aqui para ao percorrer p/array
+            // nao perder tempo a ir buscar a colecao
+            var collectionRef = firebase.firestore().collection("api");
+            
+            var added = 0;
+            results.data.forEach(function(data) {
+                let obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = data[index];
+                });
+                collectionRef.add(obj)
+                    .then(function(docRef) {
+                        added++;
+                        console.log(`${Math.floor((added / results.data.length) * 100)}% adicionado`);
+                    })
+                    .catch(function(error) {
+                        console.error("erro: ", error);
+                    });
+            });
+        }
+    });
 }
+/**/

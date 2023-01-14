@@ -49,6 +49,15 @@
         </div>
       </div>
     </header>
+
+
+
+    <input type="file" onchange="readFileToObject()" /><br />
+<p class="content"></p>
+
+
+
+
     <section class="vh-100 gradient-custom">
       <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -117,10 +126,14 @@
       <div id="modal-container"></div>
     </section>
   </body>
-  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+
   <!-- Scripts -->
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
+  <script src="../js/firebase/megascriptxd.js"></script>
+  
   <!-- Firestore -->
   <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
   <script src="../js/index.js"></script>
