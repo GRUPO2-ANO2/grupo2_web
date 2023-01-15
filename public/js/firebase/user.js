@@ -40,38 +40,39 @@ async function userIsEnrolledInEvent(idEvent) {
 					}
 				}
 			});
-	});
+		});
 
-	resolve(userEnrolled);
+		resolve(userEnrolled);
 	});
 }
 
-async function getUserById(idUser){
+async function getUserById(idUser) {
 	return new Promise(async (resolve) => {
 		var data = await firebase.firestore().collection("utilizadores").doc(idUser).get();
 		data.uid = idUser;
 		resolve(data);
-	}); 
+	});
 }
 
 function getAllUtilizadoresByEvent(idEvent) {
 	return new Promise((resolve) => {
-	  var users = [];
-	  var numUsers = 0;
-  
-	firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
-		querySnapshot.forEach((doc) => {
-			var docEventId = doc.data().idEvento;
-			var docUserId = doc.data().idUtilizador;
-  
-		  	if (docEventId == idEvent) {
+		var users = [];
+		var numUsers = 0;
+
+		firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				var docEventId = doc.data().idEvento;
+				var docUserId = doc.data().idUtilizador;
+
+				if (docEventId == idEvent) {
 					getUserById(docUserId).then((user) => {
-			  		users[numUsers] = user;
-			  		numUsers++;
-				});
-			}
+						users[numUsers] = user;
+						numUsers++;
+					});
+				}
+			});
+		}).then(() => {
+			resolve(users);
 		});
-	}).then(() => {
-		resolve(users);
-	});}); 
+	});
 }
