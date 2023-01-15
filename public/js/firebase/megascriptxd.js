@@ -66,7 +66,6 @@ async function readFileToObject() {
                 headers.forEach((header, index) => {
                     obj[header] = data[index];
                 });
-                console.log(obj);
                 collectionRef.add(obj)
                     .then(function (docRef) {
                         added++;
@@ -95,8 +94,8 @@ async function betterReadFileToObject() {
             // nao perder tempo a ir buscar a colecao
             var collectionRef = firebase.firestore().collection("api");
 
-            // Filter the data to only include objects with feature_code of "T"
-            const filteredData = results.data.filter(data => data[6] === "T");
+            // Filter the data to only include objects with feature_class of filters
+            const filteredData = results.data.filter(data => filters.includes(data[7]));
             let total = filteredData.length;
             let current = 0;
 
@@ -106,7 +105,6 @@ async function betterReadFileToObject() {
                 headers.forEach((header, index) => {
                     obj[header] = data[index];
                 });
-                console.log(obj)
                 collectionRef.add(obj)
                     .then(function(docRef) {
                         current++;
