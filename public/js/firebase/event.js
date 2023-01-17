@@ -479,14 +479,15 @@ async function showEvents() {
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-        <div class="card h-100">
-          <img class="card-img-top" src="${events[i].image}" />
-          <div class="card-img-overlay">
-            <div id="title" class="text-center text-white bg-dark opacity-15 rounded-3">
-              <h5>${events[i].name}</h2>
-            </div>
-          </div>
-        </div>
+		<div class="card card-blog">
+			<div class="card-image">
+				<a href="#"> <img class="img img-raised" src="${events[i].image}"> </a>
+				<div class="ripple-cont"></div>
+			</div>
+			<div class="table mt-4">
+				<h4 class="category text-center">${events[i].name}</h4>
+			</div>
+		</div>
         `;
 
 		// Append the card to the column
