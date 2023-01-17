@@ -14,21 +14,21 @@ async function createEvento() {
 		console.log(event);
 
 		await firebase.firestore().collection("eventos").add({
-				idGuia: currentUser.uid,
-				dateStart: dateStart,
-				dateFinish: dateFinish,
-				location: event.location,
-				description: event.description,
-				name: form.name().value,
-				elevation: event.elevation,
-				latitude: event.latitude,
-				longitude: event.longitude,
-				range: event.range,
-				registrations: registrations,
-				image: event.image,
-			}).then(() => {
-				console.log("sucesso")
-			})
+			idGuia: currentUser.uid,
+			dateStart: dateStart,
+			dateFinish: dateFinish,
+			location: event.location,
+			description: event.description,
+			name: form.name().value,
+			elevation: event.elevation,
+			latitude: event.latitude,
+			longitude: event.longitude,
+			range: event.range,
+			registrations: registrations,
+			image: event.image,
+		}).then(() => {
+			console.log("sucesso")
+		})
 			.catch((error) => {
 				console.error("Error writing document: ", error);
 			});
@@ -38,8 +38,8 @@ async function createEvento() {
 }
 
 async function joinEvent(idEvent) {
-    var userEnrolled = await userIsEnrolledInEvent(idEvent);
-    var isGuia = await userIsGuia();
+	var userEnrolled = await userIsEnrolledInEvent(idEvent);
+	var isGuia = await userIsGuia();
 
 	// dont allow guia's to enter events
 	if (isGuia) {
@@ -91,12 +91,12 @@ async function getEvent(idEvent) {
 	return new Promise(async (resolve) => {
 		const docE = await firebase.firestore().collection("eventos").doc(idEvent).get();
 		var event = null;
-	
+
 		if (docE.exists) {
 			event = docE.data();
 			event.uid = docE.id;
 		}
-	
+
 		resolve(event);
 	});
 }
@@ -137,7 +137,7 @@ async function removeEvent(idEvent) {
 			if (docIdEvento == idEvent) {
 				await firebase.firestore().collection("eventosUtilizadores").doc(data.id).delete();
 			}
-		}	
+		}
 	} else {
 		console.log("User doesnt own event");
 	}
@@ -172,7 +172,7 @@ async function getEventsByUser() {
 }
 
 async function getEventsByGuia() {
-	if (await userIsGuia() == false){
+	if (await userIsGuia() == false) {
 		alert("user is not guia");
 		return null;
 	}
@@ -208,14 +208,14 @@ async function getValidEvents() {
 	return new Promise(async (resolve) => {
 		var eventosValidos = [];
 		var arraySize = 0;
-	
+
 		await firebase.firestore().collection("eventos").get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
 				// doc.data() is never undefined for query doc snapshots~
 				const data = doc.data();
 				data.uid = doc.id;
 				const dateFinish = data.dateFinish.toDate();
-	
+
 				// Check if valid event
 				if (isValidDate(dateFinish)) {
 					eventosValidos[arraySize] = data;
@@ -223,7 +223,7 @@ async function getValidEvents() {
 				}
 			});
 		});
-	
+
 		resolve(eventosValidos);
 	});
 }
@@ -232,7 +232,7 @@ async function getEventsData() {
 	return new Promise(async (resolve) => {
 		var events = [];
 		var arraySize = 0;
-	
+
 		await firebase.firestore().collection("dadosEventos").get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
 				// doc.data() is never undefined for query doc snapshots~
@@ -243,7 +243,7 @@ async function getEventsData() {
 				arraySize++;
 			});
 		});
-	
+
 		resolve(events);
 	});
 }
@@ -251,16 +251,16 @@ async function getEventsData() {
 async function getEventData(idEventData) {
 	return new Promise(async (resolve) => {
 		var event = [];
-	
+
 		const docE = await firebase.firestore().collection("dadosEventos").doc(idEventData).get();
-	
+
 		if (docE.exists) {
 			event = docE.data();
 			event.uid = docE.id;
 		}
 
 		console.log(event.location)
-	
+
 		resolve(event);
 	});
 }
@@ -283,7 +283,7 @@ function isValidDate(date) {
 
 async function showEventDataList() {
 	const events = await getEventsData();
-    console.log(events);
+	console.log(events);
 
 	var data;
 
@@ -372,7 +372,7 @@ async function showEventsByGuia() {
 
 
 		// Add an event listener to the card that opens eventInfo
-		card.addEventListener('click', function() {
+		card.addEventListener('click', function () {
 			window.location.href = 'eventInfo.html?id=' + events[i].uid + '&page=' + "admin";
 		});
 	}
@@ -448,7 +448,7 @@ async function showEventsByUser() {
 
 
 		// Add an event listener to the card that opens eventInfo
-		card.addEventListener('click', function() {
+		card.addEventListener('click', function () {
 			window.location.href = 'eventInfo.html?id=' + events[i].uid + '&page=' + "profile";
 		});
 	}
@@ -496,9 +496,9 @@ async function showEvents() {
 		// Append the column to the row
 		row.appendChild(col);
 
-		
+
 		// Add an event listener to the card that opens eventInfo
-		card.addEventListener('click', function() {
+		card.addEventListener('click', function () {
 			window.location.href = 'eventInfo.html?id=' + events[i].uid + '&page=' + "events";
 		});
 
@@ -573,23 +573,20 @@ async function showEventInformations() {
 
 	duration.innerHTML = `${numDays} Dias`
 
-	if (page == "events")
-	{
+	if (page == "events") {
 		btn.innerHTML = `      
 		<button class="btn btn-success" type="button" onclick="joinEvent('${event.uid}');">
 			<i class="fas fa-check fa-fw"></i> 
 			Entrar no Evento
 		</button>
 		  `
-	}if (page == "profile")
-	{
+	} if (page == "profile") {
 		btn.innerHTML = `      
 		<button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEvent('${event.uid}');">
 			<i class="fas fa-xmark fa-fw"></i> Sair do Evento 
 		</button>
 		  `
-	}if (page == "admin")
-	{
+	} if (page == "admin") {
 		btn.innerHTML = `      
 		<button class="btn btn-primary m-2" style="margin-top: 20px;" onclick="#editarEvento">
 			<i class="fas fa-check fa-fw"></i> Editar Evento 
@@ -606,7 +603,7 @@ async function showEventInformations() {
 		const map = new mapboxgl.Map({
 			container: 'map',
 			zoom: 12,
-			center: [event.longitude,event.latitude],
+			center: [event.longitude, event.latitude],
 			pitch: 80,
 			bearing: 180,
 			interactive: false,
@@ -660,38 +657,38 @@ async function showEventInformations() {
 			"id": "countour-labels",
 			"type": "symbol",
 			"source": {
-			type: 'vector',
-			url: 'mapbox://mapbox.mapbox-terrain-v2'
+				type: 'vector',
+				url: 'mapbox://mapbox.mapbox-terrain-v2'
 			},
 			"source-layer": "contour",
 			'layout': {
-			'visibility': 'visible',
-			'symbol-placement': 'line',
-			'text-field': ['concat', ['to-string', ['get', 'ele']], 'm']
+				'visibility': 'visible',
+				'symbol-placement': 'line',
+				'text-field': ['concat', ['to-string', ['get', 'ele']], 'm']
 			},
 			'paint': {
-			'icon-color': '#877b59',
-			'icon-halo-width': 1,
-			'text-color': '#877b59',
-			'text-halo-width': 1
+				'icon-color': '#877b59',
+				'icon-halo-width': 1,
+				'text-color': '#877b59',
+				'text-halo-width': 1
 			}
 		});
 		map.addLayer({
 			"id": "countours",
 			"type": "line",
 			"source": {
-			type: 'vector',
-			url: 'mapbox://mapbox.mapbox-terrain-v2'
+				type: 'vector',
+				url: 'mapbox://mapbox.mapbox-terrain-v2'
 			},
 			"source-layer": "contour",
 			'layout': {
-			'visibility': 'visible',
-			'line-join': 'round',
-			'line-cap': 'round'
+				'visibility': 'visible',
+				'line-join': 'round',
+				'line-cap': 'round'
 			},
 			'paint': {
-			'line-color': '#877b59',
-			'line-width': 1
+				'line-color': '#877b59',
+				'line-width': 1
 			}
 		});
 		map.scrollZoom.enable();

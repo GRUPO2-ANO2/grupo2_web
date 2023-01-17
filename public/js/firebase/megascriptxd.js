@@ -22,9 +22,9 @@ modification date : date of last modification in yyyy-MM-dd format
 
 */
 
-class Location{
+class Location {
     constructor(geonameid, _name, alternate_names, latitude, longitude, feature_class, feature_code, country_code,
-        cc2, admin1_code, admin2_code, admin3_code, admin4_code, population, elevation, dem, timezone, modification_date){
+        cc2, admin1_code, admin2_code, admin3_code, admin4_code, population, elevation, dem, timezone, modification_date) {
         this.geonameid = geonameid;
         this._name = _name;
         this.alternate_names = alternate_names;
@@ -43,15 +43,49 @@ class Location{
         this.dem = dem;
         this.timezone = timezone;
         this.modification_date = modification_date;
-        }
+    }
 }
 
-async function readFileToObject(){
+async function readFileToObject() {
     const [file] = document.querySelector('input[type=file]').files;
     const headers = ['geonameid', 'name', 'asciiname', "alternatenames", "latitude", "longitude", "feature_class",
-    "feature_code", "country_code", "cc2", "admin1_code", "admin2_code", "admin3_code", 
-    "admin4_code", "population", "elevation", "dem", "timezone", "modification_date"];
+        "feature_code", "country_code", "cc2", "admin1_code", "admin2_code", "admin3_code",
+        "admin4_code", "population", "elevation", "dem", "timezone", "modification_date"];
 
+    Papa.parse(file, {
+        delimiter: '\t',
+        dynamicTyping: true,
+        complete: function (results) {
+            // fazer collectionRef aqui para ao percorrer p/array
+            // nao perder tempo a ir buscar a colecao
+            var collectionRef = firebase.firestore().collection("api");
+
+            var added = 0;
+            results.data.forEach(function (data) {
+                let obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = data[index];
+                });
+                collectionRef.add(obj)
+                    .then(function (docRef) {
+                        added++;
+                        console.log(`${Math.floor((added / results.data.length) * 100)}% adicionado`);
+                    })
+                    .catch(function (error) {
+                        console.error("erro: ", error);
+                    });
+            });
+        }
+    });
+}
+
+async function betterReadFileToObject() {
+    const [file] = document.querySelector('input[type=file]').files;
+    const headers = ['geonameid', 'name', 'asciiname', "alternatenames", "latitude", "longitude", "feature_class",
+        "feature_code", "country_code", "cc2", "admin1_code", "admin2_code", "admin3_code",
+        "admin4_code", "population", "elevation", "dem", "timezone", "modification_date"];
+    const filters = ['MT', 'MTS', 'CNYN', 'HLL', 'HLLS', 'NTK', 'NTKS', 'PK' , 'PKS']
+    
     Papa.parse(file, {
         delimiter: '\t',
         dynamicTyping: true,
@@ -59,17 +93,23 @@ async function readFileToObject(){
             // fazer collectionRef aqui para ao percorrer p/array
             // nao perder tempo a ir buscar a colecao
             var collectionRef = firebase.firestore().collection("api");
-            
-            var added = 0;
-            results.data.forEach(function(data) {
+
+            // Filter the data to only include objects with feature_class of filters
+            const filteredData = results.data.filter(data => filters.includes(data[7]));
+            let total = filteredData.length;
+            let current = 0;
+
+            // Add the filtered data to the collection
+            filteredData.forEach(function(data) {
                 let obj = {};
                 headers.forEach((header, index) => {
                     obj[header] = data[index];
                 });
                 collectionRef.add(obj)
                     .then(function(docRef) {
-                        added++;
-                        console.log(`${Math.floor((added / results.data.length) * 100)}% adicionado`);
+                        current++;
+                        console.log(`${current}/${total} added to firebase`);
+                        console.log(`${(current / total * 100).toFixed(2)}% completed`);
                     })
                     .catch(function(error) {
                         console.error("erro: ", error);
