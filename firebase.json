@@ -22,6 +22,7 @@
     }
   ],
   "hosting": {
+    "site": "grupo2web",
     "public": "public",
     "ignore": [
       "firebase.json",
@@ -62,5 +63,7 @@
     },
     "singleProjectMode": true
   },
-  "remoteconfig": {}
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
+  }
 }

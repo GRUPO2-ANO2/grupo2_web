@@ -5,8 +5,8 @@ const firebaseConfig = {
   projectId: "grupo2-6980f",
   storageBucket: "grupo2-6980f.appspot.com",
   messagingSenderId: "320559211112",
-  appId: "1:320559211112:web:32eb3d060a84d01bca91dd",
-  measurementId: "G-8184SBYGFP"
+  appId: "1:320559211112:web:6cacd3f5ec63a7f3ca91dd",
+  measurementId: "G-SSB7ZZK26D"
 };
 
 firebase.initializeApp(firebaseConfig);

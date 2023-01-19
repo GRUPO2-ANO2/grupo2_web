@@ -7,17 +7,22 @@ firebase.auth().onAuthStateChanged(async (user) => {
 	const registerLink = document.querySelector('.register-link');
 	const profileLink = document.querySelector('.profile-link');
 	const adminLink = document.querySelector('.admin-link');
+	const eventLink = document.querySelector('.event-link');
 
 	adminLink.style.display = 'none';
+	registerLink.style.display = 'none';
+	loginLink.style.display = 'none';
+	eventLink.style.display = 'none';
+	profileLink.style.display = 'none';
+	
 
 	if (user != null) {
 		console.log("user: " + user.uid);
 		const isGuia = await userIsGuia();
 
 		// change navbar if user is loggedin
-		loginLink.style.display = 'none';
-		registerLink.style.display = 'none';
 		profileLink.style.display = 'block';
+		eventLink.style.display = 'block';
 
 		if (isGuia) {
 			adminLink.style.display = 'block'
@@ -35,14 +40,21 @@ firebase.auth().onAuthStateChanged(async (user) => {
 			case "admin.html":
 				showEventsByGuia();
 				break;
+				
+			case "evento.html":
+				eventLink.style.display = 'none';
 		}
 	} else {
 		console.log("user: " + user);
 
 		loginLink.style.display = 'block';
 		registerLink.style.display = 'block';
-		profileLink.style.display = 'none';
-		adminLink.style.display = 'none';
+		eventLink.style.display = 'block';
+
+		switch (window.location.pathname.split("/").pop()) {
+			case "evento.html":
+				eventLink.style.display = 'none';
+		}
 	}
 });
 

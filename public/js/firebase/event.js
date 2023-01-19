@@ -322,19 +322,23 @@ async function showEventsByGuia() {
 		const col = document.createElement('div');
 		col.className = 'col-4 mt-3';
 
+		// cut string
+		const cutDesc = events[i].description.substring(0, 100) + "...";
+
 		// Create the card
 		const card = document.createElement('div');
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-        <div class="card h-100">
-          <img class="card-img-top" src="${events[i].image}" alt="..." />
-          <div class="card-img-overlay">
-          <div id="title" class="text-center text-white bg-dark opacity-15 rounded-3">
-          <h5>${events[i].name}</h2>
-            </div>
-          </div>
-        </div>
+		<div class="card" style="cursor: pointer;">
+			<img src="${events[i].image}" class="card-img-top" alt="card-img">
+			<div class="card-body">
+				<h4 class="card-title">${events[i].name}</h4>
+				<div class="scrollable">
+					<h5 class="card-text">${cutDesc}</h5>
+				</div>
+			</div>
+		</div>
         `;
 
 		// Append the card to the column
@@ -398,19 +402,23 @@ async function showEventsByUser() {
 		const col = document.createElement('div');
 		col.className = 'col-4 mt-3';
 
+		// cut string
+		const cutDesc = events[i].description.substring(0, 100) + "...";
+
 		// Create the card
 		const card = document.createElement('div');
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-        <div class="card h-100">
-          <img class="card-img-top" src="${events[i].image}" alt="..." />
-          <div class="card-img-overlay">
-          <div id="title" class="text-center text-white bg-dark opacity-15 rounded-3">
-          <h5>${events[i].name}</h2>
-            </div>
-          </div>
-        </div>
+		<div class="card" style="cursor: pointer;">
+			<img src="${events[i].image}" class="card-img-top" alt="card-img">
+			<div class="card-body">
+				<h4 class="card-title">${events[i].name}</h4>
+				<div class="scrollable">
+					<h5 class="card-text">${cutDesc}</h5>
+				</div>
+			</div>
+		</div>
         `;
 
 		// Append the card to the column
@@ -474,18 +482,21 @@ async function showEvents() {
 		const col = document.createElement('div');
 		col.className = 'col-4 mt-3';
 
+		// cut string
+		const cutDesc = events[i].description.substring(0, 100) + "...";
+
 		// Create the card
 		const card = document.createElement('div');
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-		<div class="card card-blog">
-			<div class="card-image">
-				<a href="#"> <img class="img img-raised" src="${events[i].image}"> </a>
-				<div class="ripple-cont"></div>
-			</div>
-			<div class="table mt-4">
-				<h4 class="category text-center">${events[i].name}</h4>
+		<div class="card" style="cursor: pointer;">
+			<img src="${events[i].image}" class="card-img-top" alt="card-img">
+			<div class="card-body">
+				<h4 class="card-title">${events[i].name}</h4>
+				<div class="scrollable">
+					<h5 class="card-text">${cutDesc}</h5>
+				</div>
 			</div>
 		</div>
         `;
@@ -513,7 +524,7 @@ async function showEventInformations() {
 	const urlParamsId = new URLSearchParams(window.location.search);
 	const eventId = urlParamsId.get('id');
 	const urlParamsPage = new URLSearchParams(window.location.search);
-	const page = urlParamsPage.get('page');
+	const page = urlParamsPage.get('page'); 
 	var event = await getEvent(eventId);
 
 	// convert timestamp to Date
@@ -602,7 +613,7 @@ async function showEventInformations() {
 	(async () => {
 		const map = new mapboxgl.Map({
 			container: 'map',
-			zoom: 12,
+			zoom: 40,
 			center: [event.longitude, event.latitude],
 			pitch: 80,
 			bearing: 180,
