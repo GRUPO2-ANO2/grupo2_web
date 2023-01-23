@@ -144,7 +144,7 @@ async function removeEvent(idEvent) {
 }
 
 // WARNING: Does not validate events
-async function getEventsByUser() {
+async function getEventsByUserID(userID) {
 	return new Promise(async (resolve, reject) => {
 		var events = [];
 		var eventCount = 0;
@@ -158,8 +158,8 @@ async function getEventsByUser() {
 			const docIdUtilizador = data.idUtilizador;
 
 			// If user in document same as logged in
-			if (docIdUtilizador == currentUser.uid) {
-				enrolled = await userIsEnrolledInEvent(docIdEvento);
+			if (docIdUtilizador == userID) {
+				enrolled = await userIsEnrolledInEventById(docIdEvento, userID);
 				// And if enrolled, add event
 				if (enrolled) {
 					events[eventCount] = await getEvent(docIdEvento);
@@ -169,6 +169,11 @@ async function getEventsByUser() {
 		}
 		resolve(events);
 	});
+}
+
+// WARNING: Does not validate events
+async function getEventsByUser() {
+	return await getEventsByUserID(currentUser.uid);
 }
 
 async function getEventsByGuia() {
@@ -524,7 +529,7 @@ async function showEventInformations() {
 	const urlParamsId = new URLSearchParams(window.location.search);
 	const eventId = urlParamsId.get('id');
 	const urlParamsPage = new URLSearchParams(window.location.search);
-	const page = urlParamsPage.get('page'); 
+	const page = urlParamsPage.get('page');
 	var event = await getEvent(eventId);
 
 	// convert timestamp to Date
