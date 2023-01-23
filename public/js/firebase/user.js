@@ -46,6 +46,28 @@ async function userIsEnrolledInEvent(idEvent) {
 	});
 }
 
+async function userIsEnrolledInEventById(idEvent, idUser) {
+	return new Promise(async (resolve) => {
+		var userEnrolled = false;
+
+		await firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				var docEventId = doc.data().idEvento;
+
+				if (docEventId == idEvent) {
+					var docUserId = doc.data().idUtilizador;
+
+					if (docUserId == idUser) {
+						userEnrolled = true;
+					}
+				}
+			});
+		});
+
+		resolve(userEnrolled);
+	});
+}
+
 async function getUserById(idUser) {
 	return new Promise(async (resolve) => {
 		var data = await firebase.firestore().collection("utilizadores").doc(idUser).get();
