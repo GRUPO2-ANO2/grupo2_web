@@ -95,7 +95,6 @@ async function makeGraphByUserAllEvents(graphID, userID) {
 
 async function makeGraphByGuiaID(graphID, eventID, guiaID) {
     var allLeituras = await getAllReadings();
-    // filter
     allLeituras = allLeituras.filter(obj => obj.idEvento === eventID && obj.idGuia === guiaID)
     if (allLeituras.length == 0) {
         alert("No readings");
