@@ -93,26 +93,35 @@ async function makeGraphByUserAllEvents(graphID, userID) {
     });
 }
 
-async function makeGraphByGuiaID(graphID, eventID, guiaID) {
-    var allLeituras = await getAllReadings();
-    allLeituras = allLeituras.filter(obj => obj.idEvento === eventID && obj.idGuia === guiaID)
+// makes a graph that shows every reading in an event
+async function makeGraphByEvent(graphID, eventID) {
+    var allLeituras = await getReadingsByEventID(eventID);
     if (allLeituras.length == 0) {
-        alert("No readings");
+        alert("No leituras");
         return;
     }
+    let userIds = Array.from(new Set(allLeituras.map(reading => reading.idUtilizador)));
+    let datasets = [];
+    let xValues = [];
 
-    var xValues = allLeituras.map(obj => obj.altitude)
-    var yValues = allLeituras.map(obj => obj.o2);
+    userIds.forEach(userId => {
+        let filteredLeituras = allLeituras.filter(obj => obj.idUtilizador === userId);
+        xValues.push(...filteredLeituras.map(obj => obj.altitude));
+        let yValues = filteredLeituras.map(obj => obj.o2);
+
+        datasets.push({
+            data: yValues,
+            label: "User " + userId,
+            borderColor: getRandomColor(),
+            fill: false
+        });
+    });
 
     new Chart(graphID, {
         type: "line",
         data: {
             labels: xValues,
-            datasets: [{
-                data: yValues,
-                borderColor: "red",
-                fill: false
-            }]
+            datasets: datasets
         },
         options: {
             legend: { display: true },
