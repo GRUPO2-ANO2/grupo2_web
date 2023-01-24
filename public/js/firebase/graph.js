@@ -1,22 +1,21 @@
 // Makes a graph from a user in a specificEvent
 async function makeGraphByEventUser(graphID, userID, eventID) {
     var allLeituras = await getReadingsByUserID(userID);
-    // filter
     allLeituras = allLeituras.filter(obj => obj.idEvento === eventID)
     if (allLeituras.length == 0) {
         alert("No leituras");
         return;
     }
 
-    var xValues = allLeituras.map(obj => obj.altitude)
-    var yValues = allLeituras.map(obj => obj.o2);
+    var xValues = allLeituras.map(obj => obj.o2)
+    var yValues = allLeituras.map(obj => obj.altitude);
 
     new Chart(graphID, {
         type: "line",
         data: {
-            labels: xValues,
+            labels: yValues,
             datasets: [{
-                data: yValues,
+                data: xValues,
                 borderColor: "red",
                 fill: false
             }]
@@ -24,13 +23,13 @@ async function makeGraphByEventUser(graphID, userID, eventID) {
         options: {
             legend: { display: true },
             scales: {
-                yAxes: [{
+                xAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'o2'
                     }
                 }],
-                xAxes: [{
+                yAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'altitude'
@@ -56,8 +55,8 @@ async function makeGraphByUserAllEvents(graphID, userID) {
 
     eventIds.forEach(eventId => {
         let filteredLeituras = allLeituras.filter(obj => obj.idEvento === eventId);
-        xValues.push(...filteredLeituras.map(obj => obj.altitude));
-        let yValues = filteredLeituras.map(obj => obj.o2);
+        xValues.push(...filteredLeituras.map(obj => obj.o2));
+        let yValues = filteredLeituras.map(obj => obj.altitude);
 
         datasets.push({
             data: yValues,
@@ -76,13 +75,13 @@ async function makeGraphByUserAllEvents(graphID, userID) {
         options: {
             legend: { display: true },
             scales: {
-                yAxes: [{
+                xAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'o2'
                     }
                 }],
-                xAxes: [{
+                yAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'altitude'
@@ -93,7 +92,7 @@ async function makeGraphByUserAllEvents(graphID, userID) {
     });
 }
 
-// makes a graph that shows every reading in an event
+// makes a graph that shows every reading in an event seperating by user
 async function makeGraphByEvent(graphID, eventID) {
     var allLeituras = await getReadingsByEventID(eventID);
     if (allLeituras.length == 0) {
@@ -106,8 +105,8 @@ async function makeGraphByEvent(graphID, eventID) {
 
     userIds.forEach(userId => {
         let filteredLeituras = allLeituras.filter(obj => obj.idUtilizador === userId);
-        xValues.push(...filteredLeituras.map(obj => obj.altitude));
-        let yValues = filteredLeituras.map(obj => obj.o2);
+        xValues.push(...filteredLeituras.map(obj => obj.o2));
+        let yValues = filteredLeituras.map(obj => obj.altitude);
 
         datasets.push({
             data: yValues,
@@ -126,13 +125,13 @@ async function makeGraphByEvent(graphID, eventID) {
         options: {
             legend: { display: true },
             scales: {
-                yAxes: [{
+                xAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'o2'
                     }
                 }],
-                xAxes: [{
+                yAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'altitude'
