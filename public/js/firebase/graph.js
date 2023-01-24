@@ -48,6 +48,7 @@ async function makeGraphByUserAllEvents(graphID, userID) {
         alert("No leituras");
         return;
     }
+
     let events = await getEventsByUserID(userID);
     let eventIds = events.map(event => event.uid);
     let datasets = [];
@@ -71,6 +72,48 @@ async function makeGraphByUserAllEvents(graphID, userID) {
         data: {
             labels: xValues,
             datasets: datasets
+        },
+        options: {
+            legend: { display: true },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'o2'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'altitude'
+                    }
+                }]
+            }
+        }
+    });
+}
+
+async function makeGraphByGuiaID(graphID, eventID, guiaID) {
+    var allLeituras = await getAllReadings();
+    // filter
+    allLeituras = allLeituras.filter(obj => obj.idEvento === eventID && obj.idGuia === guiaID)
+    if (allLeituras.length == 0) {
+        alert("No readings");
+        return;
+    }
+
+    var xValues = allLeituras.map(obj => obj.altitude)
+    var yValues = allLeituras.map(obj => obj.o2);
+
+    new Chart(graphID, {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+                data: yValues,
+                borderColor: "red",
+                fill: false
+            }]
         },
         options: {
             legend: { display: true },
