@@ -303,8 +303,7 @@ async function showEventDataList() {
 			    <option id="eventId" value="${events[i].uid}">
 		            ${events[i].name}
 				</option>
-			</td>
-			
+			</td>	
     	</tr>
         `;
 	}
