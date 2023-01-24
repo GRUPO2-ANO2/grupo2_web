@@ -129,12 +129,6 @@
     outline: none;
   }
   
-  /* On mouse-over */
-  .sidenav a:hover, .dropdown-btn:hover {
-    background-color: blue;
-    color: white;
-  }
-  
   /* Main content */
   .main {
     margin-left: 200px; /* Same as the width of the sidenav */
