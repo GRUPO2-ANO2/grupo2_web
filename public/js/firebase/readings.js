@@ -38,8 +38,30 @@ async function getReadingsByUserID(userId) {
 	});
 }
 
+async function getReadingsByEventID(eventID) {
+	return new Promise((resolve) => {
+		var leituras = [];
+		var numLeituras = 0;
+
+		firebase.firestore().collection("leituras").get().then((querySnapshot) => {
+			querySnapshot.forEach((doc) => {
+				var docI = doc.data();
+				var docEventID = docI.idEvento;
+				docI.id = doc.id;
+
+				if (docEventID == eventID) {
+					leituras[numLeituras] = docI;
+					numLeituras++;
+				}
+			});
+		}).then(() => {
+			resolve(leituras);
+		});
+	});
+}
+
 // Get all readings done by a guia
-async function getGuiasDoneReadings() {
+async function getGuiasDoneReadings(guiaID) {
 	var isGuia = await userIsGuia();
 	var readings = [];
 	var readingsCount = 0;
@@ -50,7 +72,7 @@ async function getGuiasDoneReadings() {
 			querySnapshot.forEach((doc) => {
 				var data = doc.data();
 
-				if (data.idGuia == currentUser.uid) {
+				if (data.idGuia == guiaID) {
 					readings[readingsCount] = data;
 					readingsCount++;
 				}
