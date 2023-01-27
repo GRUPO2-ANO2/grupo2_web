@@ -154,3 +154,25 @@
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+
+  .nav .nav-item {
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .main {
+    background-color: lightgray;
+  }
+
+  .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    background-color: white;
+  }
+
+  .tab-pane {
+    padding-right: auto;
+    margin-right: auto;
+  }
