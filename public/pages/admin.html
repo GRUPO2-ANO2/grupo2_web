@@ -11,12 +11,14 @@
   <link
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet" />
-  <link href="../css/admin.css" rel="stylesheet" />
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 
   <!-- graph -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
   </script>
+
+  <link href="../css/admin.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -26,11 +28,13 @@
         <a href="#dashboard" class="list-group-item list-group-item-action active" data-bs-toggle="tab">Dashboard</a>
       </li>
       <li class="nav-item rounded">
-        <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab"
-          onclick="showEventDataList();">Registar Evento</a>
+        <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab" onclick="showEventDataList();">Registar Evento</a>
       </li>
       <li class="nav-item rounded">
-        <a href="#event" class="list-group-item list-group-item-action" data-bs-toggle="list">Eventos</a>
+        <a href="#event" class="list-group-item list-group-item-action" data-bs-toggle="tab">Editar evento</a>
+      </li>
+      <li class="nav-item rounded bg-danger">
+        <a href="../index.html" class="list-group-item list-group-item-action text-white">Sair</a>
       </li>
     </ul>
   </div>
@@ -59,23 +63,14 @@
                   <div class="col-md">
                     <h4>Dados evento</h4>
                     <form>
-                      <label for="name">Nome Evento:</label>
-                      <br>
-                      <input type="text" id="name">
-                      <br>
-                      <label for="start-date">Data Inicio:</label>
-                      <br>
-                      <input type="date" id="startDate">
-                      <br>
-                      <label for="end-date">Data Fim:</label>
-                      <br>
-                      <input type="date" id="endDate">
-                      <br>
-                      <label for="registrations">Número máximo registos:</label>
-                      <br>
-                      <input type="number" id="registrations">
-                      <br>
-                      <br>
+                      <label for="name" class="col-form-label">Nome do Evento:</label>
+                      <input type="text" class="form-control" id="name">
+                      <label for="start-date" class="col-form-label">Data Inicio do Evento:</label>
+                      <input type="date" class="form-control" id="start-date">
+                      <label for="end-date" class="col-form-label">Data Fim do Evento:</label>
+                      <input type="date" class="form-control" id="end-date">
+                      <label for="registrations" class="col-form-label">Número máximo registos:</label>
+                      <input type="number" class="form-control" id="registrations">
                     </form>
                   </div>
                 </div>
@@ -99,13 +94,6 @@
                       </div>
                     </section>
               </section>
-            </div>
-            <div class="tab-pane fade" id="messages">
-              <h4 class="mt-2">Messages tab content</h4>
-              <p>Donec vel placerat quam, ut euismod risus. Sed a mi suscipit, elementum sem a, hendrerit velit. Donec
-                at erat magna. Sed dignissim orci nec eleifend egestas. Donec eget mi consequat massa vestibulum
-                laoreet. Mauris et ultrices nulla, malesuada volutpat ante. Fusce ut orci lorem. Donec molestie libero
-                in tempus imperdiet. Cum sociis natoque penatibus et magnis.</p>
             </div>
           </div>
         </div>
