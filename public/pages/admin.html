@@ -34,10 +34,11 @@
         <a href="#event" class="list-group-item list-group-item-action" data-bs-toggle="tab">Editar evento</a>
       </li>
       <li class="nav-item rounded bg-danger">
-        <a href="../index.html" class="list-group-item list-group-item-action text-white">Sair</a>
-      </li>
+          <a href="../index.html" class="list-group-item list-group-item-action text-white">Sair</a>
+      </li> 
     </ul>
   </div>
+
   <!-- Header-->
   <div class="main">
     <!-- List group -->
@@ -80,20 +81,32 @@
                   Evento</button>
               </div>
             </div>
-
             <div class="tab-pane fade" id="event">
               <section class="">
                 <div class="container">
-                  <div class="row d-flex justify-content-center align-items-center mt-5">
+                  <div class="row">
                     <!-- Cards -->
-                    <section class="">
-                      <div class="container">
+                    <section class="events">
+                      <div class="container mb-auto px-4 px-lg-5">
                         <div class="justify-content-center">
                           <div id="card-container"></div>
                         </div>
                       </div>
                     </section>
               </section>
+            </div>
+            <div class="tab-pane fade" id="editEvent">
+              <h4>evento</h4>
+              <form>
+                <label for="name" class="col-form-label">Nome do Evento:</label>
+                <input type="text" class="form-control" id="name">
+                <label for="start-date" class="col-form-label">Data Inicio do Evento:</label>
+                <input type="date" class="form-control" id="start-date">
+                <label for="end-date" class="col-form-label">Data Fim do Evento:</label>
+                <input type="date" class="form-control" id="end-date">
+                <label for="registrations" class="col-form-label">Número máximo registos:</label>
+                <input type="number" class="form-control" id="registrations">
+              </form>
             </div>
           </div>
         </div>
