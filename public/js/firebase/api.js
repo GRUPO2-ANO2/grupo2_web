@@ -1,3 +1,19 @@
+async function getApiDocById(id) {
+    return new Promise((resolve, reject) => {
+        var ref = firebase.firestore().collection("api");
+        ref.doc(id).get()
+            .then(doc => {
+                if (!doc.exists) {
+                    reject("Documento não existe");
+                }
+                resolve(doc.data());
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
 async function searchApiDocsByName(searchString) {
     return new Promise((resolve) => {
         var ref = firebase.firestore().collection("api");
@@ -8,17 +24,22 @@ async function searchApiDocsByName(searchString) {
 
         query1.get().then(querySnapshot1 => {
             querySnapshot1.forEach(doc => {
-                allResults.push(doc.data());
+                const data = doc.data();
+                data.id = doc.id;
+                allResults.push(data);
             });
             query2.get().then(querySnapshot2 => {
                 querySnapshot2.forEach(doc => {
-                    allResults.push(doc.data());
+                    const data = doc.data();
+                    data.id = doc.id;
+                    allResults.push(data);
                 });
                 resolve(allResults);
             });
         });
     })
 }
+
 
 async function searchApiDocsByCountry(countryCode) {
     return new Promise((resolve) => {
@@ -28,7 +49,9 @@ async function searchApiDocsByCountry(countryCode) {
 
         query.get().then(function (querySnapshot) {
             querySnapshot.forEach(function (doc) {
-                allResults.push(doc.data());
+                const data = doc.data();
+                data.id = doc.id;
+                allResults.push(data);
             });
             resolve(allResults);
         });
