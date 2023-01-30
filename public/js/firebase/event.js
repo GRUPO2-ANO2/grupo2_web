@@ -387,13 +387,33 @@ async function showEventsByGuia() {
 
 
 		// Add an event listener to the card that opens eventInfo
-		card.addEventListener('click', function () {
-			window.location.href = 'eventInfo.html?id=' + events[i].uid + '&page=' + "admin";
+		card.addEventListener('click', function() {
+			let eventRegister = document.getElementById("editEvent");
+			eventRegister.style.display = "block";
+			editEventForm(events[i].uid);
 		});
 	}
 
 	// Append the row to the card container
 	cardContainer.appendChild(row);
+}
+
+async function editEventForm(eventId) {
+	console.log(eventId);
+	const event = await getEvent(eventId);
+
+	const div = document.getElementById('editEventForm');
+
+	const form = document.createElement('form');
+
+	const label = document.createElement('label');
+	label.className = `col-form-label`;
+	label.innerHTML = `
+	Nome do Evento: ${event.name};
+	`;
+	
+	form.appendChild(label);
+	div.appendChild(form);
 }
 
 async function showEventsByUser() {
@@ -608,77 +628,27 @@ async function showEventInformations() {
 			<i class="fas fa-xmark fa-fw"></i> Sair do Evento 
 		</button>
 		  `
-	} if (page == "admin") {
+	} /*if (page == "admin") {
 		btn.innerHTML = `      
-			<button id="editEvent" class="btn btn-primary m-2" style="margin-top: 20px;">
-				<i class="fas fa-check fa-fw"></i> Editar Evento 
+			<button id="editEvent" class="btn btn-outline-success m-2" style="margin-top: 20px;">
+				<i class="fa fa-edit"></i> Editar Evento 
 			</button>
-			<button class="btn btn-danger m-2" style="margin-top: 20px;">
+			<button class="btn btn-outline-danger m-2" style="margin-top: 20px;">
 				<i class="fas fa-xmark fa-fw"></i> Remover Evento 
 			</button>
 		`;
-	
-		const modalContainer = document.getElementById('modal-container');
-
-		const modal = document.createElement('div');
-		modal.innerHTML = `
-			<div class="modal" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header bg-primary text-white">
-							<h5 class="modal-title" id="exampleModalLabel">Editar - ${event.name}</h5>
-						</div>
-						<div class="modal-body">
-							<form>
-								<div class="mb-3">
-									<label for="eventName" class="col-form-label">Nome do Evento:</label>
-									<input type="text" class="form-control" id="eventName" value="${event.name}">
-								</div>
-								<div class="mb-3">
-									<label for="eventRegistrations" class="col-form-label">Número Máximo de registos:</label>
-									<input type="number" class="form-control" id="eventRegistrations" value="${event.registrations}">
-								</div>
-								<div class="mb-3">
-									<label for="eventDateStart" class="col-form-label">Dáta Inicio:</label>
-									<input type="date" class="form-control" id="eventDateStart" value="${formattedDateStart}">
-								</div>
-								<div class="mb-3">
-									<label for="eventDateFinish" class="col-form-label">Dáta Fim:</label>
-									<input type="date" class="form-control" id="eventDateFinish" value="${formattedDateFinish}">
-								</div>
-							</form>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">Close</button>
-							<button type="submit" class="btn btn-success" onclick="editEvent('${event.uid}', document.getElementById('eventName').value, document.getElementById('eventRegistrations').value, document.getElementById('eventDateStart').value, document.getElementById('eventDateFinish').value);"							">Atualizar</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		`;
-
-	// Append the modal container and modal to the HTML
-	modalContainer.appendChild(modal);
 
 	// Add an event listener to the button with the id "editEvent"
 	document.getElementById("editEvent").addEventListener('click', function() {
-    // Get the modal element with the id "modalEdit"
-    var modalElement = document.getElementById("modalEdit");
-    // Show the modal by setting the display property to "block"
-    modalElement.style.display = "block";
-
-	// Add an event listener to the close button of the modal
-	document.getElementsByClassName("btnClose")[0].addEventListener('click', function() {
-    // Get the modal element with the id "modalEdit"
-    var modalElement = document.getElementById("modalEdit");
-    // Hide the modal by setting the display property to "none"
-    modalElement.style.display = "none";
-});
-
-});
+		console.log("click");
+		window.location.href = "admin.html";
+		window.onload = function(){
+			$('#editEvent').tab('show');
+		};
+	});
 
 
-	}
+	}*/
 
 
 	mapboxgl.accessToken = 'pk.eyJ1IjoiZ29uY2F2ZiIsImEiOiJjbGNrcm5oa20wN2k4M29xbDB2dThrbHFnIn0.WIf2lhzQBXsULjf5Dm4t1g';
