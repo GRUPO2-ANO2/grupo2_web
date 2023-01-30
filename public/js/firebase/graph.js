@@ -141,3 +141,55 @@ async function makeGraphByEvent(graphID, eventID) {
         }
     });
 }
+
+// makes a bar graph that shows how many events each month has
+async function makeGraphEventsPerMonth(graphID) {
+    currentUser = { uid: "IDtFlVMgYQhQX6kyceVczQc0Zzh1" }
+    let events = await getEventsByGuia();
+    if (events.length === 0) {
+        alert("No events");
+        return;
+    }
+
+    let monthCount = new Array(12).fill(0);
+    events.forEach(event => {
+        let eventDate = event.dateStart.toDate();
+        let eventMonth = eventDate.getMonth();
+        monthCount[eventMonth]++;
+    });
+
+    new Chart(graphID, {
+        type: "bar",
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            datasets: [
+                {
+                    data: monthCount,
+                    backgroundColor: "blue",
+                    borderColor: "black",
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: "# of events"
+                        }
+                    }
+                ],
+                xAxes: [
+                    {
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Month"
+                        }
+                    }
+                ]
+            }
+        }
+    });
+}
