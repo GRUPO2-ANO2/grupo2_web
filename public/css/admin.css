@@ -19,7 +19,7 @@
     line-height: var(--bs-body-line-height);
     color: var(--bs-body-color);
     text-align: var(--bs-body-text-align);
-    background-color: var(--bs-body-bg);
+    background-color: lightgray;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
@@ -129,12 +129,6 @@
     outline: none;
   }
   
-  /* On mouse-over */
-  .sidenav a:hover, .dropdown-btn:hover {
-    background-color: blue;
-    color: white;
-  }
-  
   /* Main content */
   .main {
     margin-left: 200px; /* Same as the width of the sidenav */
@@ -159,4 +153,22 @@
   @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
+  }
+
+  .nav .nav-item {
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    background-color: white;
+  }
+
+  .tab-pane {
+    padding-right: auto;
+    margin-right: auto;
   }

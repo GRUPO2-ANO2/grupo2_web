@@ -9,24 +9,30 @@ firebase.auth().onAuthStateChanged(async (user) => {
 	const adminLink = document.querySelector('.admin-link');
 	const eventLink = document.querySelector('.event-link');
 
-	adminLink.style.display = 'none';
-	registerLink.style.display = 'none';
-	loginLink.style.display = 'none';
-	eventLink.style.display = 'none';
-	profileLink.style.display = 'none';
-	
+	const location = window.location.pathname.split("/").pop();
+
+	if(window.location.pathname.split("/").pop() != "admin.html") {
+		adminLink.style.display = 'none';
+		registerLink.style.display = 'none';
+		loginLink.style.display = 'none';
+		eventLink.style.display = 'none';
+		profileLink.style.display = 'none';
+	}
 
 	if (user != null) {
 		console.log("user: " + user.uid);
 		const isGuia = await userIsGuia();
 
-		// change navbar if user is loggedin
-		profileLink.style.display = 'block';
-		eventLink.style.display = 'block';
+		if(window.location.pathname.split("/").pop() != "admin.html") {
+			// change navbar if user is loggedin
+			profileLink.style.display = 'block';
+			eventLink.style.display = 'block';
+		
+			if (isGuia) {
+				adminLink.style.display = 'block'
+			}
 
-		if (isGuia) {
-			adminLink.style.display = 'block'
-		}
+	}
 
 		switch (window.location.pathname.split("/").pop()) {
 			case "edit.hmtl":
@@ -35,6 +41,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
 			case "profile.html":
 				showPersonalInformation();
+				showEventsByUser();
 				break;
 
 			case "admin.html":

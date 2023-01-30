@@ -49,9 +49,11 @@ async function joinEvent(idEvent) {
 
 	// if user isnt enrolled yet, enroll him
 	if (userEnrolled == false) {
+		const date = new Date();
 		await firebase.firestore().collection("eventosUtilizadores").add({
 			idUtilizador: currentUser.uid,
-			idEvento: idEvent
+			idEvento: idEvent,
+			dateregistration: date
 		}).then(() => {
 			console.log(idEvent, "enrolled");
 			window.history.go(-1);
@@ -102,14 +104,19 @@ async function getEvent(idEvent) {
 }
 
 // Does not need to make a promise
-async function editEvent(idEvent, location, dateStart, dateFinish) {
+async function editEvent(idEvent, name, registrations, dateStart, dateFinish) {
+	let dateStartAsDate = new Date(dateStart);
+	let dateFinishAsDate = new Date(dateFinish);
 	var owns = await userOwnsEvent(idEvent);
+
+	
 
 	if (owns) {
 		await firebase.firestore().collection("eventos").doc(idEvent).update({
-			location: location,
-			dateStart: dateStart,
-			dateFinish: dateFinish
+			name: name,
+			registrations: registrations,
+			dateStart: dateStartAsDate,
+			dateFinish: dateFinishAsDate
 		}).then(() => {
 			console.log("edited");
 		});
@@ -303,8 +310,7 @@ async function showEventDataList() {
 			    <option id="eventId" value="${events[i].uid}">
 		            ${events[i].name}
 				</option>
-			</td>
-			
+			</td>	
     	</tr>
         `;
 	}
@@ -604,13 +610,74 @@ async function showEventInformations() {
 		  `
 	} if (page == "admin") {
 		btn.innerHTML = `      
-		<button class="btn btn-primary m-2" style="margin-top: 20px;" onclick="#editarEvento">
-			<i class="fas fa-check fa-fw"></i> Editar Evento 
-		</button>
-		<button class="btn btn-danger m-2" style="margin-top: 20px;" onclick="#removerEvento">
-			<i class="fas fa-xmark fa-fw"></i> Remover Evento 
-		</button>
-		  `
+			<button id="editEvent" class="btn btn-primary m-2" style="margin-top: 20px;">
+				<i class="fas fa-check fa-fw"></i> Editar Evento 
+			</button>
+			<button class="btn btn-danger m-2" style="margin-top: 20px;">
+				<i class="fas fa-xmark fa-fw"></i> Remover Evento 
+			</button>
+		`;
+	
+		const modalContainer = document.getElementById('modal-container');
+
+		const modal = document.createElement('div');
+		modal.innerHTML = `
+			<div class="modal" id="modalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header bg-primary text-white">
+							<h5 class="modal-title" id="exampleModalLabel">Editar - ${event.name}</h5>
+						</div>
+						<div class="modal-body">
+							<form>
+								<div class="mb-3">
+									<label for="eventName" class="col-form-label">Nome do Evento:</label>
+									<input type="text" class="form-control" id="eventName" value="${event.name}">
+								</div>
+								<div class="mb-3">
+									<label for="eventRegistrations" class="col-form-label">Número Máximo de registos:</label>
+									<input type="number" class="form-control" id="eventRegistrations" value="${event.registrations}">
+								</div>
+								<div class="mb-3">
+									<label for="eventDateStart" class="col-form-label">Dáta Inicio:</label>
+									<input type="date" class="form-control" id="eventDateStart" value="${formattedDateStart}">
+								</div>
+								<div class="mb-3">
+									<label for="eventDateFinish" class="col-form-label">Dáta Fim:</label>
+									<input type="date" class="form-control" id="eventDateFinish" value="${formattedDateFinish}">
+								</div>
+							</form>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-success" onclick="editEvent('${event.uid}', document.getElementById('eventName').value, document.getElementById('eventRegistrations').value, document.getElementById('eventDateStart').value, document.getElementById('eventDateFinish').value);"							">Atualizar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+
+	// Append the modal container and modal to the HTML
+	modalContainer.appendChild(modal);
+
+	// Add an event listener to the button with the id "editEvent"
+	document.getElementById("editEvent").addEventListener('click', function() {
+    // Get the modal element with the id "modalEdit"
+    var modalElement = document.getElementById("modalEdit");
+    // Show the modal by setting the display property to "block"
+    modalElement.style.display = "block";
+
+	// Add an event listener to the close button of the modal
+	document.getElementsByClassName("btnClose")[0].addEventListener('click', function() {
+    // Get the modal element with the id "modalEdit"
+    var modalElement = document.getElementById("modalEdit");
+    // Hide the modal by setting the display property to "none"
+    modalElement.style.display = "none";
+});
+
+});
+
+
 	}
 
 

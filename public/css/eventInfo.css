@@ -82,3 +82,11 @@ img {
 .box {
   border: #000;
 }
+
+.modal-container {
+  vertical-align: center;
+}
+
+.modal::backdrop {
+  backdrop-filter: 10px;
+}

@@ -1,145 +1,103 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Admin</title>
-    <!-- StyleSheets -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
-    <link href="../css/admin.css" rel="stylesheet" />
-    <link href="../css/.css" rel="stylesheet">
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  </head>
-  <body>
-    <!-- navbar
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="../index.html">Grupo 2</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item admin-link">
-              <a class="nav-link" href="admin.html">Admin</a>
-            </li>
-            <li class="nav-item login-link">
-              <a class="nav-link" href="login.html">Entrar</a>
-            </li>
-            <li class="nav-item register-link">
-              <a class="nav-link" href="register.html">Registar</a>
-            </li>
-            <li class="nav-item event-link">
-              <a class="nav-link" href="evento.html">Eventos</a>
-            </li>
-            <li class="nav-item profile-link">
-              <a class="nav-link" onclick="signOut()" style="cursor: pointer">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav> -->
 
-    <div class="sidenav">
-      <ul class="nav nav-tabs flex-column" id="myTab">
-        <li class="nav-item">
-          <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab" onclick="showEventDataList();">Registar Evento</a>
-        </li>
-        <li class="nav-item"> 
-          <a href="#profile" class="list-group-item list-group-item-action" data-bs-toggle="list">Profile</a>
-        </li>
-        <li class="nav-item">
-          <a href="#messages" class="list-group-item list-group-item-action" data-bs-toggle="list">Messages</a>
-        </li>
-      </ul>
-    </div>
-    <!-- Header-->
-    <div class="main">
+<head>
+  <title>Admin</title>
+  <!-- StyleSheets -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+  <!-- Google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+
+  <!-- graph -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+  </script>
+
+  <link href="../css/admin.css" rel="stylesheet" />
+
+</head>
+
+<body>
+  <div class="sidenav">
+    <ul class="nav nav-tabs flex-column border-0" id="myTab">
+      <li class="nav-item rounded">
+        <a href="#dashboard" class="list-group-item list-group-item-action active" data-bs-toggle="tab">Dashboard</a>
+      </li>
+      <li class="nav-item rounded">
+        <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab" onclick="showEventDataList();">Registar Evento</a>
+      </li>
+      <li class="nav-item rounded">
+        <a href="#event" class="list-group-item list-group-item-action" data-bs-toggle="tab">Editar evento</a>
+      </li>
+      <li class="nav-item rounded bg-danger">
+        <a href="../index.html" class="list-group-item list-group-item-action text-white">Sair</a>
+      </li>
+    </ul>
+  </div>
+  <!-- Header-->
+  <div class="main">
     <!-- List group -->
     <section class="py-5">
       <div class="container px-4">
         <div class="m-4">
           <div class="tab-content">
+            <div class="tab-pane fade" id="dashboard">
+              <canvas id="guiaEventChart" style="width:100%;max-width:700px">
+              </canvas>
+            </div>
             <div class="tab-pane fade" id="eventRegister">
-              <section class="container mt-5 d-flex justify-content-center">
-                <button id="open-modal-button" type="button" class="btn btn-outline-success" data-target="#myModal" onclick="showEventDataList();">Registar Evento</button>
-              </section>
-              <div id="myModal" class="modal" tabindex="-1">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Registar Evento</h5>
-                      <button id="close-modal-button" type="button" class="btn-close" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                      <h4>Dados Montanhas</h4>
-                      <table class="table">
-                        <tbody>
-                          <select id="data" class="form-select" multiple></select>
-                        </tbody>
-                      </table>
-                      <h4>Dados evento</h4>
-                      <form>
-                        <label for="name">Nome Evento:</label>
-                        <br>
-                        <input type="text" id="name">
-                        <br>
-                        <label for="start-date">Data Inicio:</label>
-                        <br>
-                        <input type="date" id="startDate">
-                        <br>
-                        <label for="end-date">Data Fim:</label>
-                        <br>
-                        <input type="date" id="endDate">
-                        <br>
-                        <label for="registrations">Número máximo registos:</label>
-                        <br>
-                        <input type="number" id="registrations">
-                        <br>
-                        <br>
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-success" type="submit" onclick="createEvento()">Registar</button>
-                    </div>
+              <div class="container">
+                <div class="row d-flex justify-content-center">
+                  <div class="col-md">
+                    <h4>Dados Montanhas</h4>
+                    <table class="table">
+                      <tbody>
+                        <select id="data" class="form-select"></select>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-md">
+                    <h4>Dados evento</h4>
+                    <form>
+                      <label for="name" class="col-form-label">Nome do Evento:</label>
+                      <input type="text" class="form-control" id="name">
+                      <label for="start-date" class="col-form-label">Data Inicio do Evento:</label>
+                      <input type="date" class="form-control" id="start-date">
+                      <label for="end-date" class="col-form-label">Data Fim do Evento:</label>
+                      <input type="date" class="form-control" id="end-date">
+                      <label for="registrations" class="col-form-label">Número máximo registos:</label>
+                      <input type="number" class="form-control" id="registrations">
+                    </form>
                   </div>
                 </div>
               </div>
-              <script>
-                document.getElementById("open-modal-button").addEventListener("click", function() {
-                  document.getElementById("myModal").style.display = "block";
-                });
-                document.getElementById("close-modal-button").addEventListener("click", function() {
-                  document.getElementById("myModal").style.display = "none";
-                });
-              </script>
+              <div class="d-flex justify-content-center mt-5">
+                <button type="button" class="btn btn-success" type="submit" onclick="createEvento()">Registar
+                  Evento</button>
+              </div>
             </div>
-            <div class="tab-pane fade" id="profile">
-              <h4 class="mt-2">Profile tab content</h4>
-              <p>Vestibulum nec erat eu nulla rhoncus fringilla ut non neque. Vivamus nibh urna, ornare id gravida ut, mollis a magna. Aliquam porttitor condimentum nisi, eu viverra ipsum porta ut. Nam hendrerit bibendum turpis, sed molestie mi fermentum id. Aenean volutpat velit sem. Sed consequat ante in rutrum convallis. Nunc facilisis leo at faucibus adipiscing.</p>
-            </div>
-            <div class="tab-pane fade" id="messages">
-              <h4 class="mt-2">Messages tab content</h4>
-              <p>Donec vel placerat quam, ut euismod risus. Sed a mi suscipit, elementum sem a, hendrerit velit. Donec at erat magna. Sed dignissim orci nec eleifend egestas. Donec eget mi consequat massa vestibulum laoreet. Mauris et ultrices nulla, malesuada volutpat ante. Fusce ut orci lorem. Donec molestie libero in tempus imperdiet. Cum sociis natoque penatibus et magnis.</p>
+
+            <div class="tab-pane fade" id="event">
+              <section class="">
+                <div class="container">
+                  <div class="row d-flex justify-content-center align-items-center mt-5">
+                    <!-- Cards -->
+                    <section class="">
+                      <div class="container">
+                        <div class="justify-content-center">
+                          <div id="card-container"></div>
+                        </div>
+                      </div>
+                    </section>
+              </section>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <section class="vh-100">
-      <div class="container py-0 h-100">
-        <div class="row d-flex justify-content-center align-items-center mt-5">
-          <h3 class="text-center text-uppercase">Eventos Registados</h3>
-          <!-- Cards -->
-          <section class="py-5">
-            <div class="container px-4">
-              <div class="justify-content-center">
-                <div id="card-container"></div>
-              </div>
-            </div>
-          </section>
     </section>
     <!-- Modals -->
     <section class="py-5">
@@ -147,19 +105,27 @@
     </section>
   </div>
 
-  </body>
-  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../bootstrap/js/bootstrap.min.js"></script>
-  <!-- Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
-  <!-- Firestore -->
-  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
-  <script src="../js/index.js"></script>
-  <script src="../js/constants.js"></script>
-  <script src="../js/firebase/event.js"></script>
-  <script src="../js/firebase/user.js"></script>
-  <script src="../js/firebase/auth.js"></script>
-  <script src="../js/utils/auth_utils.js"></script>
-  <script src="../js/navbar/navbar.js"></script>
+</body>
+<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Scripts -->
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+<!-- Firestore -->
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/constants.js"></script>
+<script src="../js/firebase/event.js"></script>
+<script src="../js/firebase/user.js"></script>
+<script src="../js/firebase/auth.js"></script>
+<script src="../js/utils/auth_utils.js"></script>
+
+<script src="../js/utils/color_utils.js"></script>
+<script src="../js/firebase/graph.js"></script>
+<script src="../js/firebase/readings.js"></script>
+
+<script>
+  // Render graphs
+  makeGraphByEvent("guiaEventChart", "gEN0O91oRIdWvxqT9K4j");
+</script>
+
 </html>
