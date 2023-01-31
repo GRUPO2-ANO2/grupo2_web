@@ -84,12 +84,12 @@ async function betterReadFileToObject() {
     const headers = ['geonameid', 'name', 'asciiname', "alternatenames", "latitude", "longitude", "feature_class",
         "feature_code", "country_code", "cc2", "admin1_code", "admin2_code", "admin3_code",
         "admin4_code", "population", "elevation", "dem", "timezone", "modification_date"];
-    const filters = ['MT', 'MTS', 'CNYN', 'HLL', 'HLLS', 'NTK', 'NTKS', 'PK' , 'PKS']
-    
+    const filters = ['MT', 'MTS', 'CNYN', 'HLL', 'HLLS', 'NTK', 'NTKS', 'PK', 'PKS']
+
     Papa.parse(file, {
         delimiter: '\t',
         dynamicTyping: true,
-        complete: function(results) {
+        complete: function (results) {
             // fazer collectionRef aqui para ao percorrer p/array
             // nao perder tempo a ir buscar a colecao
             var collectionRef = firebase.firestore().collection("api");
@@ -100,22 +100,59 @@ async function betterReadFileToObject() {
             let current = 0;
 
             // Add the filtered data to the collection
-            filteredData.forEach(function(data) {
+            filteredData.forEach(function (data) {
                 let obj = {};
                 headers.forEach((header, index) => {
                     obj[header] = data[index];
                 });
                 collectionRef.add(obj)
-                    .then(function(docRef) {
+                    .then(function (docRef) {
                         current++;
                         console.log(`${current}/${total} added to firebase`);
                         console.log(`${(current / total * 100).toFixed(2)}% completed`);
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         console.error("erro: ", error);
                     });
             });
         }
     });
 }
-/**/
+
+async function searchAndAddImageUrl(asciiname) {
+    const API_KEY = "YOUR_API_KEY";
+    const CX = "YOUR_CX";
+
+    const response = await fetch(`https://www.googleapis.com/customsearch/v1?q=${asciiname}&num=1&imgSize=large&imgType=photo&key=${API_KEY}&cx=${CX}`);
+    const data = await response.json();
+
+    const imageUrl = data.items[0].link;
+
+    // Update the collection row with the image URL
+    firebase.firestore().collection("api").doc(docRef.id)
+        .update({ imageUrl: imageUrl })
+        .then(function () {
+            console.log(`Image URL added to document: ${docRef.id}`);
+        })
+        .catch(function (error) {
+            console.error("Error adding image URL: ", error);
+        });
+}
+
+/*
+// Add the image URL to each collection row
+filteredData.forEach(function (data) {
+    let obj = {};
+    headers.forEach((header, index) => {
+        obj[header] = data[index];
+    });
+    collectionRef.add(obj)
+        .then(function (docRef) {
+            // Search for the image using the asciiname and add the URL
+            searchAndAddImageUrl(data[1]);
+        })
+        .catch(function (error) {
+            console.error("Error adding document: ", error);
+        });
+});
+*/
