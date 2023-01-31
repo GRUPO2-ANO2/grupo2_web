@@ -100,3 +100,25 @@
     border-color: #fff;
     color: #fff;
   }
+
+  
+
+  .form-select {
+    background-color: transparent;
+    border: none;
+    scroll-behavior: smooth;
+    color: white;
+  }
+  /* hide scroll */
+  .form-select::-webkit-scrollbar {
+    display: none;
+  }
+
+  .options {
+    margin-top: 10px;
+    border-color: white;
+    border-style: solid;
+    border-radius: 10px;
+    text-align: center;
+    padding: 20px;
+  }
