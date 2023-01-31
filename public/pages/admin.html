@@ -13,7 +13,9 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
+    crossorigin="anonymous"></script>
 
   <!-- graph -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
@@ -30,14 +32,15 @@
         <a href="#dashboard" class="list-group-item list-group-item-action active" data-bs-toggle="tab">Dashboard</a>
       </li>
       <li class="nav-item rounded">
-        <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab" onclick="showEventDataList();">Registar Evento</a>
+        <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab"
+          onclick="showEventDataList();">Registar Evento</a>
       </li>
       <li class="nav-item rounded">
         <a href="#event" class="list-group-item list-group-item-action" data-bs-toggle="tab">Editar evento</a>
       </li>
       <li class="nav-item rounded bg-danger">
-          <a href="../index.html" class="list-group-item list-group-item-action text-white">Sair</a>
-      </li> 
+        <a href="../index.html" class="list-group-item list-group-item-action text-white">Sair</a>
+      </li>
     </ul>
   </div>
 
@@ -49,8 +52,10 @@
         <div class="m-4">
           <div class="tab-content">
             <div class="tab-pane fade" id="dashboard">
-              <canvas id="guiaEventChart" style="width:100%;max-width:700px">
-              </canvas>
+              <div class="border border-primary" style="height: 300px; width: 500px; background-color: aliceblue;">
+                  <h1 class="text-center" style="color: black;">LEITURAS Evento XYZ</h1>
+                  <canvas id="guiaEventChart" style="width:100%;max-width:700px"></canvas>
+              </div>
             </div>
             <div class="tab-pane fade" id="eventRegister">
               <div class="container">
@@ -110,9 +115,10 @@
                   <label for="registrations" class="col-form-label">Número máximo registos:</label>
                   <input type="number" class="form-control" id="registrations"> 
                 </form>-->
-              </div> 
+              </div>
               <div class="d-flex justify-content-center mt-5">
-                <button type="button" class="btn btn-success" type="submit" onclick="editEvent()">Atualizar Evento</button>
+                <button type="button" class="btn btn-success" type="submit" onclick="editEvent()">Atualizar
+                  Evento</button>
               </div>
             </div>
           </div>

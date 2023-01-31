@@ -6,7 +6,7 @@ async function makeGraphByEventUser(graphID, userID, eventID) {
         alert("No leituras");
         return;
     }
-
+    var user = await getUserById(userID);
     var xValues = allLeituras.map(obj => obj.o2)
     var yValues = allLeituras.map(obj => obj.altitude);
 
@@ -17,7 +17,8 @@ async function makeGraphByEventUser(graphID, userID, eventID) {
             datasets: [{
                 data: xValues,
                 borderColor: "red",
-                fill: false
+                fill: false,
+                label: user.name
             }]
         },
         options: {
@@ -103,14 +104,15 @@ async function makeGraphByEvent(graphID, eventID) {
     let datasets = [];
     let xValues = [];
 
-    userIds.forEach(userId => {
+    userIds.forEach(async userId => {
         let filteredLeituras = allLeituras.filter(obj => obj.idUtilizador === userId);
         xValues.push(...filteredLeituras.map(obj => obj.o2));
         let yValues = filteredLeituras.map(obj => obj.altitude);
+        let user = await getUserById(userId);
 
         datasets.push({
             data: yValues,
-            label: "User " + userId,
+            label: user.data().Name,
             borderColor: getRandomColor(),
             fill: false
         });
