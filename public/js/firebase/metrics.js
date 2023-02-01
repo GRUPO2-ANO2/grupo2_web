@@ -114,10 +114,34 @@ async function numUsersParticipatingInEvent(eventID) {
 
 // Calculates the average height of users participating in a specific event.
 async function averageHeightOfUsersInEvent(eventID) {
-    return 0;
+    return new Promise(async (resolve) => {
+        var heightSum = 0;
+        var numUsers = 0;
+
+        const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").where("idEvento", "==", eventID).get();
+        for (const doc of querySnapshot.docs) {
+            var user = await getUserById(doc.data().idUtilizador);
+            heightSum += user.data().Height;
+            numUsers++;
+        }
+
+        resolve(heightSum / numUsers);
+    });
 }
 
 // Calculates the average weight of users participating in a specific event.
 async function averageWeightOfUsersInEvent(eventID) {
-    return 0;
+    return new Promise(async (resolve) => {
+        var weightSum = 0;
+        var numUsers = 0;
+
+        const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").where("idEvento", "==", eventID).get();
+        for (const doc of querySnapshot.docs) {
+            var user = await getUserById(doc.data().idUtilizador);
+            weightSum += user.data().Weight;
+            numUsers++;
+        }
+
+        resolve(weightSum / numUsers);
+    });
 }
