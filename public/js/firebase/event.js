@@ -3,29 +3,29 @@ async function createEvento() {
 
 	if (isGuia == 1) {
 
+		const urlParams = new URLSearchParams(window.location.search);
+		const selectedId = urlParams.get("selectedId");
+
 		let dateStart = new Date(form.startDate().value);
 		let dateFinish = new Date(form.finishDate().value);
 		let registrations = parseInt(form.registrations().value);
 
-		console.log(form.eventId().value);
-
-		var event = await getEventData(form.eventId().value);
-
-		console.log(event);
+		var data = await getApiDocById(selectedId);
 
 		await firebase.firestore().collection("eventos").add({
 			idGuia: currentUser.uid,
 			dateStart: dateStart,
 			dateFinish: dateFinish,
-			location: event.location,
-			description: event.description,
+			location: data.country_code,
+			//description: data.description,
 			name: form.name().value,
-			elevation: event.elevation,
-			latitude: event.latitude,
-			longitude: event.longitude,
-			range: event.range,
+			elevation: data.elevation,
+			latitude: data.latitude,
+			longitude: data.longitude,
+			dem: data.dem,
+			//range: data.range,
 			registrations: registrations,
-			image: event.image,
+			//image: data.image,
 		}).then(() => {
 			console.log("sucesso")
 		})
@@ -245,7 +245,7 @@ async function getEventsData() {
 		var events = [];
 		var arraySize = 0;
 
-		await firebase.firestore().collection("dadosEventos").get().then((querySnapshot) => {
+		await firebase.firestore().collection("api").get().then((querySnapshot) => {
 			querySnapshot.forEach((doc) => {
 				// doc.data() is never undefined for query doc snapshots~
 				const data = doc.data();
@@ -271,8 +271,6 @@ async function getEventData(idEventData) {
 			event.uid = docE.id;
 		}
 
-		console.log(event.location)
-
 		resolve(event);
 	});
 }
@@ -295,6 +293,7 @@ function isValidDate(date) {
 
 async function showEventDataList() {
 	const events = await getEventsData();
+
 	console.log(events);
 
 	var data;
@@ -593,7 +592,7 @@ async function showEventInformations() {
 	var title = document.getElementById("title");
 	var image = document.getElementById("img");
 	var location = document.getElementById("location");
-	var range = document.getElementById("range");
+	var dem = document.getElementById("dem");
 	var elevation = document.getElementById("elevation");
 	var description = document.getElementById("description");
 	var registrations = document.getElementById("registrations");
@@ -606,12 +605,12 @@ async function showEventInformations() {
 	image.innerHTML = `<img class="rounded" src="${event.image}">`;
 	title.innerHTML = event.name;
 	location.innerHTML = event.location;
-	range.innerHTML = event.range;
+	dem.innerHTML = event.dem;
 	elevation.innerHTML = event.elevation;
 	description.innerHTML = event.description;
 	registrations.innerHTML = event.registrations;
-	startDate.innerHTML = `Inicio: ${formattedDateStart}`;
-	finishDate.innerHTML = `Fim: ${formattedDateFinish}`;
+	startDate.innerHTML = `<strong>Inicio</strong> ${formattedDateStart}`;
+	finishDate.innerHTML = `<strong>Fim</strong> ${formattedDateFinish}`;
 
 	duration.innerHTML = `${numDays} Dias`
 

@@ -32,7 +32,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
 				adminLink.style.display = 'block'
 			}
 
-	}
+		}
 
 		switch (window.location.pathname.split("/").pop()) {
 			case "edit.hmtl":

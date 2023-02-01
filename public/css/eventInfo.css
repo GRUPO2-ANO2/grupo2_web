@@ -76,17 +76,17 @@ img {
 /* Set the size of the div element that contains the map */
 #map {
   height: 400px;
-  width: 100%;
+  width: 630px;
 }
 
 .box {
   border: #000;
 }
 
-.modal-container {
-  vertical-align: center;
+#date {
+  justify-content: space-between;
 }
 
-.modal::backdrop {
-  backdrop-filter: 10px;
+section {
+  background-color: #000;
 }

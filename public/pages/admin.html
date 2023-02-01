@@ -32,8 +32,7 @@
         <a href="#dashboard" class="list-group-item list-group-item-action active" data-bs-toggle="tab">Dashboard</a>
       </li>
       <li class="nav-item rounded">
-        <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab"
-          onclick="showEventDataList();">Registar Evento</a>
+        <a href="#eventRegister" class="list-group-item list-group-item-action" data-bs-toggle="tab">Registar Evento</a>
       </li>
       <li class="nav-item rounded">
         <a href="#event" class="list-group-item list-group-item-action" data-bs-toggle="tab">Editar evento</a>
@@ -62,11 +61,21 @@
                 <div class="row d-flex justify-content-center">
                   <div class="col-md">
                     <h4>Dados Montanhas</h4>
-                    <table class="table">
-                      <tbody>
-                        <select id="data" class="form-select"></select>
-                      </tbody>
-                    </table>
+                    <div class="input-group">
+                      <input type="search" id="searchInput" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                      <button type="button" class="btn btn-outline-primary" onclick="showEventData(document.getElementById('searchInput').value);">search</button>
+                    </div>
+                    <div class="showData">
+                      <div class="form-group">
+                        <select class="form-select" size="5" aria-label="size 3 select example">                          
+                          <div class="container vertical-scrollable" style="height: 500px; overflow-y: scroll;">
+                            <div class="row text-center" id="data">
+                              
+                            </div>
+                          </div>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md">
                     <h4>Dados evento</h4>
@@ -74,9 +83,9 @@
                       <label for="name" class="col-form-label">Nome do Evento:</label>
                       <input type="text" class="form-control" id="name">
                       <label for="start-date" class="col-form-label">Data Inicio do Evento:</label>
-                      <input type="date" class="form-control" id="start-date">
+                      <input type="date" class="form-control" id="startDate">
                       <label for="end-date" class="col-form-label">Data Fim do Evento:</label>
-                      <input type="date" class="form-control" id="end-date">
+                      <input type="date" class="form-control" id="endDate">
                       <label for="registrations" class="col-form-label">Número máximo registos:</label>
                       <input type="number" class="form-control" id="registrations">
                     </form>
@@ -84,7 +93,7 @@
                 </div>
               </div>
               <div class="d-flex justify-content-center mt-5">
-                <button type="button" class="btn btn-success" type="submit" onclick="createEvento()">Registar
+                <button id="register" type="button" class="btn btn-success" type="submit" onclick="createEvento()">Registar
                   Evento</button>
               </div>
             </div>
@@ -96,7 +105,9 @@
                     <section class="events">
                       <div class="container mb-auto px-4 px-lg-5">
                         <div class="justify-content-center">
-                          <div id="card-container"></div>
+                          <div id="card-container">
+
+                          </div>
                         </div>
                       </div>
                     </section>
@@ -144,6 +155,7 @@
 <script src="../js/firebase/user.js"></script>
 <script src="../js/firebase/auth.js"></script>
 <script src="../js/utils/auth_utils.js"></script>
+<script src="../js/firebase/api.js"></script>
 
 <script src="../js/utils/color_utils.js"></script>
 <script src="../js/firebase/graph.js"></script>
