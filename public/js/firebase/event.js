@@ -340,12 +340,14 @@ async function showEventsByGuia() {
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-		<div class="card" style="cursor: pointer;">
-			<img src="${events[i].image}" class="card-img-top" alt="card-img">
-			<div class="card-body">
-				<h4 class="card-title">${events[i].name}</h4>
-				<div class="scrollable">
-					<h5 class="card-text">${cutDesc}</h5>
+		<div id="shadow" class="shadow-lg p-3 mb-5 rounded">
+			<div class="card border-0">
+				<img src="${events[i].image}" class="card-img-top" alt="card-img">
+				<div class="card-body">
+					<h4 class="card-title">${events[i].name}</h4>
+					<div class="scrollable">
+						<h5 class="card-text">${cutDesc}</h5>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -520,12 +522,14 @@ async function showEvents() {
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-		<div class="card" style="cursor: pointer;">
-			<img src="${events[i].image}" class="card-img-top" alt="card-img">
-			<div class="card-body">
-				<h4 class="card-title">${events[i].name}</h4>
-				<div class="scrollable">
-					<h5 class="card-text">${cutDesc}</h5>
+		<div class="shadow-lg p-3 mb-5 bg-white rounded">
+			<div class="card border-0">
+				<img src="${events[i].image}" class="card-img-top" alt="card-img">
+				<div class="card-body">
+					<h4 class="card-title">${events[i].name}</h4>
+					<div class="scrollable">
+						<h5 class="card-text">${cutDesc}</h5>
+					</div>
 				</div>
 			</div>
 		</div>

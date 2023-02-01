@@ -61,15 +61,20 @@
     font-size: 20px; 
     padding: 0px 10px;
   }
+  
+  .card {
+    background-color: #647480;
+    color: white;
+    cursor: pointer;
+  }
+
+  #shadow {
+    background-color: #647480;
+  }
 
   #card-container {
     justify-content: space-between;
     margin: 10px;
-  }
-
-  .card {
-    background-color: #647480;
-    color: white;
   }
   
   .card-img-top {

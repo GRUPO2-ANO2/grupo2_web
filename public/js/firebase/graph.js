@@ -103,16 +103,16 @@ async function makeGraphByEvent(graphID, eventID) {
     let userIds = Array.from(new Set(allLeituras.map(reading => reading.idUtilizador)));
     let datasets = [];
     let xValues = [];
-
+    
     userIds.forEach(async userId => {
         let filteredLeituras = allLeituras.filter(obj => obj.idUtilizador === userId);
         xValues.push(...filteredLeituras.map(obj => obj.o2));
         let yValues = filteredLeituras.map(obj => obj.altitude);
         let user = await getUserById(userId);
-
+        
         datasets.push({
             data: yValues,
-            label: user.data().Name,
+            label: user.Name,
             borderColor: getRandomColor(),
             fill: false
         });

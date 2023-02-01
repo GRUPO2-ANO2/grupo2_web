@@ -8,7 +8,7 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #212529;
-  --bs-body-bg: #fff;
+  --bs-body-bg: #16191c;
 }
 
 body {
@@ -82,13 +82,8 @@ body {
   }
 }
 
-#card-container {
-  justify-content: space-between;
-  margin: 10px;
-}
-
-#card-text {
-  overflow-y: scroll;
+.card {
+  cursor: pointer;
 }
 
 .card-img-top {

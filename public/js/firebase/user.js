@@ -24,6 +24,13 @@ async function getUserData() {
 	});
 }
 
+async function getUserDataById(userId) {
+	return new Promise(async (resolve) => {
+		var data = await firebase.firestore().collection("utilizadores").doc(userId);
+		resolve(data);
+	});
+}
+
 async function userIsEnrolledInEvent(idEvent) {
 	return new Promise(async (resolve) => {
 		var userEnrolled = false;
@@ -72,8 +79,8 @@ async function getUserById(idUser) {
 	return new Promise(async (resolve) => {
 		var data = await firebase.firestore().collection("utilizadores").doc(idUser).get();
 		data.uid = idUser;
-		resolve(data);
-	});
+		resolve(data.data());
+	})
 }
 
 function getAllUtilizadoresByEvent(idEvent) {
