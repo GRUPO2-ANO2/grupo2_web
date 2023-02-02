@@ -20,7 +20,7 @@ async function createEvento() {
 			dateFinish: dateFinish,
 			location: data.country_code,
 			//description: data.description,
-			name: form.name().value,
+			name: form.eventName().value,
 			elevation: data.elevation,
 			latitude: data.latitude,
 			longitude: data.longitude,
@@ -301,30 +301,51 @@ function isValidDate(date) {
 // porque o que fazemos neste ficheiro é fazer pedidos ao firebase
 // relacionados a tabela evento
 
-async function showEventData(eventId) {
-
-	console.log("entrou");
+async function showEventDataIn(eventId) {
 	const event = await getEvent(eventId);
 
-	console.log(event);
+	console.log(event.name);
 
-	document.getElementById('eventName').value = "teste";
-	const startDateInput = document.getElementById('start-date');
-	const endDateInput = document.getElementById('end-date');
+	const name = document.getElementById('eventNameEdit');
+	const registrations = document.getElementById('registrationsEdit')
+	const startDateInput = document.getElementById('start-dateEdit');
+	const endDateInput = document.getElementById('end-dateEdit');
 	const registrationsInput = document.getElementById('registrations');
 	const demInput = document.getElementById('dem');
 	const elevationInput = document.getElementById('elevation');
 	const latitudeInput = document.getElementById('latitude');
 	const longitudeInput = document.getElementById('longitude');
 
-	startDateInput.value = event.startDate;
-	endDateInput.value = event.endDate;
+	const startDateAsDate = new Date(event.dateStart);
+  	const endDateAsDate = new Date(event.dateFinish);
+
+				const timestamp = data.BirthDate
+			const timestampAsDate = timestamp.toDate();
+
+			const options = {
+				day: "2-digit",
+				month: "2-digit",
+				year: "numeric"
+			};
+			const timestampAsString = timestampAsDate.toLocaleDateString("pt-PT", options);
+
+			const formattedDate = timestampAsString
+				.split("/")
+				.reverse()
+				.join("-");
+
+
+	name.value = event.name;
+	registrations.value = event.registrations;
+	startDateInput.value = startDateAsDate.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+	endDateInput.value = endDateAsDate.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
 	registrationsInput.value = event.registrations;
 	demInput.value = event.dem;
 	elevationInput.value = event.elevation;
 	latitudeInput.value = event.latitude;
 	longitudeInput.value = event.longitude;
 }
+
 
 
 async function showEventDataList() {
@@ -422,7 +443,8 @@ async function showEventsByGuia() {
 		card.addEventListener('click', function() {
 			console.log("click");
 			console.log(events[i].uid)
-			showEventData(events[i].uid);
+			showEventDataIn(events[i].uid);
+			console.log("PASSOU")
 			$("#event").removeClass("show active");
 			$("#editEvent").addClass("show active");
 		});
@@ -530,7 +552,6 @@ async function showEvents() {
 		col.className = 'col-4 mt-3';
 
 		// cut string
-		const cutDesc = events[i].description.substring(0, 100) + "...";
 
 		// Create the card
 		const card = document.createElement('div');
@@ -542,7 +563,6 @@ async function showEvents() {
 			<div class="card-body">
 				<h4 class="card-title">${events[i].name}</h4>
 				<div class="scrollable">
-					<h5 class="card-text">${cutDesc}</h5>
 				</div>
 			</div>
 		</div>

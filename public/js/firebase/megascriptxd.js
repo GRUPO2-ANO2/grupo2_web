@@ -46,38 +46,39 @@ class Location {
     }
 }
 
-async function readFileToObject() {
-    const [file] = document.querySelector('input[type=file]').files;
-    const headers = ['geonameid', 'name', 'asciiname', "alternatenames", "latitude", "longitude", "feature_class",
-        "feature_code", "country_code", "cc2", "admin1_code", "admin2_code", "admin3_code",
-        "admin4_code", "population", "elevation", "dem", "timezone", "modification_date"];
+async function showEventDataIn(eventId) {
+	const event = await getEvent(eventId);
 
-    Papa.parse(file, {
-        delimiter: '\t',
-        dynamicTyping: true,
-        complete: function (results) {
-            // fazer collectionRef aqui para ao percorrer p/array
-            // nao perder tempo a ir buscar a colecao
-            var collectionRef = firebase.firestore().collection("api");
+	console.log(event.name);
 
-            var added = 0;
-            results.data.forEach(function (data) {
-                let obj = {};
-                headers.forEach((header, index) => {
-                    obj[header] = data[index];
-                });
-                collectionRef.add(obj)
-                    .then(function (docRef) {
-                        added++;
-                        console.log(`${Math.floor((added / results.data.length) * 100)}% adicionado`);
-                    })
-                    .catch(function (error) {
-                        console.error("erro: ", error);
-                    });
-            });
-        }
-    });
+	const name = document.getElementById('eventNameEdit');
+	const registrations = document.getElementById('registrationsEdit')
+	const startDateInput = document.getElementById('start-date');
+	const endDateInput = document.getElementById('end-date');
+	const registrationsInput = document.getElementById('registrations');
+	const demInput = document.getElementById('dem');
+	const elevationInput = document.getElementById('elevation');
+	const latitudeInput = document.getElementById('latitude');
+	const longitudeInput = document.getElementById('longitude');
+
+	const startDateAsDate = new Date(event.dateStart);
+	const endDateAsDate = new Date(event.dateFinish);
+
+	const startDate = `${startDateAsDate.getDate()}/${startDateAsDate.getMonth() + 1}/${startDateAsDate.getFullYear()}`;
+	const endDate = `${endDateAsDate.getDate()}/${endDateAsDate.getMonth() + 1}/${endDateAsDate.getFullYear()}`;
+
+	name.value = event.name;
+	registrations.value = event.registrations;
+	startDateInput.value = startDate;
+	endDateInput.value = endDate;
+	registrationsInput.value = event.registrations;
+	demInput.value = event.dem;
+	elevationInput.value = event.elevation;
+	latitudeInput.value = event.latitude;
+	longitudeInput.value = event.longitude;
 }
+
+  
 
 async function betterReadFileToObject() {
     const [file] = document.querySelector('input[type=file]').files;
