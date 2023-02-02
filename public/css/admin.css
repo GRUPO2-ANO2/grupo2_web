@@ -66,6 +66,7 @@
     background-color: #647480;
     color: white;
     cursor: pointer;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
   }
 
   #shadow {
@@ -105,8 +106,6 @@
     border-color: #fff;
     color: #fff;
   }
-
-  
 
   .form-select {
     background-color: transparent;
