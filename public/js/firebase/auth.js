@@ -218,6 +218,12 @@ const form = {
 	finishDate: () => document.getElementById("endDate"),
 	registrations: () => document.getElementById("registrations"),
 	eventId: () => document.getElementById("eventId"),
+
+	// editEvent
+	eventNameEdit: () => document.getElementById("eventNameEdit"),
+	registrationsEdit: () => document.getElementById("registrationsEdit"),
+	startdateEdit: () => document.getElementById("startdateEdit"),
+	enddateEdit: () => document.getElementById("enddateEdit"),
 	dem: () => document.getElementById("dem"),
 	elevation: () => document.getElementById("elevation"),
 	latitude: () => document.getElementById("latitude"),
