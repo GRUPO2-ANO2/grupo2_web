@@ -16,6 +16,10 @@
     integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
     crossorigin="anonymous"></script>
 
+  <script defer src="/__/firebase/9.12.1/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-storage-compat.js"></script>
+
+
   <!-- graph -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
   </script>
@@ -51,23 +55,41 @@
         <div class="m-4">
           <div class="tab-content">
             <div class="tab-pane fade" id="dashboard">
-              <div class="card" style="background-color: #2c343a; height: fit-content;">
-                <div class="card-body" id="participantesBody" style="display: inline-block;"></div>
-                <div class="card-body" id="elevationBody" style="display: inline-block;"></div>
-              </div>
-              
-              
-              <div class="d-flex">  
-                <div class="border border-primary" style="height: 300px; width: 500px; background-color: aliceblue;">
-                  <h1 class="text-center" style="color: black;">LEITURAS Evento XYZ</h1>
-                  <canvas id="guiaEventChart" style="width:100%;max-width:700px"></canvas>
+              <div class="container">
+                <div class="row">
+                  <div class="col-5">
+                    <div id="participantesBody"> 
+
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="list-group" id="eventListContainer" role="tablist">
+                    </div>
+                  </div>
                 </div>
-                <div class="col-4 pl-3">
-                  <div class="list-group" id="eventListContainer" role="tablist">
+                <div class="row">
+                  <div class="col-sm">
+                    <div id="elevationBody">
+                      
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-5">
+                  <div class="col-5">
+                    <div class="d-flex">
+                      <div id="graph" class="border border-primary">
+                        <h1 class="text-center" style="color: black;">LEITURAS Evento XYZ</h1>
+                        <canvas id="guiaEventChart" style="width:100%;max-width:700px"></canvas>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="d-flex justify-content-end col-6">
+                <div class="list-group" id="eventListContainer" role="tablist">
 
+                </div>
+              </div>
             </div>
             <div class="tab-pane fade" id="eventRegister">
               <div class="container">
@@ -98,7 +120,7 @@
                       <label id="labelImageTag" for="inputTag">
                         Imagem do Evento
                         <br>
-                        <input id="inputTag" type="file"/>
+                        <input id="inputTag" type="file" />
                       </label>
                       <br>
                       <label for="eventName" class="col-form-label">Nome do Evento:</label>
@@ -143,10 +165,10 @@
                     <div class="col-md">
                       <label for="eventNameEdit" class="col-form-label">Nome do Evento:</label>
                       <input type="text" class="form-control" id="eventNameEdit">
-                      <label for="start-dateEdit" class="col-form-label">Data Inicio do Evento:</label>
-                      <input type="date" class="form-control" id="start-dateEdit">
-                      <label for="end-dasteEdit" class="col-form-label">Data Fim do Evento:</label>
-                      <input type="date" class="form-control" id="end-dateEdit">
+                      <label for="startdateEdit" class="col-form-label">Data Inicio do Evento:</label>
+                      <input type="date" class="form-control" id="startdateEdit">
+                      <label for="enddateEdit" class="col-form-label">Data Fim do Evento:</label>
+                      <input type="date" class="form-control" id="enddateEdit">
                       <label for="registrationsEdit" class="col-form-label">Número máximo registos:</label>
                       <input type="number" class="form-control" id="registrationsEdit">
                     </div>
@@ -163,9 +185,10 @@
                   </div>
                 </form>
               </div>
-              <div class="d-flex justify-content-center mt-5">
-                <button type="button" class="btn btn-success" type="submit" onclick="editEvent()">Atualizar
-                  Evento</button>
+              <div class="d-flex justify-content-end mt-5">
+                <button id="edit" type="button" class="btn btn-success" type="submit">Atualizar</button>
+                <button id="remove" class="ml-2 btn btn-danger btn-sm rounded" type="button" data-toggle="tooltip"
+                  data-placement="top" title="Remover Evento"><i class="fa fa-trash"></i></button>
               </div>
             </div>
           </div>
@@ -184,6 +207,8 @@
 <!-- Scripts -->
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-storage-compat.js"></script>
+<script defer src="/__/firebase/9.12.1/firebase-storage-compat.js"></script>
 <!-- Firestore -->
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
 <script src="../js/index.js"></script>

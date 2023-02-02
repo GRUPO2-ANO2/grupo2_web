@@ -1,70 +1,54 @@
 async function createEvento() {
 	var isGuia = await userIsGuia();
-
-	var storageRef = firebase.storage().ref();
-
+  
 	if (isGuia == 1) {
-
-		const urlParams = new URLSearchParams(window.location.search);
-		const selectedId = urlParams.get("selectedId");
-
-		let dateStart = new Date(form.startDate().value);
-		let dateFinish = new Date(form.finishDate().value);
-		let registrations = parseInt(form.registrations().value);
-
-		var data = await getApiDocById(selectedId);
-
-		const imageId = uploadImage();
-		const ref = storageRef.ref(storage, "image/" + imageId);
-		
-
-		console.log(data);
-
-		await firebase.firestore().collection("eventos").add({
-			idGuia: currentUser.uid,
-			imageId: ref,
-			dateStart: dateStart,
-			dateFinish: dateFinish,
-			location: data.country_code,
-			//description: data.description,
-			name: form.eventName().value,
-			elevation: data.elevation,
-			latitude: data.latitude,
-			longitude: data.longitude,
-			dem: data.dem,
-			//range: data.range,
-			registrations: registrations,
-			//image: data.image,
-		}).then(() => {
-			console.log("sucesso")
+	  const urlParams = new URLSearchParams(window.location.search);
+	  const selectedId = urlParams.get("selectedId");
+  
+	  let dateStart = new Date(form.startDate().value);
+	  let dateFinish = new Date(form.finishDate().value);
+	  let registrations = parseInt(form.registrations().value);
+  
+	  var data = await getApiDocById(selectedId);
+	  var imageId = await uploadImage();
+  
+	  var ref = await firebase.storage().ref("image/").child("image_" + imageId).getDownloadURL();
+  
+	  await firebase.firestore().collection("eventos").add({
+		idGuia: currentUser.uid,
+		image: ref,
+		dateStart: dateStart,
+		dateFinish: dateFinish,
+		location: data.country_code,
+		name: form.eventName().value,
+		elevation: data.elevation,
+		latitude: data.latitude,
+		longitude: data.longitude,
+		dem: data.dem,
+		registrations: registrations,
+	  })
+		.then(() => {
+		  console.log("sucesso");
+		  alert("Evento registado com sucesso!");
 		})
-			.catch((error) => {
-				console.error("Error writing document: ", error);
-			});
+		.catch((error) => {
+		  console.error("Error writing document: ", error);
+		});
 	} else {
-		alert("Utilizador não é guia!")
+	  alert("Utilizador não é guia!");
 	}
-}
+  }
+  
 
 async function uploadImage() {
-	const file = document.getElementById("inputTag").files[0];
-	storageRef.put(file).then(() => {
-		firebase.storage().ref("images").child(currentUser.uid).getDownloadURL()
-		  .then((downloadURL) => {
-			var downloadURL = imgUrl;
-			db.collection("image")
-			  .doc(user.uid)
-			  .update({
-				downloadURL: downloadURL,
-			  })
-			  .then(function() {
-				alert("saved");
-			  })
-			  .catch(function(error) {
-				alert(error);
-			  });
-		  });
-	  });
+
+	var uid = randomUid();
+	var file = document.getElementById("inputTag").files[0];
+	var storageRef = await firebase.storage().ref('image/').child("image_" + uid);
+	
+	await storageRef.put(file);
+
+	return uid;
 };
 
 function randomUid() {
@@ -140,10 +124,12 @@ async function getEvent(idEvent) {
 }
 
 // Does not need to make a promise
-async function editEvent(idEvent, name, registrations, dateStart, dateFinish) {
+async function editEvent(idEvent) {
 
-	let dateStartAsDate = new Date(dateStart);
-	let dateFinishAsDate = new Date(dateFinish);
+	let name = form.eventNameEdit().value;
+	let registrations = form.registrationsEdit().value;
+	let dateStartAsDate = new Date(form.startdateEdit().value);
+	let dateFinishAsDate = new Date(form.enddateEdit().value);
 	let dem = parseInt(form.dem().value);
 	let elevation = parseInt(form.elevation().value);
 	let latitude = parseFloat(form.latitude().value);
@@ -338,56 +324,67 @@ function isValidDate(date) {
 async function showEventDataIn(eventId) {
 	const event = await getEvent(eventId);
 
-	console.log(event.name);
-
 	const name = document.getElementById('eventNameEdit');
 	const registrations = document.getElementById('registrationsEdit')
-	const startDateInput = document.getElementById('start-dateEdit');
-	const endDateInput = document.getElementById('end-dateEdit');
+	const startDateInput = document.getElementById('startdateEdit');
+	const endDateInput = document.getElementById('enddateEdit');
 	const registrationsInput = document.getElementById('registrations');
 	const demInput = document.getElementById('dem');
 	const elevationInput = document.getElementById('elevation');
 	const latitudeInput = document.getElementById('latitude');
 	const longitudeInput = document.getElementById('longitude');
 
-	const startDateAsDate = new Date(event.dateStart);
-	const endDateAsDate = new Date(event.dateFinish);
+	const startDate = event.dateStart
+	const startDateAsDate = startDate.toDate();
 
-	/*const timestamp = data.BirthDate
-	const timestampAsDate = timestamp.toDate();
+	const finishDate = event.dateFinish
+	const finishDateAsDate = finishDate.toDate();
 
 	const options = {
 		day: "2-digit",
 		month: "2-digit",
 		year: "numeric"
 	};
-	const timestampAsString = timestampAsDate.toLocaleDateString("pt-PT", options);
+	const startDateAsString = startDateAsDate.toLocaleDateString("pt-PT", options);
+	const finishDateAsString = finishDateAsDate.toLocaleDateString("pt-PT", options);
 
-	const formattedDate = timestampAsString
+	const startDateformatted = startDateAsString
 		.split("/")
 		.reverse()
-		.join("-");*/
+		.join("-");
+
+	const finishDateformatted = finishDateAsString
+		.split("/")
+		.reverse()
+		.join("-");
 
 
 	name.value = event.name;
 	registrations.value = event.registrations;
-	startDateInput.value = startDateAsDate.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
-	endDateInput.value = endDateAsDate.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+	startDateInput.value = startDateformatted;
+	endDateInput.value = finishDateformatted;
 	registrationsInput.value = event.registrations;
 	demInput.value = event.dem;
 	elevationInput.value = event.elevation;
 	latitudeInput.value = event.latitude;
 	longitudeInput.value = event.longitude;
+
+	document.getElementById('edit').addEventListener('click', function () {
+		editEvent(event.uid);
+	});
+	document.getElementById('remove').addEventListener('click', function () {
+		if(confirm('Tem a certeza que quer eleiminar o evento: ' + event.name)) {
+			removeEvent(event.uid, function() {
+				window.location.reload();
+			});
+		}
+	});
 }
 
 
 
 async function showEventDataList() {
 	const events = await getEventsData();
-
-	console.log(events);
-
-	var data;
 
 	// Create a card for each item
 	for (let i = 0; i < events.length; i++) {
@@ -416,6 +413,7 @@ async function generateEventRows() {
 
 		// Create the link
 		const link = document.createElement('a');
+		link.id = "rowEvents"
 		link.classList.add('list-group-item', 'list-group-item-action');
 		link.textContent = event.name;
 		link.href = `#event-${event.uid}`;
@@ -500,9 +498,7 @@ async function showEventsByGuia() {
 		// Add an event listener to the card that opens eventInfo
 		card.addEventListener('click', function () {
 			console.log("click");
-			console.log(events[i].uid)
 			showEventDataIn(events[i].uid);
-			console.log("PASSOU")
 			$("#event").removeClass("show active");
 			$("#editEvent").addClass("show active");
 		});
@@ -529,8 +525,6 @@ async function showEventsByUser() {
 		const col = document.createElement('div');
 		col.className = 'col-4 mt-3';
 
-		// cut string
-		const cutDesc = events[i].description.substring(0, 100) + "...";
 
 		// Create the card
 		const card = document.createElement('div');
@@ -542,7 +536,6 @@ async function showEventsByUser() {
 			<div class="card-body">
 				<h4 class="card-title">${events[i].name}</h4>
 				<div class="scrollable">
-					<h5 class="card-text">${cutDesc}</h5>
 				</div>
 			</div>
 		</div>
@@ -689,7 +682,6 @@ async function showEventInformations() {
 	var location = document.getElementById("location");
 	var dem = document.getElementById("dem");
 	var elevation = document.getElementById("elevation");
-	var description = document.getElementById("description");
 	var registrations = document.getElementById("registrations");
 	var duration = document.getElementById("duration");
 	var startDate = document.getElementById("dateStart");
@@ -702,7 +694,6 @@ async function showEventInformations() {
 	location.innerHTML = event.location;
 	dem.innerHTML = event.dem;
 	elevation.innerHTML = event.elevation;
-	description.innerHTML = event.description;
 	registrations.innerHTML = event.registrations;
 	startDate.innerHTML = `<strong>Inicio</strong> ${formattedDateStart}`;
 	finishDate.innerHTML = `<strong>Fim</strong> ${formattedDateFinish}`;
@@ -711,39 +702,18 @@ async function showEventInformations() {
 
 	if (page == "events") {
 		btn.innerHTML = `      
-		<button class="btn btn-success" type="button" onclick="joinEvent('${event.uid}');">
+		<button class="btn btn-success mt-4" type="button" onclick="joinEvent('${event.uid}');">
 			<i class="fas fa-check fa-fw"></i> 
 			Entrar no Evento
 		</button>
 		  `
 	} if (page == "profile") {
 		btn.innerHTML = `      
-		<button class="btn btn-danger" style="margin-top: 20px;" onclick="leaveEvent('${event.uid}');">
+		<button class="btn btn-danger mt-4" style="margin-top: 20px;" onclick="leaveEvent('${event.uid}');">
 			<i class="fas fa-xmark fa-fw"></i> Sair do Evento 
 		</button>
 		  `
-	} /*if (page == "admin") {
-		btn.innerHTML = `      
-			<button id="editEvent" class="btn btn-outline-success m-2" style="margin-top: 20px;">
-				<i class="fa fa-edit"></i> Editar Evento 
-			</button>
-			<button class="btn btn-outline-danger m-2" style="margin-top: 20px;">
-				<i class="fas fa-xmark fa-fw"></i> Remover Evento 
-			</button>
-		`;
-
-	// Add an event listener to the button with the id "editEvent"
-	document.getElementById("editEvent").addEventListener('click', function() {
-		console.log("click");
-		window.location.href = "admin.html";
-		window.onload = function(){
-			$('#editEvent').tab('show');
-		};
-	});
-
-
-	}*/
-
+	}
 
 	mapboxgl.accessToken = 'pk.eyJ1IjoiZ29uY2F2ZiIsImEiOiJjbGNrcm5oa20wN2k4M29xbDB2dThrbHFnIn0.WIf2lhzQBXsULjf5Dm4t1g';
 	(async () => {
