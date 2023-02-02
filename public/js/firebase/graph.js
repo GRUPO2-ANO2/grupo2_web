@@ -1,11 +1,13 @@
+const { white } = require("colorette");
+
 // Makes a graph from a user in a specificEvent
 async function makeGraphByEventUser(graphID, userID, eventID) {
     var allLeituras = await getReadingsByUserID(userID);
     allLeituras = allLeituras.filter(obj => obj.idEvento === eventID)
-    if (allLeituras.length == 0) {
+    /*if (allLeituras.length == 0) {
         alert("No leituras");
         return;
-    }
+    }*/
     var user = await getUserById(userID);
     var xValues = allLeituras.map(obj => obj.o2)
     var yValues = allLeituras.map(obj => obj.altitude);
@@ -44,10 +46,10 @@ async function makeGraphByEventUser(graphID, userID, eventID) {
 // Makes a graph from a user in all events
 async function makeGraphByUserAllEvents(graphID, userID) {
     let allLeituras = await getReadingsByUserID(userID);
-    if (allLeituras.length == 0) {
+    /*if (allLeituras.length == 0) {
         alert("No leituras");
         return;
-    }
+    }*/
 
     let events = await getEventsByUserID(userID);
     let eventIds = events.map(event => event.uid);
@@ -98,10 +100,10 @@ let chart = null;
 async function makeGraphByEvent(graphID, eventID) {
     var allLeituras = await getReadingsByEventID(eventID);
     console.log(eventID)
-    if (allLeituras.length == 0) {
+    /*if (allLeituras.length == 0) {
         alert("No leituras");
         return;
-    }
+    }*/
     let userIds = Array.from(new Set(allLeituras.map(reading => reading.idUtilizador)));
     let datasets = [];
     let xValues = [];
@@ -127,6 +129,11 @@ async function makeGraphByEvent(graphID, eventID) {
             datasets: datasets
         },
         options: {
+            plugins: {
+                customCanvasBackgroundColor: {
+                  color: 'lightGreen',
+                }
+            },
             legend: { display: true },
             scales: {
                 xAxes: [{

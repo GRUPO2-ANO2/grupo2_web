@@ -188,30 +188,38 @@ async function showUserCount(eventID) {
 
 async function showElevationGained(eventID) {
     const elevation = await totalElevationGainedByEvent(eventID);
-
+    const container = document.querySelector('#elevationBody');
+  
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
     // Create a new card element
     const card = document.createElement('div');
     card.classList.add('card');
     card.style.width = '18rem';
-
+  
     // Create the card body
     const cardBody = document.createElement('div');
     cardBody.classList.add('card-body');
     card.appendChild(cardBody);
-
+  
     // Create the title for the card
     const title = document.createElement('h5');
     title.classList.add('card-title');
     title.textContent = 'Elevation';
     cardBody.appendChild(title);
-
+  
     // Create the card text
     const text = document.createElement('p');
     text.classList.add('card-text');
     text.textContent = `${elevation} meters`;
     cardBody.appendChild(text);
-
+  
     // Append the card to the desired location in your HTML
-    const container = document.querySelector('#elevationBody');
     container.appendChild(card);
-}
+  }
+  
+  
+
