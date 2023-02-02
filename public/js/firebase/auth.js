@@ -46,6 +46,8 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
 			case "admin.html":
 				showEventsByGuia();
+				generateEventRows();
+				renderEvent();
 				break;
 				
 			case "evento.html":

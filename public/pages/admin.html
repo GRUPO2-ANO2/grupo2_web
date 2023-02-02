@@ -21,18 +21,18 @@
   </script>
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <link href="../css/admin.css" rel="stylesheet" />
-
-
 </head>
 
 <body>
   <div class="sidenav" role="tablist">
     <ul class="nav nav-tabs flex-column border-0" id="myTab">
       <li class="nav-item rounded">
-        <a href="#dashboard" class="list-group-item list-group-item-action" data-bs-toggle="list" role="tab">Dashboard</a>
+        <a href="#dashboard" class="list-group-item list-group-item-action" data-bs-toggle="list"
+          role="tab">Dashboard</a>
       </li>
       <li class="nav-item rounded">
-        <a href="#eventRegister" class="list-group-item list-group-item-action active" data-bs-toggle="list" role="tab">Registar Evento</a>
+        <a href="#eventRegister" class="list-group-item list-group-item-action active" data-bs-toggle="list"
+          role="tab">Registar Evento</a>
       </li>
       <li class="nav-item rounded">
         <a href="#event" class="list-group-item list-group-item-action" data-bs-toggle="list" role="tab">Eventos</a>
@@ -51,10 +51,23 @@
         <div class="m-4">
           <div class="tab-content">
             <div class="tab-pane fade" id="dashboard">
-              <div class="border border-primary" style="height: 300px; width: 500px; background-color: aliceblue;">
+              <div class="card" style="background-color: #2c343a; height: fit-content;">
+                <div class="card-body" id="participantesBody" style="display: inline-block;"></div>
+                <div class="card-body" id="elevationBody" style="display: inline-block;"></div>
+              </div>
+              
+              
+              <div class="d-flex">  
+                <div class="border border-primary" style="height: 300px; width: 500px; background-color: aliceblue;">
                   <h1 class="text-center" style="color: black;">LEITURAS Evento XYZ</h1>
                   <canvas id="guiaEventChart" style="width:100%;max-width:700px"></canvas>
+                </div>
+                <div class="col-4 pl-3">
+                  <div class="list-group" id="eventListContainer" role="tablist">
+                  </div>
+                </div>
               </div>
+
             </div>
             <div class="tab-pane fade" id="eventRegister">
               <div class="container">
@@ -62,15 +75,17 @@
                   <div class="col-md">
                     <h4>Dados Montanhas</h4>
                     <div class="input-group">
-                      <input type="search" id="searchInput" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                      <button type="button" class="btn btn-outline-primary" onclick="showEventData(document.getElementById('searchInput').value);">search</button>
+                      <input type="search" id="searchInput" class="form-control rounded" placeholder="Search"
+                        aria-label="Search" aria-describedby="search-addon" />
+                      <button type="button" class="btn btn-outline-primary"
+                        onclick="showEventData(document.getElementById('searchInput').value);">search</button>
                     </div>
                     <div class="showData">
                       <div class="form-group">
-                        <select class="form-select" size="5" aria-label="size 3 select example">                          
+                        <select class="form-select" size="5" aria-label="size 3 select example">
                           <div class="container vertical-scrollable" style="height: 500px; overflow-y: scroll;">
                             <div class="row text-center" id="data">
-                              
+
                             </div>
                           </div>
                         </select>
@@ -99,7 +114,8 @@
                 </div>
               </div>
               <div class="d-flex justify-content-center mt-5">
-                <button id="register" type="button" class="btn btn-success" type="submit" onclick="createEvento()">Registar
+                <button id="register" type="button" class="btn btn-success" type="submit"
+                  onclick="createEvento()">Registar
                   Evento</button>
               </div>
             </div>
@@ -144,7 +160,7 @@
                       <label for="longitude" class="col-form-label">Longitude:</label>
                       <input type="number" class="form-control" id="longitude">
                     </div>
-                  </div> 
+                  </div>
                 </form>
               </div>
               <div class="d-flex justify-content-center mt-5">
@@ -177,13 +193,13 @@
 <script src="../js/firebase/auth.js"></script>
 <script src="../js/utils/auth_utils.js"></script>
 <script src="../js/firebase/api.js"></script>
-
+<script src="../js/firebase/metrics.js"></script>
 <script src="../js/utils/color_utils.js"></script>
 <script src="../js/firebase/graph.js"></script>
 <script src="../js/firebase/readings.js"></script>
 <script>
-  // Render graphs
-  makeGraphByEvent("guiaEventChart", "gEN0O91oRIdWvxqT9K4j");
+
 </script>
 <script src="../js/firebase/admin.js"></script>
+
 </html>

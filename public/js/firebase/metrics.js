@@ -154,3 +154,64 @@ async function percentageLeituraValidByEvent(eventID) {
         }
     })
 }
+
+async function showUserCount(eventID) {
+    const count = await numUsersParticipatingInEvent(eventID);
+
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '18rem';
+
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Participantes';
+    cardBody.appendChild(title);
+
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${count}`;
+    cardBody.appendChild(text);
+
+    // Append the card to the desired location in your HTML
+    const container = document.querySelector('#participantesBody');
+    container.appendChild(card);
+}
+
+
+async function showElevationGained(eventID) {
+    const elevation = await totalElevationGainedByEvent(eventID);
+
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '18rem';
+
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Elevation';
+    cardBody.appendChild(title);
+
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${elevation} meters`;
+    cardBody.appendChild(text);
+
+    // Append the card to the desired location in your HTML
+    const container = document.querySelector('#elevationBody');
+    container.appendChild(card);
+}
