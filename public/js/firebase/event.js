@@ -1,6 +1,8 @@
 async function createEvento() {
 	var isGuia = await userIsGuia();
 
+	var storageRef = firebase.storage().ref();
+
 	if (isGuia == 1) {
 
 		const urlParams = new URLSearchParams(window.location.search);
@@ -12,10 +14,15 @@ async function createEvento() {
 
 		var data = await getApiDocById(selectedId);
 
+		const imageId = uploadImage();
+		const ref = storageRef.ref(storage, "image/" + imageId);
+		
+
 		console.log(data);
 
 		await firebase.firestore().collection("eventos").add({
 			idGuia: currentUser.uid,
+			imageId: ref,
 			dateStart: dateStart,
 			dateFinish: dateFinish,
 			location: data.country_code,
@@ -37,6 +44,33 @@ async function createEvento() {
 	} else {
 		alert("Utilizador não é guia!")
 	}
+}
+
+async function uploadImage() {
+	const file = document.getElementById("inputTag").files[0];
+	storageRef.put(file).then(() => {
+		firebase.storage().ref("images").child(currentUser.uid).getDownloadURL()
+		  .then((downloadURL) => {
+			var downloadURL = imgUrl;
+			db.collection("image")
+			  .doc(user.uid)
+			  .update({
+				downloadURL: downloadURL,
+			  })
+			  .then(function() {
+				alert("saved");
+			  })
+			  .catch(function(error) {
+				alert(error);
+			  });
+		  });
+	  });
+};
+
+function randomUid() {
+	return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+	  (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+	);
 }
 
 async function joinEvent(idEvent) {
@@ -357,8 +391,6 @@ async function showEventDataList() {
 
 	// Create a card for each item
 	for (let i = 0; i < events.length; i++) {
-
-		// Create the card
 		const table = document.getElementById('data');
 		table.innerHTML += `
         <tr>
