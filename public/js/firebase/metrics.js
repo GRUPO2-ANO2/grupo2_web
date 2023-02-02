@@ -145,3 +145,12 @@ async function averageWeightOfUsersInEvent(eventID) {
         resolve(weightSum / numUsers);
     });
 }
+
+async function percentageLeituraValidByEvent(eventID) {
+    return new Promise(async (resolve) => {
+        const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").where("idEvento", "==", eventID).get();
+        for (const doc of querySnapshot.docs) {
+            
+        }
+    })
+}
