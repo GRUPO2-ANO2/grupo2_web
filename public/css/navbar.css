@@ -126,3 +126,15 @@
       color: #000;
     }
   }
+
+  .dropdown-menu {
+    background-color: #16191c;
+  }
+
+  .dropdown-item {
+    cursor: pointer;
+    color: #fff;
+  }
+  .dropdown-item:hover {
+    color: #647480;
+  }
