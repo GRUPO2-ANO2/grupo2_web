@@ -107,7 +107,7 @@ async function getEvent(idEvent) {
 
 // Does not need to make a promise
 async function editEvent(idEvent, name, registrations, dateStart, dateFinish) {
-	
+
 	let dateStartAsDate = new Date(dateStart);
 	let dateFinishAsDate = new Date(dateFinish);
 	let dem = parseInt(form.dem().value);
@@ -317,22 +317,22 @@ async function showEventDataIn(eventId) {
 	const longitudeInput = document.getElementById('longitude');
 
 	const startDateAsDate = new Date(event.dateStart);
-  	const endDateAsDate = new Date(event.dateFinish);
+	const endDateAsDate = new Date(event.dateFinish);
 
-				const timestamp = data.BirthDate
-			const timestampAsDate = timestamp.toDate();
+	/*const timestamp = data.BirthDate
+	const timestampAsDate = timestamp.toDate();
 
-			const options = {
-				day: "2-digit",
-				month: "2-digit",
-				year: "numeric"
-			};
-			const timestampAsString = timestampAsDate.toLocaleDateString("pt-PT", options);
+	const options = {
+		day: "2-digit",
+		month: "2-digit",
+		year: "numeric"
+	};
+	const timestampAsString = timestampAsDate.toLocaleDateString("pt-PT", options);
 
-			const formattedDate = timestampAsString
-				.split("/")
-				.reverse()
-				.join("-");
+	const formattedDate = timestampAsString
+		.split("/")
+		.reverse()
+		.join("-");*/
 
 
 	name.value = event.name;
@@ -371,6 +371,32 @@ async function showEventDataList() {
         `;
 	}
 }
+
+async function generateEventRows() {
+	const events = await getEventsByGuia();
+	console.log(events)
+	// Get the table body
+	const listGroup = document.getElementById('eventListContainer');
+
+	// Create a row for each item
+	for (let i = 0; i < events.length; i++) {
+		const event = events[i];
+
+		// Create the link
+		const link = document.createElement('a');
+		link.classList.add('list-group-item', 'list-group-item-action');
+		link.textContent = event.name;
+		link.href = `#event-${event.uid}`;
+		link.setAttribute('data-toggle', 'list');
+		link.setAttribute('role', 'tab');
+		link.setAttribute('aria-controls', `event-${event.uid}`);
+		
+		// Append the link to the list group
+		listGroup.appendChild(link);
+	}
+}
+
+
 
 async function showEventsByGuia() {
 	const events = await getEventsByGuia();
@@ -440,7 +466,7 @@ async function showEventsByGuia() {
 
 
 		// Add an event listener to the card that opens eventInfo
-		card.addEventListener('click', function() {
+		card.addEventListener('click', function () {
 			console.log("click");
 			console.log(events[i].uid)
 			showEventDataIn(events[i].uid);

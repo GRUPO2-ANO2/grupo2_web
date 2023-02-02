@@ -78,8 +78,6 @@ async function showEventDataIn(eventId) {
 	longitudeInput.value = event.longitude;
 }
 
-  
-
 async function betterReadFileToObject() {
     const [file] = document.querySelector('input[type=file]').files;
     const headers = ['geonameid', 'name', 'asciiname', "alternatenames", "latitude", "longitude", "feature_class",

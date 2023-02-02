@@ -94,8 +94,10 @@ async function makeGraphByUserAllEvents(graphID, userID) {
 }
 
 // makes a graph that shows every reading in an event seperating by user
+let chart = null;
 async function makeGraphByEvent(graphID, eventID) {
     var allLeituras = await getReadingsByEventID(eventID);
+    console.log(eventID)
     if (allLeituras.length == 0) {
         alert("No leituras");
         return;
