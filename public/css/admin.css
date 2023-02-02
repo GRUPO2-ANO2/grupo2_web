@@ -61,15 +61,21 @@
     font-size: 20px; 
     padding: 0px 10px;
   }
+  
+  .card {
+    background-color: #647480;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  }
+
+  #shadow {
+    background-color: #647480;
+  }
 
   #card-container {
     justify-content: space-between;
     margin: 10px;
-  }
-
-  .card {
-    background-color: #647480;
-    color: white;
   }
   
   .card-img-top {
@@ -100,8 +106,6 @@
     border-color: #fff;
     color: #fff;
   }
-
-  
 
   .form-select {
     background-color: transparent;

@@ -6,10 +6,11 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 1.5;
   --bs-body-color: #212529;
-  --bs-body-bg: #fff;
+  --bs-body-bg: #16191c;
 }
 
 body {
+  overflow-x: hidden;
   margin: 0;
   font-family: var(--bs-body-font-family);
   font-size: var(--bs-body-font-size);
@@ -87,6 +88,7 @@ img {
   justify-content: space-between;
 }
 
-section {
-  background-color: #000;
+.containerInfo {
+  margin-left: 10px;
+  margin-right: 10px;
 }

@@ -12,6 +12,8 @@ async function createEvento() {
 
 		var data = await getApiDocById(selectedId);
 
+		console.log(data);
+
 		await firebase.firestore().collection("eventos").add({
 			idGuia: currentUser.uid,
 			dateStart: dateStart,
@@ -105,18 +107,26 @@ async function getEvent(idEvent) {
 
 // Does not need to make a promise
 async function editEvent(idEvent, name, registrations, dateStart, dateFinish) {
+	
 	let dateStartAsDate = new Date(dateStart);
 	let dateFinishAsDate = new Date(dateFinish);
-	var owns = await userOwnsEvent(idEvent);
+	let dem = parseInt(form.dem().value);
+	let elevation = parseInt(form.elevation().value);
+	let latitude = parseFloat(form.latitude().value);
+	let longitude = parseFloat(form.longitude().value);
 
-	
+	var owns = await userOwnsEvent(idEvent);
 
 	if (owns) {
 		await firebase.firestore().collection("eventos").doc(idEvent).update({
 			name: name,
 			registrations: registrations,
 			dateStart: dateStartAsDate,
-			dateFinish: dateFinishAsDate
+			dateFinish: dateFinishAsDate,
+			dem: dem,
+			elevation: elevation,
+			latitude: latitude,
+			longitude: longitude
 		}).then(() => {
 			console.log("edited");
 		});
@@ -291,6 +301,32 @@ function isValidDate(date) {
 // porque o que fazemos neste ficheiro é fazer pedidos ao firebase
 // relacionados a tabela evento
 
+async function showEventData(eventId) {
+
+	console.log("entrou");
+	const event = await getEvent(eventId);
+
+	console.log(event);
+
+	document.getElementById('eventName').value = "teste";
+	const startDateInput = document.getElementById('start-date');
+	const endDateInput = document.getElementById('end-date');
+	const registrationsInput = document.getElementById('registrations');
+	const demInput = document.getElementById('dem');
+	const elevationInput = document.getElementById('elevation');
+	const latitudeInput = document.getElementById('latitude');
+	const longitudeInput = document.getElementById('longitude');
+
+	startDateInput.value = event.startDate;
+	endDateInput.value = event.endDate;
+	registrationsInput.value = event.registrations;
+	demInput.value = event.dem;
+	elevationInput.value = event.elevation;
+	latitudeInput.value = event.latitude;
+	longitudeInput.value = event.longitude;
+}
+
+
 async function showEventDataList() {
 	const events = await getEventsData();
 
@@ -333,19 +369,16 @@ async function showEventsByGuia() {
 		col.className = 'col-4 mt-3';
 
 		// cut string
-		const cutDesc = events[i].description.substring(0, 100) + "...";
-
 		// Create the card
 		const card = document.createElement('div');
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-		<div class="card" style="cursor: pointer;">
+		<div class="card border-0">
 			<img src="${events[i].image}" class="card-img-top" alt="card-img">
 			<div class="card-body">
 				<h4 class="card-title">${events[i].name}</h4>
 				<div class="scrollable">
-					<h5 class="card-text">${cutDesc}</h5>
 				</div>
 			</div>
 		</div>
@@ -387,32 +420,16 @@ async function showEventsByGuia() {
 
 		// Add an event listener to the card that opens eventInfo
 		card.addEventListener('click', function() {
-			let eventRegister = document.getElementById("editEvent");
-			eventRegister.style.display = "block";
-			editEventForm(events[i].uid);
+			console.log("click");
+			console.log(events[i].uid)
+			showEventData(events[i].uid);
+			$("#event").removeClass("show active");
+			$("#editEvent").addClass("show active");
 		});
 	}
 
 	// Append the row to the card container
 	cardContainer.appendChild(row);
-}
-
-async function editEventForm(eventId) {
-	console.log(eventId);
-	const event = await getEvent(eventId);
-
-	const div = document.getElementById('editEventForm');
-
-	const form = document.createElement('form');
-
-	const label = document.createElement('label');
-	label.className = `col-form-label`;
-	label.innerHTML = `
-	Nome do Evento: ${event.name};
-	`;
-	
-	form.appendChild(label);
-	div.appendChild(form);
 }
 
 async function showEventsByUser() {
@@ -440,7 +457,7 @@ async function showEventsByUser() {
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-		<div class="card" style="cursor: pointer;">
+		<div class="card border-0 shadow">
 			<img src="${events[i].image}" class="card-img-top" alt="card-img">
 			<div class="card-body">
 				<h4 class="card-title">${events[i].name}</h4>
@@ -520,7 +537,7 @@ async function showEvents() {
 		card.id = `card-${events[i].uid}`;
 		card.className = `fw-bolder`;
 		card.innerHTML = `
-		<div class="card" style="cursor: pointer;">
+		<div class="card border-0">
 			<img src="${events[i].image}" class="card-img-top" alt="card-img">
 			<div class="card-body">
 				<h4 class="card-title">${events[i].name}</h4>
