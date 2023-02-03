@@ -101,14 +101,14 @@ async function averageDurationOfEventsByGuia(guiaID) {
 }
 
 // Gets the number of users who have taken readings in a specific event.
-async function numUsersParticipatingInEvent(eventID) {
+async function numReadingsInEvent(eventID) {
     return new Promise(async (resolve) => {
-        var userCount = 0;
+        var readingsCount = 0;
         const querySnapshot = await firebase.firestore().collection("leituras").where("idEvento", "==", eventID).get();
         for (const doc of querySnapshot.docs) {
-            userCount++;
+            readingsCount++;
         }
-        resolve(userCount);
+        resolve(readingsCount);
     });
 }
 
@@ -156,7 +156,13 @@ async function percentageLeituraValidByEvent(eventID) {
 }
 
 async function showUserCount(eventID) {
-    const count = await numUsersParticipatingInEvent(eventID);
+    const count = await numReadingsInEvent(eventID);
+    const container = document.querySelector('#participantesBody');
+
+    // Remove existing cards
+    while (container.firstChild) {
+        container.removeChild(container.firstChild);
+      }
 
     // Create a new card element
     const card = document.createElement('div');
@@ -181,7 +187,6 @@ async function showUserCount(eventID) {
     cardBody.appendChild(text);
 
     // Append the card to the desired location in your HTML
-    const container = document.querySelector('#participantesBody');
     container.appendChild(card);
 }
 
@@ -219,7 +224,7 @@ async function showElevationGained(eventID) {
   
     // Append the card to the desired location in your HTML
     container.appendChild(card);
-  }
+}
   
   
 

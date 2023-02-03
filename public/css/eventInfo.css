@@ -89,14 +89,24 @@ body {
 }
 
 img {
-  width: 636px;
-  height: 402px;
-}
-
-/* Set the size of the div element that contains the map */
-#map {
+  display: block;
+  margin: 0 auto;
   height: 400px;
   width: 630px;
+  margin-right: 10px;
+}
+
+#map {
+  display: block;
+  margin: 0 auto;
+  height: 400px;
+  width: 630px;
+  margin-left: 10px;
+}
+
+.card {
+  color: white;
+  background-color: #2c343a;
 }
 
 .box {

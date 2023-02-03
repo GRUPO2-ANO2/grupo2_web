@@ -40,8 +40,11 @@ firebase.auth().onAuthStateChanged(async (user) => {
 				break;
 
 			case "profile.html":
-				showPersonalInformation();
-				showEventsByUser();
+				showPersonalInformation();				
+				if (isGuia)
+					showEventsByGuia();
+				else
+					showEventsByUser();
 				break;
 
 			case "admin.html":
@@ -83,7 +86,6 @@ async function registerWithEmailAndPassword() {
 	).then(response => {
 		console.log("Account Created");
 		registerPersonalInformations();
-		window.location.href = "../index.html";
 	}).catch(error => {
 		alert(getErrorMessage(error));
 	});
@@ -91,11 +93,6 @@ async function registerWithEmailAndPassword() {
 
 // This fn should be in user.js
 async function registerPersonalInformations() {
-
-	let birthDate = new Date(form.birthDate().value);
-	let contact = parseInt(form.contact().value);
-	let height = parseFloat(form.height().value);
-	let weight = parseFloat(form.weight().value);
 
 	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
 		isGuia: 0,
@@ -114,7 +111,7 @@ async function registerPersonalInformations() {
 
 async function editPersonalInformations() {
 
-	const guia = userIsGuia();
+	//const guia = await userIsGuia();
 
 	let birthDate = new Date(form.birthDate().value);
 	let contact = parseInt(form.contact().value);
@@ -123,14 +120,16 @@ async function editPersonalInformations() {
 
 	const docRef = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
 
+	var data = await docRef.get();
+
 	docRef.update({
-		isGuia: guia ? 1 : 0,
+		isGuia: data.data().isGuia,
 		Name: form.name().value,
 		Contact: contact,
 		BirthDate: birthDate,
 		Height: height,
 		Weight: weight
-	})
+	});
 }
 
 async function showPersonalInformation() {

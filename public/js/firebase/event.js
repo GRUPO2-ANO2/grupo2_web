@@ -31,7 +31,7 @@ async function createEvento() {
 		  console.log("sucesso");
 		  const userConfirmation = confirm("Evento registado com sucesso!");
 		  if (userConfirmation) {
-			window.location.href = "admin.html";
+			window.location.href = "profile.html";
 		  }
 		})
 		.catch((error) => {
@@ -528,8 +528,8 @@ async function showEventsByGuia() {
 }
 
 async function showEventsByUser() {
-	const events = await getEventsByUser();
-
+	const events = await getEventsByUserID(currentUser.uid);
+	
 	// Get the card container element
 	const cardContainer = document.getElementById('card-container');
 
@@ -544,6 +544,8 @@ async function showEventsByUser() {
 		const col = document.createElement('div');
 		col.className = 'col-4 mt-3';
 
+		console.log(i);
+		console.log(events); 
 
 		// Create the card
 		const card = document.createElement('div');

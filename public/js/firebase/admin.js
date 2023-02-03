@@ -8,8 +8,12 @@ eventListContainer.addEventListener('click', (e) => {
     // Check if the target of the event is a list item
     if (e.target.classList.contains('list-group-item')) {
         // Get the event ID from the target
+    //const url = new URLSearchParams(window.location.search);
         const url = window.location.href;
+        console.log(url)
         const eventId = url.split("#")[1].split("-")[1];
+
+        console.log("Evento" + eventId);
 
         // Call the makeGraphByEvent function with the new event ID
         makeGraphByEvent("guiaEventChart", eventId);
