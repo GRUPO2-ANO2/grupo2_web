@@ -29,7 +29,10 @@ async function createEvento() {
 	  })
 		.then(() => {
 		  console.log("sucesso");
-		  alert("Evento registado com sucesso!");
+		  const userConfirmation = confirm("Evento registado com sucesso!");
+		  if (userConfirmation) {
+			window.location.href = "admin.html";
+		  }
 		})
 		.catch((error) => {
 		  console.error("Error writing document: ", error);
@@ -37,7 +40,7 @@ async function createEvento() {
 	} else {
 	  alert("Utilizador não é guia!");
 	}
-  }
+}
   
 
 async function uploadImage() {
@@ -124,7 +127,7 @@ async function getEvent(idEvent) {
 }
 
 // Does not need to make a promise
-async function editEvent(idEvent) {
+async function editEvent(idEvent, callback) {
 
 	let name = form.eventNameEdit().value;
 	let registrations = form.registrationsEdit().value;
@@ -153,10 +156,12 @@ async function editEvent(idEvent) {
 	} else {
 		console.log("User doesnt own event");
 	}
+
+	callback()
 }
 
 // Does not need to make a promise
-async function removeEvent(idEvent) {
+async function removeEvent(idEvent, callback) {
 	var owns = await userOwnsEvent(idEvent);
 
 	if (owns) {
@@ -178,6 +183,8 @@ async function removeEvent(idEvent) {
 	} else {
 		console.log("User doesnt own event");
 	}
+
+	callback();
 }
 
 // WARNING: Does not validate events
@@ -370,12 +377,16 @@ async function showEventDataIn(eventId) {
 	longitudeInput.value = event.longitude;
 
 	document.getElementById('edit').addEventListener('click', function () {
-		editEvent(event.uid);
-	});
+		if(confirm('Tem a certeza que quer editar o evento: ' + event.name)) {
+			editEvent(event.uid, function() {
+				window.location.href = "admin.html";
+			});
+		}
+	});	
 	document.getElementById('remove').addEventListener('click', function () {
-		if(confirm('Tem a certeza que quer eleiminar o evento: ' + event.name)) {
+		if(confirm('Tem a certeza que quer eliminar o evento: ' + event.name)) {
 			removeEvent(event.uid, function() {
-				window.location.reload();
+				window.location.href = "admin.html";
 			});
 		}
 	});
