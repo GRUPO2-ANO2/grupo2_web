@@ -708,9 +708,11 @@ async function showEventInformations() {
 	var duration = document.getElementById("duration");
 	var btn = document.getElementById("btn");
 
+	const locationName = new Intl.DisplayNames(['en'], {type: 'region', name: event.location});
+	
 	image.innerHTML = `<img class="rounded" src="${event.image}">`;
 	title.innerHTML = event.name;
-	location.innerHTML = event.location;
+	location.innerHTML = locationName.of(event.location);
 	dem.innerHTML = event.dem;
 	elevation.innerHTML = event.elevation;
 	registrations.innerHTML = event.registrations;
