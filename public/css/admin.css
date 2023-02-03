@@ -127,14 +127,14 @@
     padding: 20px;
   }
 
-  a {
+  #rowEvents {
     color: white;
     border-color: white;
+    background-color: transparent;
     border-style: solid;
     border-radius: 10px;
     text-align: center;
     padding: 20px;
-    background-color: transparent;
   }
 
   #remove {
