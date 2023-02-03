@@ -14,7 +14,7 @@
 /*-- NavBar--*/
 #mainNav {
     min-height: 3.5rem;
-    background-color: #fff;
+    background-color: black;
   }
   #mainNav .nav-item{
     display: none;

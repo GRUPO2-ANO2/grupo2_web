@@ -61,6 +61,7 @@ function randomUid() {
 }
 
 async function joinEvent(idEvent) {
+	var info = await verifyPersonalInformation();
 	var userEnrolled = await userIsEnrolledInEvent(idEvent);
 	var isGuia = await userIsGuia();
 
@@ -68,6 +69,13 @@ async function joinEvent(idEvent) {
 	if (isGuia) {
 		alert("Guia nao pode entrar evento");
 		return;
+	}
+
+	if (info) {
+		window.alert("Antes de participar de um evento, é necessário registrar suas informações pessoais no perfil.");
+		window.addEventListener('click', function() {
+		  window.location.href = "profile.html";
+		});		
 	}
 
 	// if user isnt enrolled yet, enroll him

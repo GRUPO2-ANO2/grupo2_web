@@ -82,7 +82,8 @@ async function registerWithEmailAndPassword() {
 		form.email().value, form.password().value
 	).then(response => {
 		console.log("Account Created");
-		window.location.href = "../pages/infoPessoais.html";
+		registerPersonalInformations();
+		window.location.href = "../index.html";
 	}).catch(error => {
 		alert(getErrorMessage(error));
 	});
@@ -98,11 +99,11 @@ async function registerPersonalInformations() {
 
 	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).set({
 		isGuia: 0,
-		Name: form.name().value,
-		Contact: contact,
-		BirthDate: birthDate,
-		Height: height,
-		Weight: weight
+		Name: null,
+		Contact: null,
+		BirthDate: null,
+		Height: null,
+		Weight: null
 	}).then(() => {
 		console.log("Personal Informations Added");
 		window.location.href = "../index.html";
@@ -113,6 +114,8 @@ async function registerPersonalInformations() {
 
 async function editPersonalInformations() {
 
+	const guia = userIsGuia();
+
 	let birthDate = new Date(form.birthDate().value);
 	let contact = parseInt(form.contact().value);
 	let height = parseFloat(form.height().value);
@@ -121,7 +124,7 @@ async function editPersonalInformations() {
 	const docRef = await firebase.firestore().collection("utilizadores").doc(currentUser.uid);
 
 	docRef.update({
-		isGuia: 0,
+		isGuia: guia ? 1 : 0,
 		Name: form.name().value,
 		Contact: contact,
 		BirthDate: birthDate,
@@ -158,6 +161,25 @@ async function showPersonalInformation() {
 			document.getElementById("contact").value = data.Contact;
 		}
 	});
+}
+
+async function verifyPersonalInformation() {
+
+	let verify = false;
+
+	await firebase.firestore().collection("utilizadores").doc(currentUser.uid).get().then(async function(doc) {
+		const data = doc.data();
+
+		console.log(data);
+
+		if (!data.Contact || !data.BirthDate || !data.Height || !data.Name || !data.Weight)
+		{
+			verify = true
+		}
+
+	});
+
+	return verify;
 }
 
 // This fn should be in user.js
