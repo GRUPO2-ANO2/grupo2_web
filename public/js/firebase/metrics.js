@@ -396,7 +396,6 @@ async function showAllUtilizadoresByEvent(eventID){
     var number = await getAllUtilizadoresByEvent(eventID);
     var num = number.length;
 
-    console.log("number: " + num)
     const container = document.querySelector('#allUtilizadoresByEvent');
   
     // Remove existing cards
@@ -460,6 +459,43 @@ async function showNumReadingsOfUser(userID){
     const text = document.createElement('p');
     text.classList.add('card-text');
     text.textContent = `${num}`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function showPercentageValidByUser(userID){
+    var percentage = await percentageValidByUser(userID);
+    const container = document.querySelector('#percentageValidByUser');
+
+    percentage = Math.round(percentage * 100) / 100;
+
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = '% Leituras Validas';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${percentage} %`;
     cardBody.appendChild(text);
   
     // Append the card to the desired location in your HTML

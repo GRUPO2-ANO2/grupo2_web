@@ -95,7 +95,8 @@ async function makeGraphByUserAllEvents(graphID, userID) {
                     title: {
                         text: "O2",
                         display: true,
-                        align: "center"          
+                        align: "center",
+                        color: '#fff'
                     },
                     grid: {
                         color: 'white'
@@ -104,6 +105,12 @@ async function makeGraphByUserAllEvents(graphID, userID) {
                 y: {
                     labelString: "altitude",
                     ticks: { color: 'white', beginAtZero: true },
+                    title: {
+                        text: "Altitude",
+                        display: true,
+                        align: "center",
+                        color: '#fff'
+                    },
                     grid: {
                         color: 'white'
                     }
