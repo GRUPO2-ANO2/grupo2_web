@@ -71,7 +71,10 @@ async function validAndInvalidCountByUser(userID){
             else 
                 invalid++;
         }
-        resolve({valid,invalid});
+        var arr = [];
+        arr[0] = valid;
+        arr[1] = invalid;
+        resolve(arr);
     })
 }
 
