@@ -3,6 +3,7 @@ async function updateGraph() {
     showGraph();
     makeGraphByUserAllEvents("userEventChart", currentUser.uid);
     showNumReadingsOfUser(currentUser.uid);
+    showPercentageValidByUser(currentUser.uid);
 }
 
 async function showGraph() {
