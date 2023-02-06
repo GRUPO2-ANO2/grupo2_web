@@ -4,6 +4,8 @@ async function updateGraph() {
     makeGraphByUserAllEvents("userEventChart", currentUser.uid);
     showNumReadingsOfUser(currentUser.uid);
     showPercentageValidByUser(currentUser.uid);
+    showValidAndInvalidCountByUserValid(currentUser.uid);
+    showValidAndInvalidCountByUserInvalid(currentUser.uid);
 }
 
 async function showGraph() {

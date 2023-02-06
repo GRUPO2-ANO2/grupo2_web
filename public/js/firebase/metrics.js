@@ -71,7 +71,10 @@ async function validAndInvalidCountByUser(userID){
             else 
                 invalid++;
         }
-        resolve({valid,invalid});
+        var arr = [];
+        arr[0] = valid;
+        arr[1] = invalid;
+        resolve(arr);
     })
 }
 
@@ -510,6 +513,77 @@ async function showPercentageValidByUser(userID){
     const text = document.createElement('p');
     text.classList.add('card-text');
     text.textContent = `${percentage} %`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function showValidAndInvalidCountByUserValid(userID){
+    var valid = await validAndInvalidCountByUser(userID);
+    const container = document.querySelector('#validAndInvalidCountByUserValid');
+
+
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Leituras Validas';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${valid[0]}`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function showValidAndInvalidCountByUserInvalid(userID){
+    var invalid = await validAndInvalidCountByUser(userID);
+    const container = document.querySelector('#validAndInvalidCountByUserInvalid');
+
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Leituras Inválidas';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${invalid[1]}`;
     cardBody.appendChild(text);
   
     // Append the card to the desired location in your HTML

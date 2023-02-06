@@ -25,7 +25,7 @@ async function makeGraphByEventUser(graphID, userID, eventID) {
             datasets: [{
                 data: xValues,
                 borderColor: "red",
-                fill: false,
+                fill: true,
                 label: user.name
             }]
         },
@@ -71,7 +71,7 @@ async function makeGraphByUserAllEvents(graphID, userID) {
             data: yValues,
             label: "Event " + events[c].name,
             borderColor: getRandomColor(),
-            fill: false
+            fill: true
         });
         c++;
     });
@@ -87,6 +87,16 @@ async function makeGraphByUserAllEvents(graphID, userID) {
             datasets: datasets
         },
         options: {
+            plugins: {
+                legend: {
+                  labels: {
+                    color: "white", 
+                    font: {
+                      size: 15
+                    }
+                  }
+                }
+            },
             legend: { display: true },
             scales: {
                 x: {
@@ -147,7 +157,7 @@ async function makeGraphByEvent(graphID, eventID) {
             data: yValues,
             label: user.Name,
             borderColor: getRandomColor(),
-            fill: false,
+            fill: true,
         });
     });
 
@@ -161,6 +171,16 @@ async function makeGraphByEvent(graphID, eventID) {
             datasets: datasets,
         },
         options: {
+            plugins: {
+                legend: {
+                  labels: {
+                    color: "white", 
+                    font: {
+                      size: 15
+                    }
+                  }
+                }
+              },
             scales: {
                 x: {
                     labelString: "o2",
