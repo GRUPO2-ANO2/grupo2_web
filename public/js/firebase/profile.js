@@ -2,6 +2,7 @@
 async function updateGraph() {
     showGraph();
     makeGraphByUserAllEvents("userEventChart", currentUser.uid);
+    showNumReadingsOfUser(currentUser.uid);
 }
 
 async function showGraph() {
