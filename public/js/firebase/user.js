@@ -83,24 +83,29 @@ async function getUserById(idUser) {
 	})
 }
 
-function getAllUtilizadoresByEvent(idEvent) {
-	return new Promise((resolve) => {
+async function getAllUtilizadoresByEvent(idEvent) {
+	return new Promise(async (resolve) => {
 		var users = [];
-		var numUsers = 0;
 
-		firebase.firestore().collection("eventosUtilizadores").get().then((querySnapshot) => {
+		await firebase.firestore().collection("eventosUtilizadores").get().then(async (querySnapshot) => {
+			// para lidar com todas as promessas que estão em ativo	
+			const promises = [];
+
 			querySnapshot.forEach((doc) => {
 				var docEventId = doc.data().idEvento;
 				var docUserId = doc.data().idUtilizador;
 
-				if (docEventId == idEvent) {
-					getUserById(docUserId).then((user) => {
-						users[numUsers] = user;
-						numUsers++;
-					});
+				if (docEventId === idEvent) {
+					promises.push(getUserById(docUserId));
 				}
 			});
-		}).then(() => {
+
+			// Esperar por todas as promessas
+			const resolvedUsers = await Promise.all(promises);
+			resolvedUsers.forEach((user) => {
+				users.push(user);
+			});
+
 			resolve(users);
 		});
 	});
