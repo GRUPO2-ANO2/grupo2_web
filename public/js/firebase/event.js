@@ -31,7 +31,7 @@ async function createEvento() {
 		  console.log("sucesso");
 		  const userConfirmation = confirm("Evento registado com sucesso!");
 		  if (userConfirmation) {
-			window.location.href = "profile.html";
+			window.location.href = "admin.html";
 		  }
 		})
 		.catch((error) => {
@@ -76,6 +76,7 @@ async function joinEvent(idEvent) {
 		window.addEventListener('click', function() {
 		  window.location.href = "profile.html";
 		});		
+		return;
 	}
 
 	// if user isnt enrolled yet, enroll him
@@ -138,7 +139,7 @@ async function getEvent(idEvent) {
 async function editEvent(idEvent, callback) {
 
 	let name = form.eventNameEdit().value;
-	let registrations = form.registrationsEdit().value;
+	let registrations = parseInt(form.registrationsEdit().value);
 	let dateStartAsDate = new Date(form.startdateEdit().value);
 	let dateFinishAsDate = new Date(form.enddateEdit().value);
 	let dem = parseInt(form.dem().value);
@@ -148,7 +149,7 @@ async function editEvent(idEvent, callback) {
 
 	var owns = await userOwnsEvent(idEvent);
 
-	if (owns) {
+	if (owns) {	 
 		await firebase.firestore().collection("eventos").doc(idEvent).update({
 			name: name,
 			registrations: registrations,
@@ -157,7 +158,8 @@ async function editEvent(idEvent, callback) {
 			dem: dem,
 			elevation: elevation,
 			latitude: latitude,
-			longitude: longitude
+			longitude: longitude,
+			idGuia: currentUser.uid
 		}).then(() => {
 			console.log("edited");
 		});

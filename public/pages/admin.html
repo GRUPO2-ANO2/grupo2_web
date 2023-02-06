@@ -16,12 +16,8 @@
     integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
     crossorigin="anonymous"></script>
 
-  <script defer src="/__/firebase/9.12.1/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-storage-compat.js"></script>
-
-
   <!-- graph -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </script>
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <link href="../css/admin.css" rel="stylesheet" />
@@ -56,31 +52,60 @@
           <div class="tab-content">
             <div class="tab-pane fade" id="dashboard">
               <div class="container">
-                <div class="row">
-                  <div class="col-5">
-                    <div id="participantesBody"> 
+                <div class="row d-flex justify-content-center">
+                  <div class="col-auto">
+                    <div id="participantesBody" class="statCard"> 
 
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="list-group" id="eventListContainer" role="tablist">
+                  <div class="col-auto">
+                    <div id="elevationBody" class="statCard">
+                      
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <div id="percentageLeituraValid" class="statCard">
+                      
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <div id="averageHeightOfUsers" class="statCard">
+                      
                     </div>
                   </div>
                 </div>
-                <div class="row">
-                  <div class="col-sm">
-                    <div id="elevationBody">
+                <!-- second row -->
+                <div class="row d-flex justify-content-center">
+                  <div class="col-auto">
+                    <div id="allUtilizadoresByEvent" class="statCard"> 
+
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <div id="elevationBody" class="statCard">
+                      
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <div id="percentageLeituraValid" class="statCard">
+                      
+                    </div>
+                  </div>
+                  <div class="col-auto">
+                    <div id="averageHeightOfUsers" class="statCard">
                       
                     </div>
                   </div>
                 </div>
                 <div class="row mt-5">
-                  <div class="col-5">
+                  <div class="col-6">
                     <div class="d-flex">
                       <div id="graph" class="border border-light">
-                        <h1 class="text-center text-dark">Mount Everest</h1>
-                        <canvas id="guiaEventChart" style="width:100%;max-width:700px"></canvas>
                       </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="list-group" id="eventListContainer" role="tablist">
                     </div>
                   </div>
                 </div>
@@ -203,7 +228,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-storage-compat.js"></script>
-<script defer src="/__/firebase/9.12.1/firebase-storage-compat.js"></script>
 <!-- Firestore -->
 <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
 <script src="../js/index.js"></script>

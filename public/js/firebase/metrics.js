@@ -121,7 +121,7 @@ async function averageHeightOfUsersInEvent(eventID) {
         const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").where("idEvento", "==", eventID).get();
         for (const doc of querySnapshot.docs) {
             var user = await getUserById(doc.data().idUtilizador);
-            heightSum += user.data().Height;
+            heightSum += user.Height;
             numUsers++;
         }
 
@@ -148,11 +148,164 @@ async function averageWeightOfUsersInEvent(eventID) {
 
 async function percentageLeituraValidByEvent(eventID) {
     return new Promise(async (resolve) => {
-        const querySnapshot = await firebase.firestore().collection("eventosUtilizadores").where("idEvento", "==", eventID).get();
+        const querySnapshot = await firebase.firestore().collection("leituras").where("idEvento", "==", eventID).get();
+        var valid = 0, total = 0;
         for (const doc of querySnapshot.docs) {
-            
+           if (await isReadingValidById(doc.id))
+                valid++; 
+            total++;
         }
+        console.log(total )
+        console.log("v" + valid)
+        resolve((valid / total) * 100);
     })
+}
+
+async function showPercentageLeituraValid(eventID){
+    var percentage = await percentageLeituraValidByEvent(eventID);
+    const container = document.querySelector('#percentageLeituraValid');
+
+    percentage = Math.round(percentage * 100) / 100;
+  
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = '% Valida';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${percentage} %`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+
+}
+
+async function showAverageHeightOfUsersInEvent(eventID){
+    var height = await averageHeightOfUsersInEvent(eventID);
+    const container = document.querySelector('#averageHeightOfUsers');
+  
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Altura Média';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${height} cm`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function showAverageWeightOfUsersInEvent(eventID){
+
+}
+
+async function showAverageAltitudeByEvent(eventID){
+    var altitude = await averageAltitudeByEvent(eventID);
+    const container = document.querySelector('#averageAltitudeByEvent');
+  
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Altitude Média';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${altitude} m`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function showAverageO2ByEvent(eventID){
+    var oxigenio = await averageAltitudeByEvent(eventID);
+    const container = document.querySelector('#averageAltitudeByEvent');
+  
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'O2 Médio';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${oxigenio} %`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
 }
 
 async function showUserCount(eventID) {
@@ -167,7 +320,7 @@ async function showUserCount(eventID) {
     // Create a new card element
     const card = document.createElement('div');
     card.classList.add('card');
-    card.style.width = '18rem';
+    card.style.width = '15rem';
 
     // Create the card body
     const cardBody = document.createElement('div');
@@ -177,7 +330,7 @@ async function showUserCount(eventID) {
     // Create the title for the card
     const title = document.createElement('h5');
     title.classList.add('card-title');
-    title.textContent = 'Participantes';
+    title.textContent = 'Leituras';
     cardBody.appendChild(title);
 
     // Create the card text
@@ -203,7 +356,7 @@ async function showElevationGained(eventID) {
     // Create a new card element
     const card = document.createElement('div');
     card.classList.add('card');
-    card.style.width = '18rem';
+    card.style.width = '15rem';
   
     // Create the card body
     const cardBody = document.createElement('div');
@@ -226,5 +379,39 @@ async function showElevationGained(eventID) {
     container.appendChild(card);
 }
   
+async function showAllUtilizadoresByEvent(eventID){
+    var number = await getAllUtilizadoresByEvent(eventID);
+    var num = number.length;
+    const container = document.querySelector('#allUtilizadoresByEvent');
   
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Numero de Utilizadores';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${number} %`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
 
+}

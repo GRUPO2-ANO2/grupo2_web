@@ -1,3 +1,5 @@
+var chart = null;
+
 // Makes a graph from a user in a specificEvent
 async function makeGraphByEventUser(graphID, userID, eventID) {
     var allLeituras = await getReadingsByUserID(userID);
@@ -45,8 +47,6 @@ async function makeGraphByEventUser(graphID, userID, eventID) {
             }
         }
     });
-
-    chart.update();
 }
 
 // Makes a graph from a user in all events
@@ -99,15 +99,11 @@ async function makeGraphByUserAllEvents(graphID, userID) {
             }
         }
     });
-
-    chart.update();
 }
 
 // makes a graph that shows every reading in an event seperating by user
-let chart = null;
 async function makeGraphByEvent(graphID, eventID) {
     var allLeituras = await getReadingsByEventID(eventID);
-    console.log(eventID)
     if (allLeituras.length == 0) {
         console.log("No leituras");
         return;
@@ -115,57 +111,57 @@ async function makeGraphByEvent(graphID, eventID) {
     let userIds = Array.from(new Set(allLeituras.map(reading => reading.idUtilizador)));
     let datasets = [];
     let xValues = [];
-    
-    userIds.forEach(async userId => {
-        let filteredLeituras = allLeituras.filter(obj => obj.idUtilizador === userId);
+
+    let promises = [];
+    userIds.forEach(userId => {
+        promises.push(getUserById(userId));
+    });
+
+    let users = await Promise.all(promises);
+
+    users.forEach((user, index) => {
+        let filteredLeituras = allLeituras.filter(obj => obj.idUtilizador === userIds[index]);
         xValues.push(...filteredLeituras.map(obj => obj.o2));
         let yValues = filteredLeituras.map(obj => obj.altitude);
-        let user = await getUserById(userId);
-        
+
         datasets.push({
             data: yValues,
             label: user.Name,
             borderColor: getRandomColor(),
-            fill: false
+            fill: false,
         });
     });
 
-    if (chart && chart.destroy) {
-        chart.destroy();
-    }
+    if (chart != null) chart.destroy();
 
-    chart = new Chart(graphID, {
+    const ctx = document.getElementById(graphID);
+    console.log(ctx)
+    chart = new Chart(ctx, {
         type: "line",
         data: {
             labels: xValues,
             datasets: datasets
         },
-        options: {
-            plugins: {
-                customCanvasBackgroundColor: {
-                  color: 'lightGreen',
-                }
-            },
-            legend: { display: true },
+        options: {  
             scales: {
-                xAxes: [{
-                    scaleLabel: {
+                x: {
+                    labelString: "o2",
+                    ticks: { color: 'white', beginAtZero: true },
+                    title: {
+                        text: "O2",
                         display: true,
-                        labelString: 'o2'
+                        align: "center"
                     }
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'altitude'
-                    }
-                }]
+                },
+                y: {
+                    labelString: "altitude",
+                    ticks: { color: 'white', beginAtZero: true },
+                }
             }
         }
     });
-
-    chart.update();
 }
+
 
 // makes a bar graph that shows how many events each month has
 async function makeGraphEventsPerMonth(graphID) {
