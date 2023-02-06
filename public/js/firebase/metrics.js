@@ -155,8 +155,6 @@ async function percentageLeituraValidByEvent(eventID) {
                 valid++; 
             total++;
         }
-        console.log(total )
-        console.log("v" + valid)
         resolve((valid / total) * 100);
     })
 }
@@ -274,8 +272,10 @@ async function showAverageAltitudeByEvent(eventID){
 }
 
 async function showAverageO2ByEvent(eventID){
-    var oxigenio = await averageAltitudeByEvent(eventID);
+    var oxigenio = await averageO2ByEvent(eventID);
     const container = document.querySelector('#averageAltitudeByEvent');
+
+    oxigenio = Math.round(oxigenio * 100) / 100;
   
     // Remove existing cards
     while (container.firstChild) {
@@ -366,7 +366,7 @@ async function showElevationGained(eventID) {
     // Create the title for the card
     const title = document.createElement('h5');
     title.classList.add('card-title');
-    title.textContent = 'Elevation';
+    title.textContent = 'Elevação';
     cardBody.appendChild(title);
   
     // Create the card text
@@ -382,6 +382,8 @@ async function showElevationGained(eventID) {
 async function showAllUtilizadoresByEvent(eventID){
     var number = await getAllUtilizadoresByEvent(eventID);
     var num = number.length;
+
+    console.log("number: " + num)
     const container = document.querySelector('#allUtilizadoresByEvent');
   
     // Remove existing cards
@@ -402,13 +404,13 @@ async function showAllUtilizadoresByEvent(eventID){
     // Create the title for the card
     const title = document.createElement('h5');
     title.classList.add('card-title');
-    title.textContent = 'Numero de Utilizadores';
+    title.textContent = 'Numero Utilizadores';
     cardBody.appendChild(title);
   
     // Create the card text
     const text = document.createElement('p');
     text.classList.add('card-text');
-    text.textContent = `${number} %`;
+    text.textContent = `${num}`;
     cardBody.appendChild(text);
   
     // Append the card to the desired location in your HTML

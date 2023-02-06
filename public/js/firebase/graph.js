@@ -140,7 +140,7 @@ async function makeGraphByEvent(graphID, eventID) {
         type: "line",
         data: {
             labels: xValues,
-            datasets: datasets
+            datasets: datasets,
         },
         options: {  
             scales: {
@@ -150,12 +150,25 @@ async function makeGraphByEvent(graphID, eventID) {
                     title: {
                         text: "O2",
                         display: true,
-                        align: "center"
+                        align: "center",
+                        color: '#fff'
+                    },
+                    grid: {
+                        color: 'white'
                     }
                 },
                 y: {
                     labelString: "altitude",
                     ticks: { color: 'white', beginAtZero: true },
+                    title: {
+                        text: "Altitude",
+                        display: true,
+                        align: "center",
+                        color: '#fff'
+                    },
+                    grid: {
+                        color: 'white'
+                    }
                 }
             }
         }
