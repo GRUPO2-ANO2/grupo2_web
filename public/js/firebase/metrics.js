@@ -48,6 +48,19 @@ async function numReadingsOfUser(userID) {
     });
 }
 
+async function percentageValidByUser(userID) {
+    return new Promise(async (resolve) => {
+        const querySnapshot = await firebase.firestore().collection("leituras").where("idUtilizador", "==", userID).get();
+        var valid = 0, total = 0;
+        for (const doc of querySnapshot.docs) {
+           if (await isReadingValidById(doc.id))
+                valid++; 
+            total++;
+        }
+        resolve((valid / total) * 100);
+    })
+}
+
 // function to get the number of readings taken by guia
 async function numReadingsByGuia(guiaID) {
     return new Promise(async (resolve, reject) => {
