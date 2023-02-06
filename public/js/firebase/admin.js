@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#eventRegister").addClass("show active");
+    $("#dashboard").addClass("show active");
 });
 
 // Render graphs
