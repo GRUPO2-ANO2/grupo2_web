@@ -112,3 +112,7 @@
   section {
     padding-bottom: 0;
   }
+
+  #graphCard {
+    margin-top: 10px;
+  }
