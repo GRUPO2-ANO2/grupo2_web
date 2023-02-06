@@ -432,7 +432,7 @@ async function generateEventRows() {
 
 		// Create the link
 		const link = document.createElement('a');
-		link.id = "rowEvents"
+		link.id = `rowEvents-${event.uid}`
 		link.classList.add('list-group-item', 'list-group-item-action');
 		link.textContent = event.name;
 		link.href = `#event-${event.uid}`;
@@ -442,7 +442,12 @@ async function generateEventRows() {
 		
 		// Append the link to the list group
 		listGroup.appendChild(link);
+
+		link.addEventListener("click", function() {
+			dashboardEvent(event.uid);
+		  });
 	}
+
 }
 
 

@@ -45,6 +45,8 @@ async function makeGraphByEventUser(graphID, userID, eventID) {
             }
         }
     });
+
+    chart.update();
 }
 
 // Makes a graph from a user in all events
@@ -97,6 +99,8 @@ async function makeGraphByUserAllEvents(graphID, userID) {
             }
         }
     });
+
+    chart.update();
 }
 
 // makes a graph that shows every reading in an event seperating by user
@@ -126,8 +130,9 @@ async function makeGraphByEvent(graphID, eventID) {
         });
     });
 
-    if (chart)
+    if (chart && chart.destroy) {
         chart.destroy();
+    }
 
     chart = new Chart(graphID, {
         type: "line",
@@ -158,7 +163,10 @@ async function makeGraphByEvent(graphID, eventID) {
             }
         }
     });
+
+    chart.update();
 }
+
 // makes a bar graph that shows how many events each month has
 async function makeGraphEventsPerMonth(graphID) {
     currentUser = { uid: "IDtFlVMgYQhQX6kyceVczQc0Zzh1" }
@@ -209,4 +217,6 @@ async function makeGraphEventsPerMonth(graphID) {
             }
         }
     });
+
+    chart.update();
 }

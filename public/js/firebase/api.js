@@ -72,9 +72,6 @@ async function showEventData(search) {
     });
 }
 
-  
-
-
 async function searchApiDocsByCountry(countryCode, limit = 10) {
     return new Promise((resolve) => {
         var ref = firebase.firestore().collection("api");
