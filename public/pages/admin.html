@@ -52,7 +52,7 @@
           <div class="tab-content">
             <div class="tab-pane fade" id="dashboard">
               <div class="container">
-                <div class="row d-flex justify-content-center">
+                <div class="row">
                   <div class="col-auto">
                     <div id="participantesBody" class="statCard"> 
 
@@ -75,37 +75,34 @@
                   </div>
                 </div>
                 <!-- second row -->
-                <div class="row d-flex justify-content-center">
+                <div class="row">
                   <div class="col-auto">
                     <div id="allUtilizadoresByEvent" class="statCard"> 
 
                     </div>
                   </div>
                   <div class="col-auto">
-                    <div id="elevationBody" class="statCard">
-                      
-                    </div>
-                  </div>
-                  <div class="col-auto">
-                    <div id="percentageLeituraValid" class="statCard">
-                      
-                    </div>
-                  </div>
-                  <div class="col-auto">
-                    <div id="averageHeightOfUsers" class="statCard">
+                    <div id="averageAltitudeByEvent" class="statCard">
                       
                     </div>
                   </div>
                 </div>
                 <div class="row mt-5">
-                  <div class="col-6">
+                  <div class="col-8">
                     <div class="d-flex">
-                      <div id="graph" class="border border-light">
+                      <div class="card">
+                        <div class="card-body">
+                          <div id="graph">
+
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="list-group" id="eventListContainer" role="tablist">
+                  <div class="col-4">
+                    <div id="verticalScroll" class="container vertical-scrollable" style="height: 400px; overflow-y: scroll;">
+                      <div class="list-group" id="eventListContainer" role="tablist">
+                      </div>
                     </div>
                   </div>
                 </div>

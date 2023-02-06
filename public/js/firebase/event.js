@@ -187,7 +187,7 @@ async function removeEvent(idEvent, callback) {
 			const docIdEvento = data.idEvento;
 
 			if (docIdEvento == idEvent) {
-				await firebase.firestore().collection("eventosUtilizadores").doc(data.id).delete();
+				await firebase.firestore().collection("eventosUtilizadores").doc(doc.id).delete();
 			}
 		}
 	} else {
@@ -424,7 +424,6 @@ async function showEventDataList() {
 
 async function generateEventRows() {
 	const events = await getEventsByGuia();
-	console.log(events)
 	// Get the table body
 	const listGroup = document.getElementById('eventListContainer');
 
@@ -435,7 +434,7 @@ async function generateEventRows() {
 		// Create the link
 		const link = document.createElement('a');
 		link.id = `rowEvents-${event.uid}`
-		link.classList.add('list-group-item', 'list-group-item-action');
+		link.classList.add('eventList', 'list-group-item', 'list-group-item-action', 'border', 'border-3', 'rounded');
 		link.textContent = event.name;
 		link.href = `#event-${event.uid}`;
 		link.setAttribute('data-toggle', 'list');

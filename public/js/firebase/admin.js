@@ -21,6 +21,7 @@ async function updateGraph(eventId){
     showPercentageLeituraValid(eventId);
     showAverageHeightOfUsersInEvent(eventId);
     showAllUtilizadoresByEvent(eventId);
+    showAverageO2ByEvent(eventId);
     showGraph(eventId);
 }
 
@@ -31,6 +32,7 @@ async function showGraph(eventId) {
     div.innerHTML = ` 
     <h1 class="text-center">${event.name}</h1>
     <div id="graphIn">
-    <canvas id="guiaEventChart" style="width:100%;max-width:100%;"></canvas>
-  </div>`
+        <canvas id="guiaEventChart"></canvas>
+    </div>
+    `
 }
