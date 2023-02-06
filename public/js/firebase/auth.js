@@ -41,10 +41,15 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
 			case "profile.html":
 				showPersonalInformation();				
-				if (isGuia)
+				if (isGuia){
 					showEventsByGuia();
-				else
+				}	
+				else{
 					showEventsByUser();
+					updateGraph();
+				}
+					
+				
 				break;
 
 			case "admin.html":

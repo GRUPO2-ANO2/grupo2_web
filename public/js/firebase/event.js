@@ -216,7 +216,7 @@ async function getEventsByUserID(userID) {
 				enrolled = await userIsEnrolledInEventById(docIdEvento, userID);
 				// And if enrolled, add event
 				if (enrolled) {
-					events[eventCount] = await getEvent(docIdEvento);
+					events[eventCount] = await getEvent(docIdEvento);;
 					eventCount++;
 				}
 			}

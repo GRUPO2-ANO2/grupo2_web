@@ -61,21 +61,26 @@ async function makeGraphByUserAllEvents(graphID, userID) {
     let eventIds = events.map(event => event.uid);
     let datasets = [];
     let xValues = [];
-
+    var c = 0;
     eventIds.forEach(eventId => {
         let filteredLeituras = allLeituras.filter(obj => obj.idEvento === eventId);
         xValues.push(...filteredLeituras.map(obj => obj.o2));
         let yValues = filteredLeituras.map(obj => obj.altitude);
-
+        
         datasets.push({
             data: yValues,
-            label: "Event " + eventId,
+            label: "Event " + events[c].name,
             borderColor: getRandomColor(),
             fill: false
         });
+        c++;
     });
 
-    new Chart(graphID, {
+    if (chart != null)
+        chart.destroy();
+
+    const ctx = document.getElementById(graphID);
+    chart = new Chart(ctx, {
         type: "line",
         data: {
             labels: xValues,
@@ -84,18 +89,19 @@ async function makeGraphByUserAllEvents(graphID, userID) {
         options: {
             legend: { display: true },
             scales: {
-                xAxes: [{
-                    scaleLabel: {
+                x: {
+                    labelString: "o2",
+                    ticks: { color: 'white', beginAtZero: true },
+                    title: {
+                        text: "O2",
                         display: true,
-                        labelString: 'o2'
+                        align: "center"
                     }
-                }],
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'altitude'
-                    }
-                }]
+                },
+                y: {
+                    labelString: "altitude",
+                    ticks: { color: 'white', beginAtZero: true },
+                }
             }
         }
     });
@@ -135,14 +141,13 @@ async function makeGraphByEvent(graphID, eventID) {
     if (chart != null) chart.destroy();
 
     const ctx = document.getElementById(graphID);
-    console.log(ctx)
     chart = new Chart(ctx, {
         type: "line",
         data: {
             labels: xValues,
             datasets: datasets
         },
-        options: {  
+        options: {
             scales: {
                 x: {
                     labelString: "o2",

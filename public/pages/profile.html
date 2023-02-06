@@ -1,135 +1,165 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Perfil</title>
-    <!-- StyleSheets -->
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
-    <link href="../css/navbar.css" rel="stylesheet" />
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <link href="../css/profile.css" rel="stylesheet" />
-  </head>
-  <body>
-    <!-- navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
-      <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="../index.html">Grupo 2</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item admin-link">
-              <a class="nav-link" href="admin.html">Admin</a>
-            </li>
-            <li class="nav-item login-link">
-              <a class="nav-link" href="login.html">Entrar</a>
-            </li>
-            <li class="nav-item register-link">
-              <a class="nav-link" href="register.html">Registar</a>
-            </li>
-            <li class="nav-item event-link">
-              <a class="nav-link" href="evento.html">Eventos</a>
-            </li>
-            <li class="nav-item profile-link">
-              <a class="nav-link" onclick="signOut()" style="cursor: pointer">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <!-- Header-->
-    <header class="masthead">
-      <div class="bg-transparent py-5">
-        <div class="container px-4 px-lg-5 my-5">
-          <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Perfil</h1>
-          </div>
-        </div>
-      </div>
-    </header>
 
-    <section class="gradient-custom">
-      <div class="container mt-5">
-        <div class="row d-flex justify-content-center align-items-center">
-          <h3 class="text-center text-uppercase text-white">Informações Pessoais</h3>
-          <div class="col-12 col-xl-5">
-            <div class="cardEdit bg-dark text-white mt-5">
-              <div class="cardBorder">
-                <div class="card-body p-5 text-center">
-                  <div class="mb-4 mt-1">
-                    <div class="form-outline form-white">
-                      <div class="form-outline form-white mb-4">
-                        <input type="text" name="name" id="name" placeholder="Nome Completo" class="form-control form-control-lg bg-transparent text-white" required>
-                      </div>
-                    </div>
+<head>
+  <title>Perfil</title>
+  <!-- StyleSheets -->
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+  <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+  <!-- Google fonts-->
+  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet" />
+  <link href="../css/navbar.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+  <link href="../css/profile.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container px-4 px-lg-5">
+      <a class="navbar-brand" href="../index.html">Grupo 2</a>
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+        aria-label="Toggle navigation"> Menu <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item admin-link">
+            <a class="nav-link" href="admin.html">Admin</a>
+          </li>
+          <li class="nav-item login-link">
+            <a class="nav-link" href="login.html">Entrar</a>
+          </li>
+          <li class="nav-item register-link">
+            <a class="nav-link" href="register.html">Registar</a>
+          </li>
+          <li class="nav-item event-link">
+            <a class="nav-link" href="evento.html">Eventos</a>
+          </li>
+          <li class="nav-item profile-link">
+            <a class="nav-link" onclick="signOut()" style="cursor: pointer">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Header-->
+  <header class="masthead">
+    <div class="bg-transparent py-5">
+      <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+          <h1 class="display-4 fw-bolder">Perfil</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="gradient-custom">
+    <div class="container mt-5">
+      <div class="row d-flex justify-content-center align-items-center">
+        <h3 class="text-center text-uppercase text-white">Informações Pessoais</h3>
+        <div class="col-12 col-xl-5">
+          <div class="cardEdit bg-dark text-white mt-5">
+            <div class="cardBorder">
+              <div class="card-body p-5 text-center">
+                <div class="mb-4 mt-1">
+                  <div class="form-outline form-white">
                     <div class="form-outline form-white mb-4">
-                      <div class="form-group">
-                        <input type="date" id="birthDate" placeholder="Password" class="form-control form-control-lg bg-transparent text-white" required>
-                      </div>
+                      <input type="text" name="name" id="name" placeholder="Nome Completo"
+                        class="form-control form-control-lg bg-transparent text-white" required>
                     </div>
-                    <div class="form-outline form-white mb-4">
-                      <div class="form-group">
-                        <input type="number" id="height" placeholder="Altura" class="form-control form-control-lg bg-transparent text-white" required>
-                      </div>
+                  </div>
+                  <div class="form-outline form-white mb-4">
+                    <div class="form-group">
+                      <input type="date" id="birthDate" placeholder="Password"
+                        class="form-control form-control-lg bg-transparent text-white" required>
                     </div>
-                    <div class="form-outline form-white mb-4">
-                      <div class="form-group">
-                        <input type="number" id="weight" placeholder="Peso" class="form-control form-control-lg bg-transparent text-white" required>
-                      </div>
+                  </div>
+                  <div class="form-outline form-white mb-4">
+                    <div class="form-group">
+                      <input type="number" id="height" placeholder="Altura"
+                        class="form-control form-control-lg bg-transparent text-white" required>
+                    </div>
+                  </div>
+                  <div class="form-outline form-white mb-4">
+                    <div class="form-group">
+                      <input type="number" id="weight" placeholder="Peso"
+                        class="form-control form-control-lg bg-transparent text-white" required>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="col-12 col-xl-5">
-            <div class="cardEdit bg-dark text-white">
-              <div class="cardBorder">
-                <div class="card-body p-5 text-center">
-                  <div class="mb-4 mt-1">
-                    <div class="form-outline form-white">
-                      <div class="form-group">
-                        <input type="number" id="contact" placeholder="Contacto" class="form-control form-control-lg bg-transparent text-light" />
-                      </div>
+        </div>
+        <div class="col-12 col-xl-5">
+          <div class="cardEdit bg-dark text-white">
+            <div class="cardBorder">
+              <div class="card-body p-5 text-center">
+                <div class="mb-4 mt-1">
+                  <div class="form-outline form-white">
+                    <div class="form-group">
+                      <input type="number" id="contact" placeholder="Contacto"
+                        class="form-control form-control-lg bg-transparent text-light" />
                     </div>
                   </div>
-                  <div>
-                    <button class="btn btn-outline-light btn-lg px-5" type="submit" onclick="editPersonalInformations()">Atualizar</button>
-                  </div>
+                </div>
+                <div>
+                  <button class="btn btn-outline-light btn-lg px-5" type="submit"
+                    onclick="editPersonalInformations()">Atualizar</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-    </section>
-    <h3 class="text-center text-uppercase text-white mt-5">Eventos Registados</h3>
-    <!-- Cards -->
-    <section class="py-5">
-      <div class="container px-4 mt-5">
-        <div class="justify-content-center">
-          <div id="card-container"></div>
-        </div>
       </div>
-    </section>
-  </body>
+  </section>
+  <h3 class="text-center text-uppercase text-white mt-5">Eventos Registados</h3>
+  <!-- Cards -->
+  <section class="py-5">
+    <div class="container px-4 mt-5">
+      <div class="justify-content-center">
+        <div id="card-container"></div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Scripts -->
-  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
-  <script src="../js/firebase/megascriptxd.js"></script>
-  
-  <!-- Firestore -->
-  <script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
-  <script src="../js/index.js"></script>
-  <script src="../js/constants.js"></script>
-  <script src="../js/firebase/event.js"></script>
-  <script src="../js/firebase/user.js"></script>
-  <script src="../js/firebase/auth.js"></script>
-  <script src="../js/utils/auth_utils.js"></script>
-  <script src="../js/navbar/navbar.js"></script>
+  <!--  -->
+  <h3 class="text-center text-uppercase text-white mt-5">Dados Estatisticos</h3>
+  <section class="py-5">
+    <div class="container px-4 mt-5">
+      <div class="justify-content-center">
+          <!--  -->
+          <div id="graph" class="border border-light">
+          </div>
+      </div>
+    </div>
+  </section>
+</body>
+
+<!-- Scripts -->
+<script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
+<script src="../js/firebase/megascriptxd.js"></script>
+<script src="../js/firebase/graph.js"></script>
+<script src="../js/firebase/readings.js"></script>
+
+<!-- Firestore -->
+<script src="https://www.gstatic.com/firebasejs/9.12.1/firebase-firestore-compat.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/firebase/profile.js"></script>
+<script src="../js/constants.js"></script>
+<script src="../js/firebase/event.js"></script>
+<script src="../js/firebase/user.js"></script>
+<script src="../js/firebase/auth.js"></script>
+<script src="../js/utils/auth_utils.js"></script>
+<script src="../js/navbar/navbar.js"></script>
+<script src="../js/utils/color_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </html>

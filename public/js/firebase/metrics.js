@@ -408,7 +408,7 @@ async function showAllUtilizadoresByEvent(eventID){
     // Create the card text
     const text = document.createElement('p');
     text.classList.add('card-text');
-    text.textContent = `${number} %`;
+    text.textContent = `${num}`;
     cardBody.appendChild(text);
   
     // Append the card to the desired location in your HTML
