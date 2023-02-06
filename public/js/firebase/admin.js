@@ -27,15 +27,12 @@ async function updateGraph(eventId){
 
 
 async function showGraph(eventId) {
-
     const event = await getEvent(eventId);
-
     const div = document.getElementById("graph");
     div.innerHTML = ` 
     <h1 class="text-center">${event.name}</h1>
     <div id="graphIn">
         <canvas id="guiaEventChart"></canvas>
     </div>
-
     `
 }

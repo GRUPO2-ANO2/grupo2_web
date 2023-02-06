@@ -84,29 +84,29 @@ async function getUserById(idUser) {
 }
 
 async function getAllUtilizadoresByEvent(idEvent) {
-    return new Promise(async (resolve) => {
-        var users = [];
+	return new Promise(async (resolve) => {
+		var users = [];
 
-        await firebase.firestore().collection("eventosUtilizadores").get().then(async (querySnapshot) => {
-            // para lidar com todas as promessas que estão em ativo    
-            const promises = [];
+		await firebase.firestore().collection("eventosUtilizadores").get().then(async (querySnapshot) => {
+			// para lidar com todas as promessas que estão em ativo	
+			const promises = [];
 
-            querySnapshot.forEach((doc) => {
-                var docEventId = doc.data().idEvento;
-                var docUserId = doc.data().idUtilizador;
+			querySnapshot.forEach((doc) => {
+				var docEventId = doc.data().idEvento;
+				var docUserId = doc.data().idUtilizador;
 
-                if (docEventId === idEvent) {
-                    promises.push(getUserById(docUserId));
-                }
-            });
+				if (docEventId === idEvent) {
+					promises.push(getUserById(docUserId));
+				}
+			});
 
-            // Esperar por todas as promessas
-            const resolvedUsers = await Promise.all(promises);
-            resolvedUsers.forEach((user) => {
-                users.push(user);
-            });
+			// Esperar por todas as promessas
+			const resolvedUsers = await Promise.all(promises);
+			resolvedUsers.forEach((user) => {
+				users.push(user);
+			});
 
-            resolve(users);
-        });
-    });
+			resolve(users);
+		});
+	});
 }
