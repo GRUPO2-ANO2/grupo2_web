@@ -143,19 +143,13 @@ async function averageDurationOfEventsByGuia(guiaID) {
     return new Promise(async (resolve, reject) => {
         try {
             const events = await getEventsByGuia();
-            let sum = 0;
-            let count = 0;
-            
-            events.forEach(async (event) => {
-                var dateStart = event.dateStart.toDate();
-                var dateFinish = event.dateFinish.toDate();
-                var numDays = Math.floor(((dateFinish.getTime() - dateStart.getTime()) / 86400000));
-                
-                sum += numDays;
-                count++;
+            let totalDuration = 0;
+            let eventCount = 0;
+            events.forEach((event) => {
+                totalDuration += event.dateFinish - event.dateStart;
+                eventCount++;
             });
-
-            resolve(sum / count);
+            resolve(totalDuration / eventCount);
         } catch (error) {
             reject(error);
         }
@@ -617,6 +611,79 @@ async function showValidAndInvalidCountByUserInvalid(userID){
     const text = document.createElement('p');
     text.classList.add('card-text');
     text.textContent = `${invalid[1]}`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function ShowNumEventsOwnedByGuia(userId){
+    var num = await numEventsOwnedByGuia(userId);
+    const container = document.querySelector('#numEventsOwnedByGuia');
+
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Número Eventos';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${num}`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function ShowAverageDurationOfEventsByGuia(userId){
+    var duration = await averageDurationOfEventsByGuia(userId);
+    const container = document.querySelector('#averageDurationOfEventsByGuia');
+
+    duration = Math.round(duration * 100) / 100;
+
+
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Tempo Duração Média';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${duration} dias`;
     cardBody.appendChild(text);
   
     // Append the card to the desired location in your HTML

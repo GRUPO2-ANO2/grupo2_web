@@ -47,7 +47,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
 				}	
 				else{
 					showEventsByUser();
-					updateGraph();
+					updateGraph();	
 				}
 					
 				
