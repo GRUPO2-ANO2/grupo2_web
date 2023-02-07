@@ -22,6 +22,7 @@ async function updateGraphGuia() {
     showGraphGuia();
     makeGraphEventsPerMonth("guiaEventBarChart");
     ShowNumEventsOwnedByGuia(currentUser.uid);
+    ShowAverageDurationOfEventsByGuia(currentUser.uid);
 }
 
 async function showGraphGuia() {
@@ -82,17 +83,7 @@ async function showStatsDataGuia() {
 					</div>
 				</div>
 				<div class="col-auto">
-					<div id="validAndInvalidCountByUserValid" class="statCard"> 
-
-					</div>
-				</div>
-				<div class="col-auto">
-					<div id="validAndInvalidCountByUserInvalid" class="statCard"> 
-
-					</div>
-				</div>
-				<div class="col-auto">
-					<div id="percentageValidByUser" class="statCard"> 
+					<div id="averageDurationOfEventsByGuia" class="statCard"> 
 
 					</div>
 				</div>
