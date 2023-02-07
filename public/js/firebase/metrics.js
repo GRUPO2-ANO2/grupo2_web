@@ -113,22 +113,55 @@ async function averageAltitudeByEvent(eventID) {
 }
 
 // Calculates the average duration of events owned by a specific guia.
-async function averageDurationOfEventsByGuia(guiaID) {
+async function averageDurationOfEventsByGuiaBAD(guiaID) {
     return new Promise(async (resolve, reject) => {
         try {
-            const events = await getEventsByGuiaID(guiaID);
+            const events = await getEvents();
             let totalDuration = 0;
-            let eventCount = 0;
-            events.forEach((event) => {
-                totalDuration += event.dateFinish - event.dateStart;
-                eventCount++;
+            let eventsDuration = 0;
+            
+            events.forEach(async (event) => {
+                var dateStart = event.dateStart.toDate();
+                var dateFinish = event.dateFinish.toDate();
+                var numDays = Math.floor(((dateFinish.getTime() - dateStart.getTime()) / 86400000));
+                
+                if (event.idGuia == guiaID){
+                    eventsDuration += numDays;
+                }
+                totalDuration += numDays;
             });
-            resolve(totalDuration / eventCount);
+            console.log(eventsDuration)
+            console.log(totalDuration)
+            resolve(eventsDuration / totalDuration);
         } catch (error) {
             reject(error);
         }
     });
 }
+
+async function averageDurationOfEventsByGuia(guiaID) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const events = await getEventsByGuia();
+            let sum = 0;
+            let count = 0;
+            
+            events.forEach(async (event) => {
+                var dateStart = event.dateStart.toDate();
+                var dateFinish = event.dateFinish.toDate();
+                var numDays = Math.floor(((dateFinish.getTime() - dateStart.getTime()) / 86400000));
+                
+                sum += numDays;
+                count++;
+            });
+
+            resolve(sum / count);
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
 
 // Gets the number of users who have taken readings in a specific event.
 async function numReadingsInEvent(eventID) {

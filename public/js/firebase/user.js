@@ -95,7 +95,7 @@ async function getAllUtilizadoresByEvent(idEvent) {
 				var docEventId = doc.data().idEvento;
 				var docUserId = doc.data().idUtilizador;
 
-				if (docEventId === idEvent) {
+				if (docEventId == idEvent) {
 					promises.push(getUserById(docUserId));
 				}
 			});
@@ -104,6 +104,7 @@ async function getAllUtilizadoresByEvent(idEvent) {
 			const resolvedUsers = await Promise.all(promises);
 			resolvedUsers.forEach((user) => {
 				users.push(user);
+				console.log("ENCONTROU USER")
 			});
 
 			resolve(users);

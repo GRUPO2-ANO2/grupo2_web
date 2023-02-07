@@ -1,62 +1,62 @@
 async function createEvento() {
 	var isGuia = await userIsGuia();
-  
+
 	if (isGuia == 1) {
-	  const urlParams = new URLSearchParams(window.location.search);
-	  const selectedId = urlParams.get("selectedId");
-  
-	  let dateStart = new Date(form.startDate().value);
-	  let dateFinish = new Date(form.finishDate().value);
-	  let registrations = parseInt(form.registrations().value);
-  
-	  var data = await getApiDocById(selectedId);
-	  var imageId = await uploadImage();
-  
-	  var ref = await firebase.storage().ref("image/").child("image_" + imageId).getDownloadURL();
-  
-	  await firebase.firestore().collection("eventos").add({
-		idGuia: currentUser.uid,
-		image: ref,
-		dateStart: dateStart,
-		dateFinish: dateFinish,
-		location: data.country_code,
-		name: form.eventName().value,
-		elevation: data.elevation,
-		latitude: data.latitude,
-		longitude: data.longitude,
-		dem: data.dem,
-		registrations: registrations,
-	  })
-		.then(() => {
-		  console.log("sucesso");
-		  const userConfirmation = confirm("Evento registado com sucesso!");
-		  if (userConfirmation) {
-			window.location.href = "admin.html";
-		  }
+		const urlParams = new URLSearchParams(window.location.search);
+		const selectedId = urlParams.get("selectedId");
+
+		let dateStart = new Date(form.startDate().value);
+		let dateFinish = new Date(form.finishDate().value);
+		let registrations = parseInt(form.registrations().value);
+
+		var data = await getApiDocById(selectedId);
+		var imageId = await uploadImage();
+
+		var ref = await firebase.storage().ref("image/").child("image_" + imageId).getDownloadURL();
+
+		await firebase.firestore().collection("eventos").add({
+			idGuia: currentUser.uid,
+			image: ref,
+			dateStart: dateStart,
+			dateFinish: dateFinish,
+			location: data.country_code,
+			name: form.eventName().value,
+			elevation: data.elevation,
+			latitude: data.latitude,
+			longitude: data.longitude,
+			dem: data.dem,
+			registrations: registrations,
 		})
-		.catch((error) => {
-		  console.error("Error writing document: ", error);
-		});
+			.then(() => {
+				console.log("sucesso");
+				const userConfirmation = confirm("Evento registado com sucesso!");
+				if (userConfirmation) {
+					window.location.href = "admin.html";
+				}
+			})
+			.catch((error) => {
+				console.error("Error writing document: ", error);
+			});
 	} else {
-	  alert("Utilizador não é guia!");
+		alert("Utilizador não é guia!");
 	}
 }
-  
+
 
 async function uploadImage() {
 
 	var uid = randomUid();
 	var file = document.getElementById("inputTag").files[0];
 	var storageRef = await firebase.storage().ref('image/').child("image_" + uid);
-	
+
 	await storageRef.put(file);
 
 	return uid;
 };
 
 function randomUid() {
-	return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-	  (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+	return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+		(c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
 	);
 }
 
@@ -73,9 +73,9 @@ async function joinEvent(idEvent) {
 
 	if (info) {
 		window.alert("Antes de participar de um evento, é necessário registrar suas informações pessoais no perfil.");
-		window.addEventListener('click', function() {
-		  window.location.href = "profile.html";
-		});		
+		window.addEventListener('click', function () {
+			window.location.href = "profile.html";
+		});
 		return;
 	}
 
@@ -135,6 +135,33 @@ async function getEvent(idEvent) {
 	});
 }
 
+async function getEvents() {
+	return new Promise(async (resolve) => {
+		var events = [];
+
+		await firebase.firestore().collection("eventos").get().then(async (querySnapshot) => {
+			const promises = [];
+			var ids = []
+			querySnapshot.forEach((doc) => {
+				ids.push(doc.id);
+				promises.push(getEvent(doc.id));
+			});
+
+			// Esperar por todas as promessas
+			const resolvedEvents = await Promise.all(promises);
+			var c = 0;
+			resolvedEvents.forEach((event) => {
+				events.push(event);
+				events[c].id = ids[c];
+				c++;
+			});
+
+			resolve(events);
+		});
+	});
+}
+
+
 // Does not need to make a promise
 async function editEvent(idEvent, callback) {
 
@@ -149,7 +176,7 @@ async function editEvent(idEvent, callback) {
 
 	var owns = await userOwnsEvent(idEvent);
 
-	if (owns) {	 
+	if (owns) {
 		await firebase.firestore().collection("eventos").doc(idEvent).update({
 			name: name,
 			registrations: registrations,
@@ -387,15 +414,15 @@ async function showEventDataIn(eventId) {
 	longitudeInput.value = event.longitude;
 
 	document.getElementById('edit').addEventListener('click', function () {
-		if(confirm('Tem a certeza que quer editar o evento: ' + event.name)) {
-			editEvent(event.uid, function() {
+		if (confirm('Tem a certeza que quer editar o evento: ' + event.name)) {
+			editEvent(event.uid, function () {
 				window.location.href = "admin.html";
 			});
 		}
-	});	
+	});
 	document.getElementById('remove').addEventListener('click', function () {
-		if(confirm('Tem a certeza que quer eliminar o evento: ' + event.name)) {
-			removeEvent(event.uid, function() {
+		if (confirm('Tem a certeza que quer eliminar o evento: ' + event.name)) {
+			removeEvent(event.uid, function () {
 				window.location.href = "admin.html";
 			});
 		}
@@ -440,13 +467,13 @@ async function generateEventRows() {
 		link.setAttribute('data-toggle', 'list');
 		link.setAttribute('role', 'tab');
 		link.setAttribute('aria-controls', `event-${event.uid}`);
-		
+
 		// Append the link to the list group
 		listGroup.appendChild(link);
 
-		link.addEventListener("click", function() {
+		link.addEventListener("click", function () {
 			dashboardEvent(event.uid);
-		  });
+		});
 	}
 
 }
@@ -535,7 +562,7 @@ async function showEventsByGuia() {
 
 async function showEventsByUser() {
 	const events = await getEventsByUserID(currentUser.uid);
-	
+
 	// Get the card container element
 	const cardContainer = document.getElementById('card-container');
 
@@ -551,7 +578,7 @@ async function showEventsByUser() {
 		col.className = 'col-4 mt-3';
 
 		console.log(i);
-		console.log(events); 
+		console.log(events);
 
 		// Create the card
 		const card = document.createElement('div');
@@ -716,8 +743,8 @@ async function showEventInformations() {
 	var duration = document.getElementById("duration");
 	var btn = document.getElementById("btn");
 
-	const locationName = new Intl.DisplayNames(['en'], {type: 'region', name: event.location});
-	
+	const locationName = new Intl.DisplayNames(['en'], { type: 'region', name: event.location });
+
 	image.innerHTML = `<img class="rounded" src="${event.image}">`;
 	title.innerHTML = event.name;
 	location.innerHTML = locationName.of(event.location);
