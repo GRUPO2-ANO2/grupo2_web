@@ -622,3 +622,76 @@ async function showValidAndInvalidCountByUserInvalid(userID){
     // Append the card to the desired location in your HTML
     container.appendChild(card);
 }
+
+async function ShowNumEventsOwnedByGuia(userId){
+    var num = await numEventsOwnedByGuia(userId);
+    const container = document.querySelector('#numEventsOwnedByGuia');
+
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Número Eventos';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${num}`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
+
+async function ShowAverageDurationOfEventsByGuia(userId){
+    var duration = await averageDurationOfEventsByGuia(userId);
+    const container = document.querySelector('#averageDurationOfEventsByGuia');
+
+    duration = Math.round(duration * 100) / 100;
+
+
+    // Remove existing cards
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+  
+    // Create a new card element
+    const card = document.createElement('div');
+    card.classList.add('card');
+    card.style.width = '15rem';
+  
+    // Create the card body
+    const cardBody = document.createElement('div');
+    cardBody.classList.add('card-body');
+    card.appendChild(cardBody);
+  
+    // Create the title for the card
+    const title = document.createElement('h5');
+    title.classList.add('card-title');
+    title.textContent = 'Tempo Duração Média';
+    cardBody.appendChild(title);
+  
+    // Create the card text
+    const text = document.createElement('p');
+    text.classList.add('card-text');
+    text.textContent = `${duration} dias`;
+    cardBody.appendChild(text);
+  
+    // Append the card to the desired location in your HTML
+    container.appendChild(card);
+}
