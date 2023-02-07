@@ -216,7 +216,6 @@ async function makeGraphByEvent(graphID, eventID) {
 
 // makes a bar graph that shows how many events each month has
 async function makeGraphEventsPerMonth(graphID) {
-    currentUser = { uid: "IDtFlVMgYQhQX6kyceVczQc0Zzh1" }
     let events = await getEventsByGuia();
     if (events.length === 0) {
         console.log("No events");
@@ -230,37 +229,48 @@ async function makeGraphEventsPerMonth(graphID) {
         monthCount[eventMonth]++;
     });
 
-    new Chart(graphID, {
+    if (chart != null) chart.destroy();
+
+    const ctx = document.getElementById(graphID);
+    chart = new Chart(ctx, {
         type: "bar",
         data: {
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             datasets: [
                 {
                     data: monthCount,
-                    backgroundColor: "blue",
+                    backgroundColor: getRandomColor(),
                     borderColor: "black",
                     borderWidth: 1
                 }
             ]
         },
         options: {
+            plugins: {
+                legend: {
+                  labels: {
+                    color: "white", 
+                    font: {
+                      size: 0
+                    }
+                  }
+                }
+              },
             scales: {
-                yAxes: [
-                    {
-                        scaleLabel: {
-                            display: true,
-                            labelString: "# of events"
-                        }
+                x: {
+                    ticks: { color: 'white', beginAtZero: true },
+                    labelString: "# of events",
+                    grid: {
+                        color: 'white'
                     }
-                ],
-                xAxes: [
-                    {
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Month"
-                        }
+                },
+                y: {
+                    ticks: { color: 'white', beginAtZero: true },
+                    labelString: "Month",
+                    grid: {
+                        color: 'white'
                     }
-                ]
+                }
             }
         }
     });

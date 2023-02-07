@@ -43,6 +43,7 @@ firebase.auth().onAuthStateChanged(async (user) => {
 				showPersonalInformation();				
 				if (isGuia){
 					showEventsByGuia();
+					updateGraphGuia();
 				}	
 				else{
 					showEventsByUser();
