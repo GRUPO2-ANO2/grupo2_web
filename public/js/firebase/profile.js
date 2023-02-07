@@ -1,6 +1,6 @@
 // Render graphs
 async function updateGraph() {
-    showDataUser();
+    showStatsDataUser();
     showGraph();
     makeGraphByUserAllEvents("userEventChart", currentUser.uid);
     showNumReadingsOfUser(currentUser.uid);
@@ -18,7 +18,7 @@ async function showGraph() {
 }
 
 async function updateGraphGuia() {
-    showDataGuia();
+    showStatsDataGuia();
     showGraphGuia();
     makeGraphEventsPerMonth("guiaEventBarChart");
     ShowNumEventsOwnedByGuia(currentUser.uid);
@@ -32,7 +32,7 @@ async function showGraphGuia() {
     </div>`
 }
 
-async function showDataUser() {
+async function showStatsDataUser() {
 
 		document.getElementById("showData").innerHTML = 
 			`
@@ -71,7 +71,7 @@ async function showDataUser() {
 			</div>`;
 }
 
-async function showDataGuia() {
+async function showStatsDataGuia() {
 		document.getElementById("showData").innerHTML = 
 		`
 		<div class="container px-4 mt-5">
