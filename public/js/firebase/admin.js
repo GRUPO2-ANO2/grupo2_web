@@ -22,7 +22,6 @@ async function updateGraph(eventId){
     showAverageHeightOfUsersInEvent(eventId);
     showAllUtilizadoresByEvent(eventId);
     showAverageO2ByEvent(eventId);
-    ShowNumEventsOwnedByGuia(eventId);
     showGraph(eventId);
 }
 

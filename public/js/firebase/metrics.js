@@ -590,8 +590,8 @@ async function showValidAndInvalidCountByUserInvalid(userID){
     container.appendChild(card);
 }
 
-async function ShowNumEventsOwnedByGuia(userID){
-    var num = await numEventsOwnedByGuia(userID);
+async function ShowNumEventsOwnedByGuia(userId){
+    var num = await numEventsOwnedByGuia(userId);
     const container = document.querySelector('#numEventsOwnedByGuia');
 
     // Remove existing cards
