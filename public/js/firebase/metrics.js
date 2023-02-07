@@ -263,7 +263,9 @@ async function showPercentageLeituraValid(eventID){
 async function showAverageHeightOfUsersInEvent(eventID){
     var height = await averageHeightOfUsersInEvent(eventID);
     const container = document.querySelector('#averageHeightOfUsers');
-  
+
+    height = Math.round(height * 100) / 100;
+
     // Remove existing cards
     while (container.firstChild) {
       container.removeChild(container.firstChild);
@@ -288,7 +290,7 @@ async function showAverageHeightOfUsersInEvent(eventID){
     // Create the card text
     const text = document.createElement('p');
     text.classList.add('card-text');
-    text.textContent = `${height} cm`;
+    text.textContent = `${height} m`;
     cardBody.appendChild(text);
   
     // Append the card to the desired location in your HTML

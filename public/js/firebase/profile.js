@@ -33,6 +33,21 @@ async function showGraphGuia() {
     </div>`
 }
 
+async function showEventsUser() {
+    document.getElementById("showEvents").innerHTML =
+    `
+    <h3 class="text-center text-uppercase text-white mt-5">Eventos Registados</h3>
+    <!-- Cards -->
+    <section class="py-5">
+      <div class="container px-4 mt-5">
+        <div class="justify-content-center">
+          <div id="card-container"></div>
+        </div>
+      </div>
+    </section>
+    `
+}
+
 async function showStatsDataUser() {
 
 		document.getElementById("showData").innerHTML = 
